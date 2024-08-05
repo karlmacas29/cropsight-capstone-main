@@ -1,0 +1,170 @@
+{
+    "cropsightData": {
+        "insectList": [
+            {
+                "insectID" : 1,
+                "insectName": "Green LeafHopper",
+                "insectPic": "assets/images/greenleafhopper/1s.jpg",
+                "insectDesc": "Green leafhoppers are the most common leafhoppers in rice fields and are primarily critical because they spread the viral disease tungro. Both nymphs and adults feed by extracting plant sap with their needle-shaped mouthparts.",
+                "insectWhere": "Grasses found near irrigation canals and levees, and rice ratoons are favorable for feeding and egg-laying. Tillering and panicle initiation stages are most favorable for their multiplication, although seedling to booting stages are also susceptible. They jump readily when disturbed. They are active in summer and become sluggish during cold weather. Thus, their numbers decline drastically. To quickly detect them, either tap vigorously several plants, stopping now and then as one walks through a field, or sweep rice foliage with an insect net.",
+                "insectDamage" : "Adults and nymphs cause direct damage to the rice plant by sucking the sap from leaf sheaths and leaf blades. GLH also cause indirect damage by injecting toxic chemicals and transmitting viruses (tungro, dwarf, transitory yellowing, and yellow- orange leaf) and a mycoplasma disease (yellow dwarf). They mostly confine themselves and feed on the leaf and leaf sheath of rice. Mild infestations reduce plant vigor and number of productive tillers. Heavy infestations cause withering and complete drying of the crop."
+            },
+            {
+                "insectID" : 2,
+                "insectName": "Rice Leaffolder",
+                "insectPic": "assets/images/riceleaffolder/1s.jpg",
+                "insectDesc": "Leaffolder caterpillars fold a rice leaf around themselves and attach the leaf margins together with silk strands.",
+                "insectWhere": "Leaffolders live in all environments but are abundant during the rainy season. High humidity, shady areas of the field, and excessive use of nitrogenous fertilizers favor their rapid multiplication.",
+                "insectDamage" : "Leaffolders inflict damage in the larva stage. Plants are susceptible to attack up to 10 weeks after transplanting (i.e., from seedling to flowering). Infestation usually occurs during early growth stages of the rice crop. The larvae infest the leaves of young plants; they fasten the edges of a leaf together and live inside the rolled leaf. Heavy infestation makes the plant look burnt, sickly, and twig-like."
+            },
+            {
+                "insectID" : 3,
+                "insectName": "Rice Bug",
+                "insectPic": "assets/images/ricebug/factsheet-ricebug-2.jpg",
+                "insectDesc": "Rice bugs damage rice by sucking out the contents of developing grains from pre-flowering spikelets to soft dough stage, therefore causing unfilled or empty grains and discoloration. Immature and adult rice bugs both feed on rice grains.",
+                "insectWhere": "Bugs are found in all environments but are prevalent in rainfed wetland or upland rice. They are destructive in areas where rainfall is evenly distributed throughout the year, and also in irrigated crops. Extensive weedy areas of rice fields, wild grasses near canals, staggered rice planting, rice fields adjacent to woodlands, and coconut plantations favor bug multiplication. Susceptible growth stages are from flowering to milky stage.",
+                "insectDamage" : "Adults and nymphs appear in the young crop with the early rains. They suck sap from the developing grains at the milky stage. All soft milky grains are susceptible to attack. Panicles in heavily infested fields remain erect. Insect attack results in discolored or shriveled grains; off-smell of raw and cooked rice, and off-flavor of straws, which is unattractive to cattle. Before grain formation, the bugs feed on succulent shoots and leaves. Nymphs cause more damage than adults."
+            },
+            {
+                "insectID" : 4,
+                "insectName": "Stem Borer",
+                "insectPic": "assets/images/stemborer/4s.jpg",
+                "insectDesc": "Stem borers can destroy rice at any stage of the plant from seedling to maturity.",
+                "insectWhere": "The stem borer larvae bore at the base of the plants during the vegetative stage. On older plants, they bore through the upper nodes and feed toward the base. The yellow stem borer is a pest of deepwater rice. It is found in aquatic environments where there is continuous flooding. Second instar larvae enclose themselves in body leaf wrappings to make tubes and detach themselves from the leaf and falls onto the water surface. They attach themselves to the tiller and bore into the stem.",
+                "insectDamage" : "Yellow stem borer is a notorious pest of deepwater rice. It is abundant in aquatic habitats where flooding occurs and where multiple rice crops are grown annually. Rice plants at the vegetative and early heading stages are preferred for egg-laying. Plants receiving high nitrogenous fertilizers are also favorable to larval survival. Only one larva can be found in a stem. To detect the presence of moth, flush the borders of the field. To monitor larval densities, dissect tillers at tiller elongation and panicle initiation stages. For eggmasses, check seedbed or newly established crop at weekly intervals starting 3 weeks after transplanting up to 9 WAT. Egg-laying can peak at 3.5 eggmass/m².\nWhite Stem Borer: \n Predominant in rainfed areas where there is only one wet season crop per year, and where stubbles are left undisturbed during the dry season. Upland rice is susceptible to WSB species, as the larvae cannot survive extremely wet situations. Thus, this insect does not occur in areas with high rainfall. Early in the season, deadhearts are caused in the nurseries and in the young crop, while later in the cropping season subsequent generations cause whiteheads. WSB is presently found in the Visayas and Mindanao.'"
+            }
+        ],
+        "insectManage":[
+            {
+                "insectId" : 1,
+                "insectName" : "Green LeafHopper",
+                "insectPic": "assets/images/greenleafhopper/1s.jpg",
+                "cultureMn": [
+                    "• Seedbeds should be raised, far from light sources, and covered with mesh cloth to limit virus infection and early damage by leafhoppers.",
+                    "• Mobile nurseries planted to a set of different susceptible and resistant varieties can be used to detect the percentage of virus infection before transplanting. The nursery boxes can be set under lights to attract leafhoppers. The percentage of infected seedlings can be determined by the iodine diagnostic test.",
+                    "• Transplant older seedlings to shorten the susceptible vegetative period in the field.",
+                    "• Early plantings in the dry season reduce the risk of insect-transmitted diseases.",
+                    "• Remove grassy weeds and volunteer rice in fallow fields to help reduce leafhopper numbers.",
+                    "• More nitrogen (N) fertilizer increases ZLH attack, but it also promotes tillering and plant vigor necessary to boost the crop's ability to compensate for pest damage. Therefore, optimal and timely use of N is important.",
+                    "• More potassium increases resistance of the rice plant as cell walls get thicker because of greater silica uptake.",
+                    "• Crop rotation with a non-rice crop during the dry season will remove weeds and volunteer rice plants. Similarly, in the uplands, if rice is intercropped with soybean, it will reduce GLH incidence compared with rice followed by rice.",
+                    "• Dense planting increases the number of leafhoppers.",
+                    "• Observing ratoon and volunteer rice for leafhopper numbers helps determine their density.",
+                    "• Draining water from the field reduces their numbers.",
+                    "• Many varieties resistant to GLH are commercially available. There are few varieties with resistance to virus diseases, but widespread planting of GLH-resistant varieties helps suppress the incidence of viruses."
+                ],
+                "biologicalMn" : [
+                    "• Small wasps kill hopper eggs.",
+                    "• Dryinids, water bugs, dragonflies, damselflies, spiders, and nematodes attack nymphs and adults."
+                ],
+                "chemicalMn" : [
+                    "• Systemic insecticide will be more effective. Granules incorporated in the soil are more effective than broadcasted or sprayed in seedbed.",
+                    "• Apply insecticide only if GLH is prevalent in the area"
+                ]
+            },
+            {
+                "insectId" : 2,
+                "insectName" : "Rice Leaffolder",
+                "insectPic": "assets/images/riceleaffolder/1s.jpg",
+                "cultureMn": [
+                    "• Clipping tops of bundled seedlings before transplanting removes eggs.",
+                    "• Removing weeds prevents leaffolder buildup.",
+                    "• Reducing amount of nitrogenous fertilizer and splitting the application make rice plants less favorable for egg-laying and leaffolder attack.",
+                    "• Potassium makes cell walls thicker because of greater silica uptake, making the plant more tolerant to leaffolders.",
+                    "• Higher infestation occurs in shady places.",
+                    "• Wider spacing reduces infestation.",
+                    "• Early planting enables plants to escape a high degree of defoliation.",
+                    "• Most modern rice varieties can compensate for leaffolder defoliation; making insecticides no longer necessary for control.",
+                    "• Varieties with narrow leaves are more resistant to leaffolders than varieties with wider leaves."
+                ],
+                "biologicalMn" : [
+                    "• Small wasps and crickets kill leaffolder eggs.",
+                    "• Big wasps, damselflies, ants, and carabid (guitar) beetles prey on larvae.",
+                    "• During the wet season, frequent moderate rainfall enables pathogens to wipe out the entire larval population. Fungi and nuclear polyhydrosis virus (NPV) kill the larvae.",
+                    "• Spiders eat adult leaffolders."
+                ],
+                "chemicalMn" : ["There is no chemical management from now"]
+            },
+            {
+                "insectId" : 3,
+                "insectName" : "Rice Bug",
+                "insectPic": "assets/images/ricebug/factsheet-ricebug-2.jpg",
+                "cultureMn": [
+                    "• Eliminate grassy weeds from rice fields, levees, and surrounding areas either by cutting or burning to reduce habitats for egg-laying.",
+                    "• Avoid staggered planting of fields to break continuous food source.",
+                    "• Passing baskets or bags coated on the inside with sticky material could repel/capture bugs.",
+                    "• Net and handpick bugs to reduce their numbers.",
+                    "• Put attractants such as arasan or anything having bad odor like dead snails or rats. The bugs attracted can be burned or sprayed with chemicals to reduce their numbers.",
+                    "• Awned (bearded) varieties are resistant.",
+                    "• Varieties with panicles enclosed in the leaf sheath for longer time offer some mechanical resistance to feeding."
+                ],
+                "biologicalMn" : [
+                    "• Small wasps and long-horned grasshoppers kill eggs",
+                    "• Fungal pathogens infect nymphs and adults.",
+                    "• Spiders, crickets, lady beetles, and long-horned grasshoppers feed on nymphs and adults."
+                ],
+                "chemicalMn" : [
+                    "• Foliar sprays or dust formulations are effective. Spray or dust at flowering stage in the early morning or evening on calm days.",
+                    "• Granular insecticides are ineffective."
+                ]
+            },
+            {
+                "insectId" : 4,
+                "insectName" : "Stem Borer",
+                "insectPic": "assets/images/stemborer/4s.jpg",
+                "cultureMn": [
+                    "The following tactics are necessary for community-wide implementation at various crop stages. However, it would also depend on the prevailing local conditions.",
+                    "Before sowing: \t",
+                    "• Plowing/harrowing the rice field immediately after harvest turns under stubbles harboring larvae and pupae. They are either preyed upon by useful organisms or get dried up under the heat of sun. This is effective for managing yellow, white, and striped stem borers.",
+                    "• If the population in stubbles is high, flooding the field before land preparation for the next crop and keeping it submerged up to a week can kill resident larvae.",
+                    "• Spreading straw under the sun kills resident larvae in it.",
+                    "• Delaying seedbed planting until moth’s emergence to avoid egg-laying.",
+                    "• Choosing right planting time minimizes stem borer population growth, as well as using seedbed trap crops to manually collect eggmasses, and also to know stem borer activity.",
+                    "• Conserving and enhancing the action of indigenous useful organisms such as small and big wasps, carabid beetles, and spiders regulate stem borer buildup.",
+                    "• Collecting eggmasses, larvae, and pupae of stem borers in containers with minute holes so that once the wasps emerge, they will disperse in the field.",
+                    "At seedling state: \t",
+                    "• Monitoring seedbeds for eggmasses every after 5 days helps in effective pest management decision-making.",
+                    "• Changing the method of seedling cultivation. For instance, using a plastic covering at the nursery stage reduces the possibility for adults to lay eggs.",
+                    "• Periodically raising the level of irrigation water drowns the eggs, which are deposited at the base of tillers and in leaf sheaths.",
+                    "• Cutting the tops of bundled seedlings before transplanting to remove eggmasses. This prevents eggmass carry-over from seedbed to transplanted field.",
+                    "• Planting a trap crop. It is done by planting a susceptible rice variety ahead of the main planting time, applying N fertilizer, and installing light traps to attract moths for egg-laying. This should be done community-wide.",
+                    "• Spraying pesticide when natural control is low helps bring down pest level.",
+                    "After transplanting: \t",
+                    "• Roguing infested plants to kill the larvae. This should be done for several years over a large area.",
+                    "• Early and late plantings to avoid crop continuity and buildup of the borer population. This is location-specific. Asynchronous planting creates many oviposition periods with overlapping generations, as there is continuous supply of food. It also increases larval development. Encourage synchronous plantings (3-4 weeks duration) in the dispersal range of the moth (10-20 km). Crops that are established within a month from the first planting date are considered as regular-planted.",
+                    "• Use of light traps to arrest the moths flying in the night. Peaks in the light traps depend on major planting seasons rather than environmental conditions.",
+                    "• Removal of eggmasses from the field. It is more effectively done if timed based on light trap collections (10 days after a peak moth flight) or timed to coincide with susceptible growth stages—stem elongation and panicle exsertion (1 week before panicle exsertion). For a hectare, it takes approximately 4 days for a skilled person to remove eggmasses.",
+                    "• Transplanted rice is more susceptible to damage than direct-seeded rice because transplanted rice is planted later, has lower plant density, proportionally lower flooding period, and longer maturity. In direct-seeded rice, there is vigorous growth, no standing water during vegetative stage, shorter time to mature, and it has narrow stems that are more hard, hence more first-instar larvae die. Thus, plant at a higher range of crop density.",
+                    "• High amount of potash reduces stem borer incidence. Increased K reduces stem borer susceptibility as cell walls get thicker because of greater silica uptake.",
+                    "• Incorporation of ash enriches the plant with silicon that affects stem borer development.",
+                    "• Increased use of N and P favors stem borer attack. High nitrogen application increases crop duration and stem borer’s survival, feeding rate, and larval size.",
+                    "• Harvesting at the ground level removes majority of larvae of all species.",
+                    "Crop rotation: \t",
+                    "• Vigorous and well-nourished crop tolerates stem borers more than a stressed crop.",
+                    "• Spot application of pesticide (bio-pesticides or systemic insecticides) is a judicious practice.",
+                    "Varieties: \t",
+                    "• Select varieties that have moderate resistance to stem borer.",
+                    "• Modern cultivars mature early so they are less attacked.",
+                    "• Tall varieties are more susceptible to attack. They have dense silica deposits in the stem.",
+                    "• Select profuse-tillering varieties because of their high compensation capacity. This enables plants to compensate for deadhearts."
+                ],
+                "biologicalMn" : [
+                    "• High parasitization of eggmasses by small wasps can be known by rearing field-collected eggmasses.",
+                    "• Long-horned grasshoppers, fire ants, and crickets are egg predators. Long-horned grasshopper prefers yellow and white stem borer eggmasses. Crickets and mirids feed on other stem borer species. They prefer naked eggs.",
+                    "• Carabid beetles, lady beetles, fire ants, water beetle larvae, water striders, spiders, and fish prey on newly hatched larvae that fall on the water surface.",
+                    "• Spiders, dragonflies, and damselflies prey on adults.",
+                    "• Big predators of moths are frogs, ducks, and owls. Provide more perching places for owls in the field. They capture moths at night.",
+                    "• The rice stubble decays with high moisture. It also encourages white fungal growth on the larvae and pupae residing in the stem.",
+                    "• Bacteria (Bacillus thuringiensis) also infect the larvae. Both naturally occurring Bt and commercial Bt formulations infect larvae."
+                ],
+                "chemicalMn" : [
+                    "• Insecticide use is difficult after stem borer larvae have entered the tillers.",
+                    "• At tillering stage, sprays and granules are equally effective in flooded areas.",
+                    "• From panicle initiation to flowering stages, granules are not effective and only spray formulations should be used."
+                   
+            ]
+            }
+        ]
+    }
+}
+  
