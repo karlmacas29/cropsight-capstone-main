@@ -1,6 +1,6 @@
 import 'package:cropsight/services/insectjson.dart';
 import 'package:cropsight/services/readjson.dart';
-import 'package:cropsight/views/descript/manDesc.dart';
+import 'package:cropsight/views/descript/mandesc.dart';
 import 'package:flutter/material.dart';
 
 class SolutionTab extends StatefulWidget {
