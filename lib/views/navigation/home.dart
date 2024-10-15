@@ -77,7 +77,7 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 42, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
       child: ListView(
         scrollDirection: Axis.vertical,
         children: [
@@ -88,9 +88,6 @@ class _HomeTabState extends State<HomeTab> {
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.start,
-          ),
-          const SizedBox(
-            height: 20,
           ),
           Card(
             shadowColor: Colors.grey,
@@ -103,15 +100,17 @@ class _HomeTabState extends State<HomeTab> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('What is Cropsight?',
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+                  Text(
+                    'What is Cropsight?',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 5),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.task_alt_rounded,
-                        color: Color.fromRGBO(2, 101, 0, 1),
+                        Icons.mobile_friendly,
+                        color: Color.fromRGBO(86, 144, 51, 1),
                         size: 38,
                       ),
                       SizedBox(
@@ -135,8 +134,8 @@ class _HomeTabState extends State<HomeTab> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.task_alt_rounded,
-                        color: Color.fromRGBO(2, 101, 0, 1),
+                        Icons.image,
+                        color: Color.fromRGBO(86, 144, 51, 1),
                         size: 38,
                       ),
                       SizedBox(
@@ -160,8 +159,8 @@ class _HomeTabState extends State<HomeTab> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.task_alt_rounded,
-                        color: Color.fromRGBO(2, 101, 0, 1),
+                        Icons.auto_stories,
+                        color: Color.fromRGBO(86, 144, 51, 1),
                         size: 38,
                       ),
                       SizedBox(
@@ -186,9 +185,9 @@ class _HomeTabState extends State<HomeTab> {
             height: 20,
           ),
           const Text(
-            'Features',
+            'Scan Rice Pest Damage',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.start,
@@ -214,13 +213,11 @@ class _HomeTabState extends State<HomeTab> {
                             blurRadius: 0.4,
                             offset: Offset.fromDirection(1))
                       ],
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.white
-                          : const Color.fromARGB(255, 26, 26, 26),
+                      color: Colors.green,
                       borderRadius:
                           const BorderRadius.all(Radius.circular(20))),
                   child: Padding(
-                    padding: const EdgeInsets.all(25),
+                    padding: const EdgeInsets.all(10),
                     child: Column(
                       children: [
                         Container(
@@ -232,11 +229,14 @@ class _HomeTabState extends State<HomeTab> {
                             child: const Icon(
                               Icons.camera_rounded,
                               color: Colors.white,
+                              size: 40,
                             )),
                         const Text(
-                          'Scan',
+                          'Camera',
                           style: TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 20),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
+                              color: Colors.white),
                         ),
                       ],
                     ),
@@ -260,27 +260,34 @@ class _HomeTabState extends State<HomeTab> {
                             blurRadius: 0.4,
                             offset: Offset.fromDirection(1))
                       ],
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.white
-                          : const Color.fromARGB(255, 26, 26, 26),
+                      color: Colors.blue,
                       borderRadius:
                           const BorderRadius.all(Radius.circular(20))),
                   child: Padding(
-                    padding: const EdgeInsets.all(25),
+                    padding: const EdgeInsets.all(10),
                     child: Column(
                       children: [
                         Container(
-                            padding: const EdgeInsets.all(23),
-                            decoration: const BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            child: const Icon(Icons.photo_library_rounded,
-                                color: Colors.white)),
+                          padding: const EdgeInsets.all(23),
+                          decoration: const BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: const Icon(
+                            Icons.photo_library_rounded,
+                            color: Colors.white,
+                            size: 40,
+                          ),
+                        ),
                         const Text(
-                          'Photos',
+                          'Upload',
                           style: TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 20),
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),

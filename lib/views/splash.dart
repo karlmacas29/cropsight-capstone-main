@@ -1,4 +1,4 @@
-import 'package:cropsight/views/navigation/homepage.dart';
+import 'package:cropsight/views/navigation/nav_page.dart';
 import 'package:cropsight/views/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _navigateToNextScreen() async {
-    await Future.delayed(Duration(seconds: 3)); // Delay for 3 seconds
+    await Future.delayed(const Duration(seconds: 3)); // Delay for 3 seconds
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;

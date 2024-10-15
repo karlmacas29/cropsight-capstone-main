@@ -1,6 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:cropsight/views/navigation/cropsight.dart';
 import 'package:cropsight/views/navigation/home.dart';
+import 'package:cropsight/views/navigation/reports.dart';
 import 'package:cropsight/views/navigation/settings.dart';
 import 'package:cropsight/views/navigation/solution.dart';
 import 'package:flutter/material.dart';
@@ -18,30 +19,30 @@ class _HomePageNavState extends State<HomePageNav> {
     const HomeTab(),
     const CropsightTab(),
     const SolutionTab(),
-    const Text('4'),
-    const Text('5')
+    const ReportPage(),
   ];
 
   final _iconappbar = [
     Icons.home_rounded,
-    Icons.bookmark,
-    Icons.camera,
+    Icons.auto_stories,
     Icons.task,
-    Icons.explore
+    Icons.list_alt
   ];
 
-  final _titleAppbar = ['Home', 'Cropsight', 'Solution'];
+  final _titleAppbar = ['Home', 'Cropsight', 'Solution', 'Reports'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).brightness == Brightness.light
-            ? const Color.fromRGBO(244, 253, 255, 1)
-            : const Color.fromARGB(255, 41, 41, 41),
-        appBar: PreferredSize(
-          preferredSize: const Size.square(80),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
+      backgroundColor: Theme.of(context).brightness == Brightness.light
+          ? const Color.fromRGBO(244, 253, 255, 1)
+          : const Color.fromARGB(255, 41, 41, 41),
+      appBar: PreferredSize(
+        preferredSize: const Size.square(80),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20),
             child: AppBar(
               backgroundColor: Theme.of(context).brightness == Brightness.light
                   ? const Color.fromRGBO(244, 253, 255, 1)
@@ -49,6 +50,7 @@ class _HomePageNavState extends State<HomePageNav> {
               scrolledUnderElevation: 0.0,
               actions: [
                 IconButton(
+                    iconSize: 30,
                     onPressed: () {
                       Navigator.push(
                           context,
@@ -60,7 +62,7 @@ class _HomePageNavState extends State<HomePageNav> {
               leadingWidth: 28,
               leading: Icon(
                 _iconappbar[_currentIndex],
-                color: Color.fromRGBO(86, 144, 51, 1),
+                color: const Color.fromRGBO(86, 144, 51, 1),
                 size: 42,
               ),
               title: Text(
@@ -71,17 +73,24 @@ class _HomePageNavState extends State<HomePageNav> {
             ),
           ),
         ),
-        body: tabsnav[_currentIndex],
-        bottomNavigationBar: AnimatedBottomNavigationBar(
-            height: 80,
-            gapLocation: GapLocation.none,
-            activeColor: const Color.fromRGBO(86, 144, 51, 1),
-            icons: _iconappbar,
-            activeIndex: _currentIndex,
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            }));
+      ),
+      body: tabsnav[_currentIndex],
+      bottomNavigationBar: AnimatedBottomNavigationBar(
+        backgroundColor: Theme.of(context).brightness == Brightness.light
+            ? const Color.fromRGBO(244, 253, 255, 1)
+            : const Color.fromARGB(255, 41, 41, 41),
+        iconSize: 30,
+        height: 80,
+        gapLocation: GapLocation.none,
+        activeColor: const Color.fromRGBO(86, 144, 51, 1),
+        icons: _iconappbar,
+        activeIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
+    );
   }
 }

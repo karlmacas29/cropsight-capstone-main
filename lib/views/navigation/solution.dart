@@ -99,8 +99,11 @@ class _SolutionTabState extends State<SolutionTab> {
                                 Text(
                                   manageDt.insectName,
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 20),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),
