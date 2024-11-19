@@ -1,4 +1,8 @@
 # Cropsight - A image processing for identify rice crop pest
+- This is a capstone project in third year
+- Title defended 
+- Outline defended approve
 
+# Updated for new features coming soon
 
 
