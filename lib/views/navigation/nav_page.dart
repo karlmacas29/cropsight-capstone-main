@@ -1,9 +1,9 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:cropsight/views/navigation/cropsight.dart';
+import 'package:cropsight/views/navigation/geotagging.dart';
 import 'package:cropsight/views/navigation/home.dart';
 import 'package:cropsight/views/navigation/reports.dart';
 import 'package:cropsight/views/navigation/settings.dart';
-import 'package:cropsight/views/navigation/solution.dart';
 import 'package:flutter/material.dart';
 
 class HomePageNav extends StatefulWidget {
@@ -18,18 +18,23 @@ class _HomePageNavState extends State<HomePageNav> {
   final tabsnav = [
     const HomeTab(),
     const CropsightTab(),
-    const SolutionTab(),
     const ReportPage(),
+    const GeotaggingMapView(),
   ];
 
   final _iconappbar = [
     Icons.home_rounded,
     Icons.auto_stories,
-    Icons.task,
-    Icons.list_alt
+    Icons.list_alt,
+    Icons.pin_drop,
   ];
 
-  final _titleAppbar = ['Home', 'Cropsight', 'Solution', 'Reports'];
+  final _titleAppbar = [
+    'Home',
+    'Cropsight',
+    'Reports',
+    'Tagging',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +58,11 @@ class _HomePageNavState extends State<HomePageNav> {
                     iconSize: 30,
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SettingsApp()));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsApp(),
+                        ),
+                      );
                     },
                     icon: const Icon(Icons.settings))
               ],
@@ -75,20 +82,39 @@ class _HomePageNavState extends State<HomePageNav> {
         ),
       ),
       body: tabsnav[_currentIndex],
-      bottomNavigationBar: AnimatedBottomNavigationBar(
+      bottomNavigationBar: AnimatedBottomNavigationBar.builder(
+        splashColor: Colors.green,
+        splashRadius: 30,
+        elevation: 15,
         backgroundColor: Theme.of(context).brightness == Brightness.light
             ? const Color.fromRGBO(244, 253, 255, 1)
             : const Color.fromARGB(255, 41, 41, 41),
-        iconSize: 30,
         height: 80,
         gapLocation: GapLocation.none,
-        activeColor: const Color.fromRGBO(86, 144, 51, 1),
-        icons: _iconappbar,
         activeIndex: _currentIndex,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
           });
+        },
+        itemCount: tabsnav.length,
+        tabBuilder: (int index, bool isActive) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                _iconappbar[index],
+                color: isActive ? Colors.green : null,
+              ),
+              Text(
+                _titleAppbar[index],
+                style: TextStyle(
+                  color: isActive ? Colors.green : null,
+                ),
+              ),
+            ],
+          );
         },
       ),
     );

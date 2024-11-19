@@ -1,5 +1,4 @@
-import 'package:cropsight/services/insectjson.dart';
-import 'package:cropsight/services/readjson.dart';
+import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/descript/information.dart';
 import 'package:flutter/material.dart';
 
@@ -11,162 +10,110 @@ class CropsightTab extends StatefulWidget {
 }
 
 class _CropsightTabState extends State<CropsightTab> {
-  final RemoteJson remoteJson = RemoteJson();
+  List<Map<String, dynamic>> _allData = []; //read
+  bool _isLoading = true;
 
-  late List<Insects> filteredItems;
-  String searchQuery = '';
+  void _refreshData() async {
+    final db = CropSightDatabase();
+    final insects = await db.getAllInsects();
+    setState(() {
+      _allData = insects;
+      _isLoading = false;
+    });
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   filteredItems = insects;
-  // }
+  //data read print
+  Future<void> displayInsectData() async {
+    final db = CropSightDatabase();
 
-  // void _filterItems(String query) {
-  //   setState(() {
-  //     searchQuery = query;
-  //     if (searchQuery.isEmpty) {
-  //       filteredItems = insects;
-  //     } else {
-  //       final startsWithQuery = insects
-  //           .where((insect) => insect.insectName
-  //               .toLowerCase()
-  //               .startsWith(searchQuery.toLowerCase()))
-  //           .toList();
-  //       final containsQuery = insects
-  //           .where((insect) =>
-  //               insect.insectName
-  //                   .toLowerCase()
-  //                   .contains(searchQuery.toLowerCase()) &&
-  //               !insect.insectName
-  //                   .toLowerCase()
-  //                   .startsWith(searchQuery.toLowerCase()))
-  //           .toList();
-  //       filteredItems = [...startsWithQuery, ...containsQuery];
-  //     }
-  //   });
-  // }
+    try {
+      // Get all insects
+      final insects = await db.getAllInsects();
+      for (var insect in insects) {
+        print('Insect: ${insect['insectName']}');
+
+        // Get management data for this insect
+        final management = await db.getInsectManagement(insect['insectID']);
+        if (management != null) {
+          // Decode the JSON strings back into lists
+          final decodedManagement = db.decodeManagementData(management);
+          print('Management methods: ${decodedManagement['cultureMn'].length}');
+        }
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    displayInsectData();
+    _refreshData();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 42, vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SearchBar(
-            elevation: const WidgetStatePropertyAll(1),
-            // onChanged: _filterItems,
-            padding: const WidgetStatePropertyAll(
-                EdgeInsets.symmetric(horizontal: 20)),
-            backgroundColor: WidgetStatePropertyAll(
-                Theme.of(context).brightness == Brightness.light
-                    ? Colors.white
-                    : const Color.fromARGB(255, 26, 26, 26)),
-            hintText: 'Search...',
-            keyboardType: TextInputType.text,
-            trailing: const [Icon(Icons.search_rounded)],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Text(
-            'Rice Pest Lists',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Expanded(
-            child: FutureBuilder<Insects>(
-              future: remoteJson.allData(),
-              builder: (context, snap) {
-                if (snap.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                } else if (snap.hasError) {
-                  return Center(
-                    child: Text('${snap.error}'),
-                  );
-                } else if (snap.hasData) {
-                  Insects insList = snap.data!;
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: insList.cropsightData.insectList.length,
-                    physics: const BouncingScrollPhysics(
-                        decelerationRate: ScrollDecelerationRate.fast),
-                    shrinkWrap: true,
-                    itemBuilder: ((context, index) {
-                      InsectList insectdt =
-                          insList.cropsightData.insectList[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Material(
-                          borderRadius: BorderRadius.circular(10),
-                          elevation: 1,
-                          color:
-                              Theme.of(context).brightness == Brightness.light
-                                  ? const Color.fromRGBO(244, 253, 255, 1)
-                                  : const Color.fromARGB(255, 41, 41, 41),
-                          child: ListTile(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            tileColor:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? Colors.white
-                                    : const Color.fromARGB(255, 26, 26, 26),
-                            selectedTileColor: Colors.green,
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => InfoPage(
-                                            id: insectdt.insectId,
-                                            image: insectdt.insectPic,
-                                            name: insectdt.insectName,
-                                            desc: insectdt.insectDesc,
-                                            inWhere: insectdt.insectWhere,
-                                            inDamage: insectdt.insectDamage,
-                                          )));
-                            },
-                            leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.asset(
-                                width: 50,
-                                height: 50,
-                                insectdt.insectPic,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            title: Text(insectdt.insectName,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold)),
-                            subtitle: Text(
-                              insectdt.insectDesc,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+    return _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 42, vertical: 10),
+            child: GridView.builder(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+              itemCount: _allData.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
+              itemBuilder: (context, index) {
+                return GridTile(
+                  footer: Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: Text(
+                        _allData[index]['insectName'],
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => InfoPage(
+                            id: _allData[index]['insectID'],
                           ),
                         ),
                       );
-                    }),
-                  );
-                } else {
-                  return const Center(
-                    child: Text('There is no Data Found'),
-                  );
-                }
+                    },
+                    child: Ink(
+                      child: Container(
+                        height: null,
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(_allData[index]['insectPic']),
+                            fit: BoxFit.fill,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
               },
             ),
-          ) //
-        ],
-      ),
-    );
+          );
   }
 }

@@ -1,9 +1,20 @@
+import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/navigation/settings.dart';
 import 'package:cropsight/views/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final db = CropSightDatabase();
+  try {
+    // This will only populate if the database is empty
+    await db.populateDatabase();
+    print('Database initialization complete');
+  } catch (e) {
+    print('Error initializing database: $e');
+  }
   runApp(
     ChangeNotifierProvider(
       create: (_) => ThemeProvider(),
@@ -21,7 +32,7 @@ class MyApp extends StatelessWidget {
     return Consumer<ThemeProvider>(builder: (context, themeProvider, child) {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'CropSight App',
         theme: ThemeData.light(useMaterial3: true),
         darkTheme: ThemeData.dark(useMaterial3: true),
         themeMode: themeProvider.themeMode,

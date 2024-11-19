@@ -9,6 +9,13 @@ class WelcomePageOne extends StatefulWidget {
 }
 
 class _WelcomePageOneState extends State<WelcomePageOne> {
+  double getResponsiveFontSize(BuildContext context, double fontSize) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    // Adjust the scaling factor as needed
+    return fontSize *
+        (screenWidth / 375.0); // 375 is a standard width (e.g., iPhone 11)
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +28,7 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            const Row(
+            Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -30,7 +37,7 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
                   style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Inter',
-                      fontSize: 48,
+                      fontSize: getResponsiveFontSize(context, 40),
                       fontWeight: FontWeight.bold),
                 ),
               ],
@@ -38,15 +45,15 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
             const SizedBox(
               height: 10,
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
               child: Center(
                 child: Text(
                   'A mobile app for rice crop pest detection system using mobile camera.',
                   style: TextStyle(
-                      color: Color.fromRGBO(196, 196, 196, 1),
+                      color: const Color.fromRGBO(196, 196, 196, 1),
                       fontFamily: 'Inter',
-                      fontSize: 20,
+                      fontSize: getResponsiveFontSize(context, 20),
                       fontWeight: FontWeight.w100),
                   textAlign: TextAlign.center,
                 ),

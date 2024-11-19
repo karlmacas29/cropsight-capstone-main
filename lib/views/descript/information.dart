@@ -1,17 +1,15 @@
-import 'package:cropsight/models/imageview.dart';
+import 'package:cropsight/controller/db_controller.dart';
+import 'package:cropsight/views/descript/mandesc.dart';
+import 'package:cropsight/widgets/imageview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
 class InfoPage extends StatefulWidget {
-  const InfoPage(
-      {super.key,
-      required this.id,
-      required this.name,
-      required this.image,
-      required this.desc,
-      required this.inWhere,
-      required this.inDamage});
-  final String name, image, desc, inWhere, inDamage;
+  const InfoPage({
+    super.key,
+    required this.id,
+  });
+
   final int id;
 
   @override
@@ -19,41 +17,38 @@ class InfoPage extends StatefulWidget {
 }
 
 class _InfoPageState extends State<InfoPage> {
+  String? name, insectPic, desc, descWhere, descDamage;
+  bool _isLoading = true;
+  //
+
+  void fetchInsectData(int insectId) async {
+    final db = CropSightDatabase();
+    final insectData = await db.getInsectID(insectId);
+    if (insectData != null) {
+      print('Insect Name: ${insectData['insectName']}');
+      print('Insect Pic: ${insectData['insectPic']}');
+
+      setState(() {
+        name = insectData['insectName'].toString();
+        insectPic = insectData['insectPic'].toString();
+        desc = insectData['insectDesc'].toString();
+        descWhere = insectData['insectWhere'].toString();
+        descDamage = insectData['insectDamage'].toString();
+        _isLoading = false;
+      });
+    } else {
+      print('No data found for insect ID $insectId');
+    }
+  }
+
   SizedBox sbx = const SizedBox(
     height: 10,
   );
-  String imageString = "";
-  String imageString1 = "";
+
   @override
   void initState() {
     super.initState();
-    if (widget.id == 1) {
-      setState(() {
-        imageString =
-            "assets/images/greenleafhopper/factsheet-green-leafhopper-1.jpg";
-        imageString1 = "assets/images/greenleafhopper/medium.jpg";
-      });
-    } else if (widget.id == 2) {
-      setState(() {
-        imageString = "assets/images/riceleaffolder/factsheet-leaffolder-1.jpg";
-        imageString1 = "assets/images/riceleaffolder/leaf-folder-moth.jpg";
-      });
-    } else if (widget.id == 3) {
-      setState(() {
-        imageString = "assets/images/ricebug/unnamed.jpg";
-        imageString1 = "assets/images/ricebug/sss.png";
-      });
-    } else if (widget.id == 4) {
-      setState(() {
-        imageString = "assets/images/stemborer/2s.jpg";
-        imageString1 = "assets/images/stemborer/3s.jpg";
-      });
-    } else {
-      setState(() {
-        imageString = "";
-        imageString1 = "";
-      });
-    }
+    fetchInsectData(widget.id);
   }
 
   @override
@@ -70,140 +65,170 @@ class _InfoPageState extends State<InfoPage> {
         elevation: 0.0,
         scrolledUnderElevation: 0.0,
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(widget.name,
-                      textAlign: TextAlign.left,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.bold)),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ExpandableCarousel(
-                items: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ViewFullImg(img: widget.image)));
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          widget.image,
-                          height: 200,
-                          fit: BoxFit.cover,
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: ListView(
+                  scrollDirection: Axis.vertical,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          name.toString(),
+                          textAlign: TextAlign.left,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
                         ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ExpandableCarousel(
+                      items: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ViewFullImg(
+                                    img: insectPic.toString(),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.asset(
+                                insectPic.toString(),
+                                height: 200,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ViewFullImg(
+                                          img: insectPic.toString())));
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.asset(
+                                insectPic.toString(),
+                                height: 200,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ViewFullImg(
+                                          img: insectPic.toString())));
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.asset(
+                                insectPic.toString(),
+                                height: 200,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                      options: ExpandableCarouselOptions(
+                        showIndicator: true,
+                        slideIndicator: const CircularSlideIndicator(),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Description',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24),
+                          textAlign: TextAlign.justify,
+                        ),
+                        sbx,
+                        Text(
+                          desc.toString(),
+                          textAlign: TextAlign.justify,
+                        ),
+                        sbx,
+                        const Text(
+                          'Where to find',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24),
+                          textAlign: TextAlign.justify,
+                        ),
+                        sbx,
+                        Text(
+                          descWhere.toString(),
+                          textAlign: TextAlign.justify,
+                        ),
+                        sbx,
+                        const Text(
+                          'Damage',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24),
+                          textAlign: TextAlign.justify,
+                        ),
+                        sbx,
+                        Text(
+                          descDamage.toString(),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ],
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    ViewFullImg(img: imageString1)));
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          imageString1,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
+                              builder: (context) => ManageDesc(
+                                id: widget.id.toString(),
+                              ),
+                            ),
+                          );
+                        },
+                        child: const Text('Solution'),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ViewFullImg(img: imageString)));
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          imageString,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-                options: ExpandableCarouselOptions(
-                  showIndicator: true,
-                  slideIndicator: const CircularSlideIndicator(),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Description',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                    textAlign: TextAlign.justify,
-                  ),
-                  sbx,
-                  Text(
-                    widget.desc,
-                    textAlign: TextAlign.justify,
-                  ),
-                  sbx,
-                  const Text(
-                    'Where to find',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                    textAlign: TextAlign.justify,
-                  ),
-                  sbx,
-                  Text(
-                    widget.inWhere,
-                    textAlign: TextAlign.justify,
-                  ),
-                  sbx,
-                  const Text(
-                    'Damage',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                    textAlign: TextAlign.justify,
-                  ),
-                  sbx,
-                  Text(
-                    widget.inDamage,
-                    textAlign: TextAlign.justify,
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
