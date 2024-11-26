@@ -352,91 +352,112 @@ class _HomeTabState extends State<HomeTab> {
   }
 
   Future<void> getImage(BuildContext context, ImageSource source) async {
-    final cameraStatus = await Permission.camera.status;
-    final photosStatus = await Permission.photos.status;
+    try {
+      // Check camera permission status
+      PermissionStatus cameraStatus = await Permission.camera.status;
+      PermissionStatus storageStatus = await Permission.storage.status;
 
-    if (cameraStatus.isDenied || photosStatus.isDenied) {
-      final requestCamera = await Permission.camera.request().isGranted;
-      final requestPhotos = await Permission.photos.request().isGranted;
+      // Request permissions if not already granted
+      if (!cameraStatus.isGranted || !storageStatus.isGranted) {
+        Map<Permission, PermissionStatus> statuses = await [
+          Permission.camera,
+          Permission.storage,
+        ].request();
 
-      if (!requestCamera || !requestPhotos) {
+        // Check if permissions were granted
+        cameraStatus = statuses[Permission.camera] ?? PermissionStatus.denied;
+        storageStatus = statuses[Permission.storage] ?? PermissionStatus.denied;
+      }
+
+      // Handle permanently denied permissions
+      if (cameraStatus.isPermanentlyDenied ||
+          storageStatus.isPermanentlyDenied) {
+        return _showPermissionDialog(context);
+      }
+
+      // Check if permissions are still not granted
+      if (!cameraStatus.isGranted || !storageStatus.isGranted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Permission denied')),
+          const SnackBar(
+              content: Text(
+                  'Permissions are required to access camera and storage')),
         );
         return;
       }
-    }
 
-    if (cameraStatus.isPermanentlyDenied || photosStatus.isPermanentlyDenied) {
-      showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Permission Error'),
-            content: const SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text(
-                      'This app needs camera and photo access to function properly. Please grant the permissions in the settings.'),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Open Settings'),
-                onPressed: () async {
-                  await openAppSettings();
-                },
-              ),
-            ],
-          );
-        },
-      );
-      return;
-    }
+      // Pick image
+      final pickedFile = await ImagePicker().getImage(source: source);
 
-    if (await Permission.camera.isGranted &&
-        await Permission.photos.isGranted) {
-      try {
-        final pickedFile = await ImagePicker().getImage(source: source);
+      if (pickedFile != null) {
+        setState(() {
+          // Delete previous image if it exists
+          _image?.deleteSync(recursive: true);
+          _image = File(pickedFile.path);
+        });
 
-        if (pickedFile != null) {
-          setState(() {
-            _image?.deleteSync(); // Delete the previous image file if it exists
-            _image = File(pickedFile.path);
-          });
-          var im = _image = File(pickedFile.path);
-          showBottomModal(context);
-          Future.delayed(const Duration(seconds: 3), () {
-            runModelOnImage(im);
-          });
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('No image selected')),
-          );
-        }
-      } catch (e) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Error'),
-              content: const Text(
-                  'An error occurred while picking the image. Please try again.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
+        showBottomModal(context);
+
+        // Delay model inference
+        await Future.delayed(const Duration(seconds: 3), () {
+          runModelOnImage(_image!);
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No image selected')),
         );
       }
+    } catch (e) {
+      _showErrorDialog(context);
     }
+  }
+
+  void _showPermissionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Permission Required'),
+          content: const Text(
+            'Camera and storage permissions are required. Please grant permissions in app settings.',
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Open Settings'),
+              onPressed: () {
+                openAppSettings();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showErrorDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: const Text(
+              'An error occurred while picking the image. Please try again.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   //modal loading cool

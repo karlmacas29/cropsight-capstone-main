@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ReportPage extends StatefulWidget {
-  const ReportPage({super.key});
+class HistoryPages extends StatefulWidget {
+  const HistoryPages({super.key});
 
   @override
-  State<ReportPage> createState() => _ReportPageState();
+  State<HistoryPages> createState() => _HistoryPagesState();
 }
 
-class _ReportPageState extends State<ReportPage> {
+class _HistoryPagesState extends State<HistoryPages> {
   @override
   Widget build(BuildContext context) {
     return const Center(

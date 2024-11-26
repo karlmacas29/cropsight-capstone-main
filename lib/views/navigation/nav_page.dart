@@ -1,8 +1,8 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:cropsight/views/navigation/cropsight.dart';
-import 'package:cropsight/views/navigation/geotagging.dart';
+import 'package:cropsight/views/navigation/reports_tagging.dart';
 import 'package:cropsight/views/navigation/home.dart';
-import 'package:cropsight/views/navigation/reports.dart';
+import 'package:cropsight/views/navigation/history.dart';
 import 'package:cropsight/views/navigation/settings.dart';
 import 'package:flutter/material.dart';
 
@@ -18,22 +18,22 @@ class _HomePageNavState extends State<HomePageNav> {
   final tabsnav = [
     const HomeTab(),
     const CropsightTab(),
-    const ReportPage(),
-    const GeotaggingMapView(),
+    const HistoryPages(),
+    const ReportsTaggingView(),
   ];
 
   final _iconappbar = [
     Icons.home_rounded,
     Icons.auto_stories,
     Icons.list_alt,
-    Icons.pin_drop,
+    Icons.analytics,
   ];
 
   final _titleAppbar = [
     'Home',
     'Cropsight',
+    'History',
     'Reports',
-    'Tagging',
   ];
 
   @override
