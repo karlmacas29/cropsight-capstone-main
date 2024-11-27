@@ -24,13 +24,6 @@ class _HistoryPagesState extends State<HistoryPages> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              IconButton(
-                onPressed: null,
-                icon: Icon(
-                  Icons.delete,
-                  color: Colors.red,
-                ),
-              )
             ],
           ), //scanning
           SingleChildScrollView(
@@ -46,10 +39,6 @@ class _HistoryPagesState extends State<HistoryPages> {
                     ),
                     title: Text('Green LeafHopper'),
                     subtitle: Text('Damage: Tungro Virus'),
-                    trailing: IconButton(
-                      onPressed: null,
-                      icon: Icon(Icons.delete),
-                    ),
                   ),
                 ),
                 Padding(
@@ -61,10 +50,6 @@ class _HistoryPagesState extends State<HistoryPages> {
                     ),
                     title: Text('Green LeafHopper'),
                     subtitle: Text('Damage: Tungro Virus'),
-                    trailing: IconButton(
-                      onPressed: null,
-                      icon: Icon(Icons.delete),
-                    ),
                   ),
                 )
               ],

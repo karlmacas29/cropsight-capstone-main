@@ -3,8 +3,9 @@ import 'package:cropsight/views/navigation/cropsight.dart';
 import 'package:cropsight/views/navigation/reports_tagging.dart';
 import 'package:cropsight/views/navigation/home.dart';
 import 'package:cropsight/views/navigation/history.dart';
-import 'package:cropsight/views/navigation/settings.dart';
+import 'package:cropsight/views/pages/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePageNav extends StatefulWidget {
   const HomePageNav({super.key});
@@ -36,6 +37,40 @@ class _HomePageNavState extends State<HomePageNav> {
     'Reports',
   ];
 
+  final List<String> dropdownItems = [
+    'Panabo',
+    'Carmen',
+    'Dujali',
+    'Nanyo',
+  ];
+
+  String? selectedValue;
+
+  // Method to load the saved value from SharedPreferences
+  _loadSavedValue() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      // Retrieve the saved value, default to null if not found
+      selectedValue = prefs.getString('selectedDropdownValue');
+    });
+  }
+
+  // Method to save the selected value to SharedPreferences
+  _saveValue(String? value) async {
+    if (value != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('selectedDropdownValue', value);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Load the saved value when the widget is first initialized
+    _loadSavedValue();
+    print('Location $selectedValue');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +89,25 @@ class _HomePageNavState extends State<HomePageNav> {
                   : const Color.fromARGB(255, 41, 41, 41),
               scrolledUnderElevation: 0.0,
               actions: [
+                DropdownButton<String>(
+                  hint: const Text('Location?'),
+                  value: selectedValue,
+                  items: dropdownItems.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedValue = newValue;
+                    });
+                    // Save the new value
+                    _saveValue(newValue);
+                    // Print the current selected value
+                    print('Selected value: $selectedValue');
+                  },
+                ),
                 IconButton(
                     iconSize: 30,
                     onPressed: () {

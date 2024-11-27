@@ -1,5 +1,5 @@
 import 'package:cropsight/controller/db_controller.dart';
-import 'package:cropsight/views/navigation/settings.dart';
+import 'package:cropsight/views/pages/settings.dart';
 import 'package:cropsight/views/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

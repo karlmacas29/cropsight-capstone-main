@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cropsight/views/descript/mandesc.dart';
 import 'package:flutter/material.dart';
 
 class ScanPage extends StatefulWidget {
@@ -114,15 +115,26 @@ class _ScanPageState extends State<ScanPage> {
                                 'Rice stem borers (RSB) can be present in all rice growing areas. During tillering, the typical damage symptom is deadheart, while in flowering stage, it causes whitehead. The larvae also produce tiny holes on the stem and deposit faeces within it, which is seen when the stem is cut open.',
                               ),
                             ),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: const Text(
-                                'Solution',
-                                style: TextStyle(color: Colors.white),
+                            Center(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ManageDesc(
+                                        id: (4).toString(),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                style: const ButtonStyle(
+                                    backgroundColor:
+                                        WidgetStatePropertyAll(Colors.green)),
+                                child: const Text(
+                                  'Solution',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      WidgetStatePropertyAll(Colors.green)),
                             )
                           ],
                         ),
@@ -168,16 +180,27 @@ class _ScanPageState extends State<ScanPage> {
                                     'Adults and nymphs cause direct damage to the rice plant by sucking the sap from leaf sheaths and leaf blades. GLH also cause indirect damage by injecting toxic chemicals and transmitting viruses (tungro, dwarf, transitory yellowing, and yellow- orange leaf) and a mycoplasma disease (yellow dwarf). They mostly confine themselves and feed on the leaf and leaf sheath of rice. Mild infestations reduce plant vigor and number of productive tillers. Heavy infestations cause withering and complete drying of the crop.',
                                   ),
                                 ),
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'Solution',
-                                    style: TextStyle(color: Colors.white),
+                                Center(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ManageDesc(
+                                            id: (1).toString(),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    style: const ButtonStyle(
+                                        backgroundColor: WidgetStatePropertyAll(
+                                            Colors.green)),
+                                    child: const Text(
+                                      'Solution',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          WidgetStatePropertyAll(Colors.green)),
-                                )
+                                ),
                               ],
                             ),
                           )

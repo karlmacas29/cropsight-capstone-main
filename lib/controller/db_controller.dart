@@ -8,6 +8,7 @@ class CropSightDatabase {
   static Database? _database;
   static const String insectListTable = 'insectList';
   static const String insectManageTable = 'insectManage';
+  static const String scanningHistory = 'scanningHistory';
 
   CropSightDatabase._internal();
 
@@ -55,6 +56,20 @@ class CropSightDatabase {
         cultureMn TEXT,
         biologicalMn TEXT,
         chemicalMn TEXT,
+        FOREIGN KEY (insectId) REFERENCES $insectListTable (insectID)
+      )
+    ''');
+
+    //Create scanHistory table
+    await db.execute('''
+      CREATE TABLE $scanningHistory (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        insectId INTEGER,
+        insectName TEXT,
+        insectPic TEXT,
+        location TEXT,
+        month TEXT,
+        year TEXT,
         FOREIGN KEY (insectId) REFERENCES $insectListTable (insectID)
       )
     ''');

@@ -1,28 +1,26 @@
-import 'package:cropsight/views/pages/reports_location.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ReportsTaggingView extends StatefulWidget {
-  const ReportsTaggingView({super.key});
+class LocationReportScreen extends StatefulWidget {
+  const LocationReportScreen({
+    super.key,
+    required this.locationName,
+    required this.locationColorCode,
+  });
+
+  final String locationName;
+  final Color locationColorCode;
 
   @override
-  State<ReportsTaggingView> createState() => _ReportsTaggingViewState();
+  State<LocationReportScreen> createState() => _LocationReportScreenState();
 }
 
-class _ReportsTaggingViewState extends State<ReportsTaggingView> {
+class _LocationReportScreenState extends State<LocationReportScreen> {
   String formattedDate = DateFormat('E MMMM dd, y').format(DateTime.now());
   bool isMonthlyView = true;
   String selectedPeriod = 'Monthly';
   //
-
-  //
-  final List<LocationData> locations = [
-    LocationData(name: 'Carmen', totalScans: 1, color: Colors.orange),
-    LocationData(name: 'Panabo', totalScans: 1, color: Colors.amber),
-    LocationData(name: 'Dujali', totalScans: 1, color: Colors.green),
-    LocationData(name: 'Nanyo', totalScans: 1, color: Colors.brown),
-  ];
 
   // Get the current month and year
 
@@ -40,70 +38,81 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     int.parse(DateFormat('y').format(DateTime.now())) - 1: [1],
     int.parse(DateFormat('y').format(DateTime.now())): [300],
   };
-
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 10),
-            DropdownButton<String>(
-              value: selectedPeriod,
-              items: ['Monthly', 'Yearly']
-                  .map((period) => DropdownMenuItem(
-                        value: period,
-                        child: Text(period),
-                      ))
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedPeriod = value!;
-                  isMonthlyView = value == 'Monthly';
-                });
-              },
-            ),
-            const SizedBox(height: 20),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Text(
-                  'Total Scan',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(width: 5),
-                Text(formattedDate)
-              ],
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: isMonthlyView ? _buildMonthlyChart() : _buildYearlyChart(),
-            ),
-            const SizedBox(height: 20),
-
-            // Location Cards
-            Expanded(
-              child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1.5,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                ),
-                itemCount: locations.length,
-                itemBuilder: (context, index) {
-                  return _buildLocationCard(locations[index]);
+    return Scaffold(
+      backgroundColor: Theme.of(context).brightness == Brightness.light
+          ? const Color.fromRGBO(244, 253, 255, 1)
+          : const Color.fromARGB(255, 41, 41, 41),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).brightness == Brightness.light
+            ? const Color.fromRGBO(244, 253, 255, 1)
+            : const Color.fromARGB(255, 41, 41, 41),
+        title: Text(widget.locationName),
+        automaticallyImplyLeading: true,
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 10),
+              DropdownButton<String>(
+                value: selectedPeriod,
+                items: ['Monthly', 'Yearly']
+                    .map((period) => DropdownMenuItem(
+                          value: period,
+                          child: Text(period),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    selectedPeriod = value!;
+                    isMonthlyView = value == 'Monthly';
+                  });
                 },
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Total Scan in ${widget.locationName}',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Expanded(
+                child:
+                    isMonthlyView ? _buildMonthlyChart() : _buildYearlyChart(),
+              ),
+              const SizedBox(height: 20),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Total Insect Scanning',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Expanded(
+                child: _buildInsectTotalChart(),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -112,13 +121,13 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
   Color _getColorForQuarter(int index) {
     switch (index) {
       case 0:
-        return Colors.blue;
+        return widget.locationColorCode;
       case 1:
-        return Colors.green;
+        return Colors.red;
       case 2:
         return Colors.orange;
       default:
-        return Colors.blue;
+        return widget.locationColorCode;
     }
   }
 
@@ -144,7 +153,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
             barRods: [
               BarChartRodData(
                 toY: entry.value,
-                color: Colors.blue,
+                color: widget.locationColorCode,
                 width: 16,
               )
             ],
@@ -226,49 +235,55 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     );
   }
 
-  Widget _buildLocationCard(LocationData location) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LocationReportScreen(
-              locationName: location.name,
-              locationColorCode: location.color,
+  Widget _buildInsectTotalChart() {
+    return BarChart(
+      BarChartData(
+        alignment: BarChartAlignment.spaceAround,
+        maxY: 500,
+        barGroups: monthlyScan.asMap().entries.map((entry) {
+          return BarChartGroupData(
+            x: entry.key,
+            barRods: [
+              BarChartRodData(
+                toY: entry.value,
+                color: widget.locationColorCode,
+                width: 16,
+              )
+            ],
+          );
+        }).toList(),
+        titlesData: FlTitlesData(
+          // leftTitles: AxisTitles(
+          //   sideTitles: SideTitles(
+          //     showTitles: true,
+          //     reservedSize: 40,
+          //     getTitlesWidget: (value, meta) {
+          //       return Text((value / 1000).toString());
+          //     },
+          //   ),
+          // ),
+          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: (value, meta) {
+                final instect = [
+                  'Green Leafhopper',
+                  'Stem Borer',
+                  'Rice Bugs',
+                  'Rice Leaffolder',
+                ];
+                return Text(
+                  instect[value.toInt()],
+                  maxLines: 2,
+                  style: const TextStyle(
+                    fontSize: 10,
+                  ),
+                );
+              },
             ),
           ),
-        );
-      },
-      child: Card(
-        color: location.color,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              location.name,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              '${location.totalScans}',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            const Text(
-              'Total Scans',
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 14,
-              ),
-            ),
-          ],
         ),
       ),
     );

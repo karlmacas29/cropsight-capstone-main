@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:cropsight/views/navigation/scanning.dart';
+import 'package:cropsight/views/pages/scanning.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
