@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tflite_v2/tflite_v2.dart';
 
 class HomeTab extends StatefulWidget {
@@ -16,10 +17,25 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   final picker = ImagePicker();
   File? _image;
+  String? selectedValue = 'Panabo';
+
+  // Method to load the saved value from SharedPreferences
+  _loadSavedValue() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey('selectedDropdownValue')) {
+      setState(() {
+        selectedValue = prefs.getString('selectedDropdownValue');
+      });
+      print("Loaded value: $selectedValue"); // Debug log
+    } else {
+      print("No value found in SharedPreferences");
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    _loadSavedValue();
     Tflite.close();
     loadML().then((value) {
       setState(() {
@@ -61,7 +77,11 @@ class _HomeTabState extends State<HomeTab> {
       print(output);
       Navigator.pop(context);
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return ScanPage(imageSc: img, output: output);
+        return ScanPage(
+          imageSc: img,
+          output: output,
+          location: selectedValue,
+        );
       }));
     } on Exception catch (e) {
       print('Code error: $e');
@@ -353,34 +373,36 @@ class _HomeTabState extends State<HomeTab> {
 
   Future<void> getImage(BuildContext context, ImageSource source) async {
     try {
-      // Check camera permission status
+      // For Android 13+, use PhotoLibrary permission instead of Storage
       PermissionStatus cameraStatus = await Permission.camera.status;
-      PermissionStatus storageStatus = await Permission.storage.status;
+      PermissionStatus photoLibraryStatus = await Permission.photos.status;
 
       // Request permissions if not already granted
-      if (!cameraStatus.isGranted || !storageStatus.isGranted) {
+      if (!cameraStatus.isGranted || !photoLibraryStatus.isGranted) {
         Map<Permission, PermissionStatus> statuses = await [
           Permission.camera,
-          Permission.storage,
+          Permission.photos, // Changed from storage to photos
         ].request();
 
-        // Check if permissions were granted
+        // Update permission statuses
         cameraStatus = statuses[Permission.camera] ?? PermissionStatus.denied;
-        storageStatus = statuses[Permission.storage] ?? PermissionStatus.denied;
+        photoLibraryStatus =
+            statuses[Permission.photos] ?? PermissionStatus.denied;
       }
 
       // Handle permanently denied permissions
       if (cameraStatus.isPermanentlyDenied ||
-          storageStatus.isPermanentlyDenied) {
+          photoLibraryStatus.isPermanentlyDenied) {
         return _showPermissionDialog(context);
       }
 
       // Check if permissions are still not granted
-      if (!cameraStatus.isGranted || !storageStatus.isGranted) {
+      if (!cameraStatus.isGranted || !photoLibraryStatus.isGranted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content: Text(
-                  'Permissions are required to access camera and storage')),
+            content:
+                Text('Permissions are required to access camera and photos'),
+          ),
         );
         return;
       }

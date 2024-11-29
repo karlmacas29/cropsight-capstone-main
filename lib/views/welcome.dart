@@ -28,6 +28,7 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            const SizedBox(height: 10),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -37,13 +38,13 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
                   style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Inter',
-                      fontSize: getResponsiveFontSize(context, 40),
+                      fontSize: getResponsiveFontSize(context, 35),
                       fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             const SizedBox(
-              height: 10,
+              height: 5,
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
@@ -60,7 +61,7 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
               ),
             ),
             const SizedBox(
-              height: 50,
+              height: 35,
             ),
             ElevatedButton(
                 onPressed: () {

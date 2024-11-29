@@ -1,3 +1,4 @@
+import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/pages/reports_location.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -14,32 +15,197 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
   String formattedDate = DateFormat('E MMMM dd, y').format(DateTime.now());
   bool isMonthlyView = true;
   String selectedPeriod = 'Monthly';
-  //
 
   //
-  final List<LocationData> locations = [
-    LocationData(name: 'Carmen', totalScans: 1, color: Colors.orange),
-    LocationData(name: 'Panabo', totalScans: 1, color: Colors.amber),
-    LocationData(name: 'Dujali', totalScans: 1, color: Colors.green),
-    LocationData(name: 'Nanyo', totalScans: 1, color: Colors.brown),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _fetchYearlyData();
+    _fetchMonthlyData();
+    _initializeLocations();
+  }
+
+  //
+  List<LocationData> locations = [];
+
+  Future<void> _initializeLocations() async {
+    // Instance of your database class
+
+    try {
+      // Initialize locations with default values
+      locations = [
+        LocationData(name: 'Carmen', totalScans: 0, color: Colors.orange),
+        LocationData(name: 'Panabo', totalScans: 0, color: Colors.amber),
+        LocationData(name: 'Dujali', totalScans: 0, color: Colors.green),
+        LocationData(name: 'Nanyo', totalScans: 0, color: Colors.brown),
+      ];
+
+      // Fetch counts for each location asynchronously
+      await Future.wait([
+        _fetchTotalScansForLocation('Carmen'),
+        _fetchTotalScansForLocation('Panabo'),
+        _fetchTotalScansForLocation('Dujali'),
+        _fetchTotalScansForLocation('Nanyo'),
+      ]);
+    } catch (e) {
+      print('Error initializing locations: $e');
+    }
+  }
+
+  Future<void> _fetchTotalScansForLocation(String locationName) async {
+    final dbHelper = CropSightDatabase(); // Instance of your database class
+
+    try {
+      String count = await dbHelper.countEntriesByLocation(locationName);
+
+      setState(() {
+        // Find and update the location in the list
+        int index = locations.indexWhere((loc) => loc.name == locationName);
+        if (index != -1) {
+          locations[index] =
+              locations[index].copyWith(totalScans: int.tryParse(count) ?? 0);
+        }
+      });
+    } catch (e) {
+      print('Error fetching scans for $locationName: $e');
+    }
+  }
+
+  // Helper method to calculate max Y value dynamically
+  double _getMaxYMonth() {
+    // Find the maximum value
+    double maxValue =
+        monthlyScan.reduce((curr, next) => curr > next ? curr : next);
+
+    // Add some padding (e.g., 10% more than the max)
+    return maxValue * 1.1;
+  }
+
+  double _getMaxYYear() {
+    // Expand the list of lists and find the maximum value
+    double maxValue = yearlyScan.values
+        .expand((list) => list)
+        .reduce((curr, next) => curr > next ? curr : next);
+
+    // Add some padding (e.g., 10% more than the max)
+    return maxValue * 1.1;
+  }
 
   // Get the current month and year
 
   final List<double> monthlyScan = [
-    100,
-    200,
-    300,
-    400,
+    0,
+    0,
+    0,
+    0,
   ];
 
-  // Yearly data
+  Future<void> _fetchMonthlyData() async {
+    int currentMonth = DateTime.now().month;
+    int currentYear = DateTime.now().year;
+
+    // Calculate the months to fetch
+    final months = [
+      _getPreviousMonth(currentMonth, 3),
+      _getPreviousMonth(currentMonth, 2),
+      _getPreviousMonth(currentMonth, 1),
+      {'month': currentMonth, 'year': currentYear}
+    ];
+
+    // Fetch data for each month
+    for (int i = 0; i < months.length; i++) {
+      await _fetchCountForMonth(months[i]);
+    }
+  }
+
+  Map<String, dynamic> _getPreviousMonth(int currentMonth, int subtractMonths) {
+    int month = currentMonth - subtractMonths;
+    int year = DateTime.now().year;
+
+    // Handle year change
+    if (month <= 0) {
+      month += 12;
+      year--;
+    }
+
+    return {'month': month, 'year': year};
+  }
+
+  Future<void> _fetchCountForMonth(Map<String, dynamic> monthData) async {
+    final dbHelper = CropSightDatabase(); // Instance of your database class
+
+    try {
+      // Convert month to full month name
+      String monthName = DateFormat.MMMM()
+          .format(DateTime(monthData['year'], monthData['month']));
+
+      // Fetch count from database
+      String count = await dbHelper.countEntriesByMonth(monthName);
+      double doubleValue = double.tryParse(count) ?? 0.0;
+
+      setState(() {
+        // Determine the index in monthlyScan based on the month's relative position
+        int index = _getMonthIndex(monthData['month'], DateTime.now().month);
+        monthlyScan[index] = doubleValue;
+      });
+
+      print('Number of entries in $monthName: $count');
+    } catch (e) {
+      print('Error fetching count for month ${monthData['month']}: $e');
+    }
+  }
+
+  int _getMonthIndex(int month, int currentMonth) {
+    // Calculate the index based on the month's relative position to the current month
+    int diff = currentMonth - month;
+    return 3 - diff; // Reverse the order to match your chart layout
+  }
+
   final Map<int, List<double>> yearlyScan = {
-    int.parse(DateFormat('y').format(DateTime.now())) - 3: [1],
-    int.parse(DateFormat('y').format(DateTime.now())) - 2: [1],
-    int.parse(DateFormat('y').format(DateTime.now())) - 1: [1],
-    int.parse(DateFormat('y').format(DateTime.now())): [300],
+    DateTime.now().year - 3: [0],
+    DateTime.now().year - 2: [0],
+    DateTime.now().year - 1: [0],
+    DateTime.now().year: [0],
   };
+
+  Future<void> _fetchYearlyData() async {
+    final currentYear = DateTime.now().year;
+    final years = [
+      currentYear - 3,
+      currentYear - 2,
+      currentYear - 1,
+      currentYear
+    ];
+
+    // Fetch data for each year
+    for (var year in years) {
+      await _fetchCountForYear(year.toString());
+    }
+  }
+
+  Future<void> _fetchCountForYear(String yr) async {
+    final dbHelper = CropSightDatabase(); // Instance of your database class
+
+    try {
+      int count = await dbHelper.countEntriesByYear(yr);
+      double doubleValue = count.toDouble();
+
+      setState(() {
+        // Convert year string to int
+        int yearKey = int.parse(yr);
+
+        // Update the first (default) entry for this year
+        // You can modify this logic if you want to distribute across quarters
+        if (yearlyScan.containsKey(yearKey)) {
+          yearlyScan[yearKey]?[0] = doubleValue;
+        }
+      });
+
+      print('Number of entries in $yr: $count');
+    } catch (e) {
+      print('Error fetching count for year $yr: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +303,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     return BarChart(
       BarChartData(
         alignment: BarChartAlignment.spaceAround,
-        maxY: 500,
+        maxY: _getMaxYMonth(),
         barGroups: monthlyScan.asMap().entries.map((entry) {
           return BarChartGroupData(
             x: entry.key,
@@ -160,8 +326,10 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
           //     },
           //   ),
           // ),
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -188,7 +356,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     return BarChart(
       BarChartData(
         alignment: BarChartAlignment.spaceAround,
-        maxY: 500,
+        maxY: _getMaxYYear(),
         barGroups: yearlyScan.entries.map((entry) {
           return BarChartGroupData(
             x: entry.key,
@@ -211,8 +379,10 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
           //     },
           //   ),
           // ),
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -275,7 +445,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
   }
 }
 
-// Location data model
+// Optional: If your LocationData class doesn't have a copyWith method, add it
 class LocationData {
   final String name;
   final int totalScans;
@@ -283,4 +453,16 @@ class LocationData {
 
   LocationData(
       {required this.name, required this.totalScans, required this.color});
+
+  LocationData copyWith({
+    String? name,
+    int? totalScans,
+    Color? color,
+  }) {
+    return LocationData(
+      name: name ?? this.name,
+      totalScans: totalScans ?? this.totalScans,
+      color: color ?? this.color,
+    );
+  }
 }

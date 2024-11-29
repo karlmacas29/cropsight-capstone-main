@@ -44,15 +44,19 @@ class _HomePageNavState extends State<HomePageNav> {
     'Nanyo',
   ];
 
-  String? selectedValue;
+  String? selectedValue = 'Panabo';
 
   // Method to load the saved value from SharedPreferences
   _loadSavedValue() async {
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      // Retrieve the saved value, default to null if not found
-      selectedValue = prefs.getString('selectedDropdownValue');
-    });
+    if (prefs.containsKey('selectedDropdownValue')) {
+      setState(() {
+        selectedValue = prefs.getString('selectedDropdownValue');
+      });
+      print("Loaded value: $selectedValue"); // Debug log
+    } else {
+      print("No value found in SharedPreferences");
+    }
   }
 
   // Method to save the selected value to SharedPreferences
@@ -60,6 +64,7 @@ class _HomePageNavState extends State<HomePageNav> {
     if (value != null) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('selectedDropdownValue', value);
+      print("Saved value: $value");
     }
   }
 

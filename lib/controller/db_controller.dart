@@ -66,7 +66,9 @@ class CropSightDatabase {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         insectId INTEGER,
         insectName TEXT,
+        insectDamage TEXT,
         insectPic TEXT,
+        insectPercent TEXT,
         location TEXT,
         month TEXT,
         year TEXT,
@@ -285,5 +287,85 @@ class CropSightDatabase {
       // 'biologicalMn': json.decode(managementData['biologicalMn']),
       // 'chemicalMn': json.decode(managementData['chemicalMn']),
     };
+  }
+
+  // Insert data into scanningHistory table
+  Future<int> insertScanningHistory(Map<String, dynamic> data) async {
+    final db = await database; // Ensure database is initialized
+    return await db.insert(
+      scanningHistory, // Table name
+      data,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  // Fetch data from scanningHistory with sorting and limit
+  Future<List<Map<String, dynamic>>> getScanningHistory(
+      {String sortBy = 'latest', int limit = 10}) async {
+    final db = await database;
+
+    // Determine sort order based on user selection
+    String orderByClause;
+    switch (sortBy) {
+      case 'year':
+        orderByClause = 'year DESC';
+        break;
+      case 'month':
+        orderByClause = 'month DESC';
+        break;
+      default: // Default is 'latest'
+        orderByClause = 'id DESC';
+    }
+
+    // Limit query
+    String queryLimit =
+        limit > 0 ? 'LIMIT $limit' : ''; // No limit if 'all' selected
+
+    // Execute query
+    return await db.rawQuery(
+        'SELECT * FROM $scanningHistory ORDER BY $orderByClause $queryLimit');
+  }
+
+  //
+  Future<int> countEntriesByYear(String targetYear) async {
+    final db = await database; // Access the database instance
+
+    // Perform the query to count entries with the given year
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM $scanningHistory WHERE year = ?',
+      [targetYear], // Use parameterized query to prevent SQL injection
+    );
+
+    // Extract the count value from the query result
+    int count = Sqflite.firstIntValue(result) ?? 0;
+    return count;
+  }
+
+  Future<String> countEntriesByMonth(String targetMonth) async {
+    final db = await database; // Access the database instance
+
+    // Perform the query to count entries with the given month
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM $scanningHistory WHERE month = ?',
+      [targetMonth], // Use parameterized query to prevent SQL injection
+    );
+
+    // Extract the count value from the query result
+    int count = Sqflite.firstIntValue(result) ?? 0;
+    return count.toString(); // Convert the count to a string
+  }
+
+  Future<String> countEntriesByLocation(String targetLocation) async {
+    final db = await database; // Access the database instance
+
+    // Perform the query to count entries with the given location
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM $scanningHistory WHERE location = ?',
+      [targetLocation], // Use parameterized query to prevent SQL injection
+    );
+
+    // Extract the count value from the query result
+    int count = Sqflite.firstIntValue(result) ?? 0;
+    return count.toString(); // Convert the count to a string
   }
 }
