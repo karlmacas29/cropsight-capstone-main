@@ -318,12 +318,12 @@ class CropSightDatabase {
     }
 
     // Limit query
-    String queryLimit =
-        limit > 0 ? 'LIMIT $limit' : ''; // No limit if 'all' selected
+    String queryLimit = (limit > 0) ? 'LIMIT $limit' : ''; // No LIMIT if -1
 
-    // Execute query
-    return await db.rawQuery(
-        'SELECT * FROM $scanningHistory ORDER BY $orderByClause $queryLimit');
+    // Build and execute query
+    final query =
+        'SELECT * FROM $scanningHistory ORDER BY $orderByClause $queryLimit';
+    return await db.rawQuery(query);
   }
 
   //

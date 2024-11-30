@@ -168,6 +168,9 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
             children: [
               const SizedBox(height: 10),
               DropdownButton<String>(
+                dropdownColor: Theme.of(context).brightness == Brightness.light
+                    ? const Color.fromRGBO(244, 253, 255, 1)
+                    : const Color.fromRGBO(18, 18, 18, 1),
                 value: selectedPeriod,
                 items: ['Monthly', 'Yearly']
                     .map((period) => DropdownMenuItem(
@@ -229,19 +232,6 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
         ),
       ),
     );
-  }
-
-  Color _getColorForQuarter(int index) {
-    switch (index) {
-      case 0:
-        return widget.locationColorCode;
-      case 1:
-        return Colors.red;
-      case 2:
-        return Colors.orange;
-      default:
-        return widget.locationColorCode;
-    }
   }
 
   Future<List<int>> fetchMonthlyCounts(String location) async {

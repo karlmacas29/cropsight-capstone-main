@@ -217,6 +217,9 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
           children: [
             const SizedBox(height: 10),
             DropdownButton<String>(
+              dropdownColor: Theme.of(context).brightness == Brightness.light
+                  ? const Color.fromRGBO(244, 253, 255, 1)
+                  : const Color.fromRGBO(18, 18, 18, 1),
               value: selectedPeriod,
               items: ['Monthly', 'Yearly']
                   .map((period) => DropdownMenuItem(

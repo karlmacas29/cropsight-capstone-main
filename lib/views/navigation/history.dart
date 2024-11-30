@@ -101,6 +101,9 @@ class _HistoryPagesState extends State<HistoryPages> {
         children: [
           // Sorting Dropdown
           DropdownButton<String>(
+            dropdownColor: Theme.of(context).brightness == Brightness.light
+                ? const Color.fromRGBO(244, 253, 255, 1)
+                : const Color.fromRGBO(18, 18, 18, 1),
             value: _currentSort,
             items: const [
               DropdownMenuItem(value: 'latest', child: Text('Latest')),
@@ -117,6 +120,9 @@ class _HistoryPagesState extends State<HistoryPages> {
 
           // Limit Dropdown
           DropdownButton<int>(
+            dropdownColor: Theme.of(context).brightness == Brightness.light
+                ? const Color.fromRGBO(244, 253, 255, 1)
+                : const Color.fromRGBO(18, 18, 18, 1),
             value: _currentLimit,
             items: const [
               DropdownMenuItem(value: 10, child: Text('10')),
@@ -126,11 +132,13 @@ class _HistoryPagesState extends State<HistoryPages> {
                   value: -1, child: Text('All')), // -1 for no limit
             ],
             onChanged: (value) {
-              setState(() {
-                _currentLimit =
-                    value == -1 ? 0 : value!; // Treat -1 as unlimited
-                _fetchData();
-              });
+              if (value != null) {
+                setState(() {
+                  _currentLimit =
+                      value == -1 ? -1 : value; // Use -1 directly for 'All'
+                  _fetchData();
+                });
+              }
             },
           ),
         ],

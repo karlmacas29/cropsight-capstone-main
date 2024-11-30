@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:cropsight/views/descript/information.dart';
+import 'package:cropsight/views/descript/mandesc.dart';
 import 'package:flutter/material.dart';
 
 class HistoryDataScreen extends StatefulWidget {
@@ -152,6 +154,52 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
                   ),
                 ),
               ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => InfoPage(
+                              id: int.parse(widget.insectId!),
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Text('Description'),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ManageDesc(
+                              id: widget.insectId.toString(),
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Text('Solution'),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),

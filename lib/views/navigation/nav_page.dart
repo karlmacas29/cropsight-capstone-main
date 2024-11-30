@@ -31,6 +31,13 @@ class _HomePageNavState extends State<HomePageNav> {
     FluentIcons.clipboard_data_bar_20_regular,
   ];
 
+  final _iconFilled = [
+    FluentIcons.home_12_filled,
+    FluentIcons.book_search_24_filled,
+    FluentIcons.history_24_filled,
+    FluentIcons.clipboard_data_bar_20_filled,
+  ];
+
   final _titleAppbar = [
     'Home',
     'Cropsight',
@@ -45,7 +52,7 @@ class _HomePageNavState extends State<HomePageNav> {
     'Nanyo',
   ];
 
-  String? selectedValue = 'Panabo';
+  String? selectedValue;
 
   // Method to load the saved value from SharedPreferences
   _loadSavedValue() async {
@@ -96,6 +103,10 @@ class _HomePageNavState extends State<HomePageNav> {
               scrolledUnderElevation: 0.0,
               actions: [
                 DropdownButton<String>(
+                  dropdownColor:
+                      Theme.of(context).brightness == Brightness.light
+                          ? const Color.fromRGBO(244, 253, 255, 1)
+                          : const Color.fromRGBO(18, 18, 18, 1),
                   hint: const Text('Location?'),
                   value: selectedValue,
                   items: dropdownItems.map((String value) {
@@ -165,7 +176,7 @@ class _HomePageNavState extends State<HomePageNav> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
-                _iconappbar[index],
+                isActive ? _iconFilled[index] : _iconappbar[index],
                 color: isActive ? Colors.green : null,
               ),
               Text(
