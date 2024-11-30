@@ -78,7 +78,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
         monthlyScan.reduce((curr, next) => curr > next ? curr : next);
 
     // Add some padding (e.g., 10% more than the max)
-    return maxValue * 1.1;
+    return maxValue * 1.2;
   }
 
   double _getMaxYYear() {
@@ -88,7 +88,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
         .reduce((curr, next) => curr > next ? curr : next);
 
     // Add some padding (e.g., 10% more than the max)
-    return maxValue * 1.1;
+    return maxValue * 1.2;
   }
 
   // Get the current month and year

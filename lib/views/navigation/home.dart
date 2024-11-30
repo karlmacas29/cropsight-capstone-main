@@ -373,46 +373,51 @@ class _HomeTabState extends State<HomeTab> {
 
   Future<void> getImage(BuildContext context, ImageSource source) async {
     try {
-      // For Android 13+, use PhotoLibrary permission instead of Storage
       PermissionStatus cameraStatus = await Permission.camera.status;
-      PermissionStatus photoLibraryStatus = await Permission.photos.status;
 
-      // Request permissions if not already granted
-      if (!cameraStatus.isGranted || !photoLibraryStatus.isGranted) {
-        Map<Permission, PermissionStatus> statuses = await [
-          Permission.camera,
-          Permission.photos, // Changed from storage to photos
-        ].request();
+      // Request camera permission if not granted
+      if (!cameraStatus.isGranted) {
+        cameraStatus = await Permission.camera.request();
+      }
 
-        // Update permission statuses
-        cameraStatus = statuses[Permission.camera] ?? PermissionStatus.denied;
-        photoLibraryStatus =
-            statuses[Permission.photos] ?? PermissionStatus.denied;
+      // For Android 13+, request media permission for photos only if needed
+      if (Platform.isAndroid &&
+          // ignore: unnecessary_null_comparison
+          Platform.version.split('.')[0] != null &&
+          int.parse(Platform.version.split('.')[0]) >= 33) {
+        PermissionStatus mediaStatus = await Permission.photos.status;
+        if (!mediaStatus.isGranted) {
+          mediaStatus = await Permission.photos.request();
+        }
+
+        // Handle denial for Android 13+
+        if (mediaStatus.isPermanentlyDenied) {
+          return _showPermissionDialog(context);
+        }
+
+        if (!mediaStatus.isGranted) {
+          _showSnackbar(
+              context, 'Photo access permission is required for Android 13+');
+          return;
+        }
       }
 
       // Handle permanently denied permissions
-      if (cameraStatus.isPermanentlyDenied ||
-          photoLibraryStatus.isPermanentlyDenied) {
+      if (cameraStatus.isPermanentlyDenied) {
         return _showPermissionDialog(context);
       }
 
-      // Check if permissions are still not granted
-      if (!cameraStatus.isGranted || !photoLibraryStatus.isGranted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content:
-                Text('Permissions are required to access camera and photos'),
-          ),
-        );
+      // Check if camera permission is still denied
+      if (!cameraStatus.isGranted) {
+        _showSnackbar(context, 'Camera permission is required');
         return;
       }
 
-      // Pick image
+      // Pick image from camera/gallery
       final pickedFile = await ImagePicker().getImage(source: source);
 
       if (pickedFile != null) {
         setState(() {
-          // Delete previous image if it exists
           _image?.deleteSync(recursive: true);
           _image = File(pickedFile.path);
         });
@@ -424,13 +429,17 @@ class _HomeTabState extends State<HomeTab> {
           runModelOnImage(_image!);
         });
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No image selected')),
-        );
+        _showSnackbar(context, 'No image selected');
       }
     } catch (e) {
       _showErrorDialog(context);
     }
+  }
+
+  void _showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   void _showPermissionDialog(BuildContext context) {
