@@ -19,6 +19,7 @@ class InfoPage extends StatefulWidget {
 class _InfoPageState extends State<InfoPage> {
   String? name, insectPic, desc, descWhere, descDamage;
   bool _isLoading = true;
+  String? pic2, pic3;
   //
 
   void fetchInsectData(int insectId) async {
@@ -36,6 +37,33 @@ class _InfoPageState extends State<InfoPage> {
         descDamage = insectData['insectDamage'].toString();
         _isLoading = false;
       });
+
+      if (insectData['insectName'] == 'Green LeafHopper') {
+        setState(() {
+          pic2 = 'assets/images/greenleafhopper/a.png';
+          pic3 = 'assets/images/greenleafhopper/tungro.png';
+        });
+      } else if (insectData['insectName'] == 'Rice Leaffolder') {
+        setState(() {
+          pic2 = 'assets/images/riceleaffolder/photo_3.jpg';
+          pic3 = 'assets/images/riceleaffolder/factsheet-leaffolder-1.jpg';
+        });
+      } else if (insectData['insectName'] == 'Rice Bug') {
+        setState(() {
+          pic2 = 'assets/images/ricebug/sss.png';
+          pic3 = 'assets/images/ricebug/unnamed.jpg';
+        });
+      } else if (insectData['insectName'] == 'Stem Borer') {
+        setState(() {
+          pic2 = 'assets/images/stemborer/3s.jpg';
+          pic3 = 'assets/images/stemborer/4s.jpg';
+        });
+      } else {
+        setState(() {
+          pic2 = 'assets/images/greenleafhopper/a.png';
+          pic3 = 'assets/images/greenleafhopper/tungro.png';
+        });
+      }
     } else {
       print('No data found for insect ID $insectId');
     }
@@ -120,15 +148,18 @@ class _InfoPageState extends State<InfoPage> {
                           child: InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ViewFullImg(
-                                          img: insectPic.toString())));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ViewFullImg(
+                                    img: pic2.toString(),
+                                  ),
+                                ),
+                              );
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image.asset(
-                                insectPic.toString(),
+                                pic2.toString(),
                                 height: 200,
                                 fit: BoxFit.cover,
                               ),
@@ -140,15 +171,18 @@ class _InfoPageState extends State<InfoPage> {
                           child: InkWell(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ViewFullImg(
-                                          img: insectPic.toString())));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ViewFullImg(
+                                    img: pic3.toString(),
+                                  ),
+                                ),
+                              );
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image.asset(
-                                insectPic.toString(),
+                                pic3.toString(),
                                 height: 200,
                                 fit: BoxFit.cover,
                               ),

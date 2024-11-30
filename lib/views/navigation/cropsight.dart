@@ -68,36 +68,36 @@ class _CropsightTabState extends State<CropsightTab> {
                 mainAxisSpacing: 10,
               ),
               itemBuilder: (context, index) {
-                return GridTile(
-                  footer: Center(
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: const BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      child: Text(
-                        _allData[index]['insectName'],
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => InfoPage(
+                          id: _allData[index]['insectID'],
                         ),
                       ),
-                    ),
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => InfoPage(
-                            id: _allData[index]['insectID'],
+                    );
+                  },
+                  child: Ink(
+                    child: GridTile(
+                      footer: Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          child: Text(
+                            _allData[index]['insectName'],
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      );
-                    },
-                    child: Ink(
+                      ),
                       child: Container(
                         height: null,
                         padding: const EdgeInsets.all(15),
