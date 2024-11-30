@@ -368,4 +368,84 @@ class CropSightDatabase {
     int count = Sqflite.firstIntValue(result) ?? 0;
     return count.toString(); // Convert the count to a string
   }
+
+  // based on month
+  Future<Map<String, int>> countEntriesByLocationAndInsect(
+      String location, String month) async {
+    final db = await database; // Access the database instance
+
+    // Perform the query to count entries for each insectName with the given location and month
+    final result = await db.rawQuery('''
+    SELECT
+      SUM(CASE WHEN insectName = 'Stem Borer' THEN 1 ELSE 0 END) AS StemBorerCount,
+      SUM(CASE WHEN insectName = 'Green Leafhopper' THEN 1 ELSE 0 END) AS GreenLeafhopperCount,
+      SUM(CASE WHEN insectName = 'Rice bug' THEN 1 ELSE 0 END) AS RiceBugCount,
+      SUM(CASE WHEN insectName = 'Green leaffolder' THEN 1 ELSE 0 END) AS GreenLeaffolderCount
+    FROM $scanningHistory
+    WHERE location = ? AND month = ?
+  ''', [location, month]);
+
+    // Extract the counts from the query result
+    return {
+      'Stem Borer': result[0]['StemBorerCount'] as int? ?? 0,
+      'Green Leafhopper': result[0]['GreenLeafhopperCount'] as int? ?? 0,
+      'Rice bug': result[0]['RiceBugCount'] as int? ?? 0,
+      'Green leaffolder': result[0]['GreenLeaffolderCount'] as int? ?? 0,
+    };
+  }
+
+  //based on year
+  Future<Map<String, int>> countEntriesByLocationAndInsectForYear(
+      String location, String year) async {
+    final db = await database; // Access the database instance
+
+    // Perform the query to count entries for each insectName with the given location and year
+    final result = await db.rawQuery('''
+    SELECT
+      SUM(CASE WHEN insectName = 'Stem Borer' THEN 1 ELSE 0 END) AS StemBorerCount,
+      SUM(CASE WHEN insectName = 'Green Leafhopper' THEN 1 ELSE 0 END) AS GreenLeafHopperCount,
+      SUM(CASE WHEN insectName = 'Rice bug' THEN 1 ELSE 0 END) AS RiceBugCount,
+      SUM(CASE WHEN insectName = 'Green leaffolder' THEN 1 ELSE 0 END) AS GreenLeaffolderCount
+    FROM $scanningHistory
+    WHERE location = ? AND year = ?
+  ''', [location, year]);
+
+    // Extract the counts from the query result
+    return {
+      'Stem Borer': result[0]['StemBorerCount'] as int? ?? 0,
+      'Green Leafhopper': result[0]['GreenLeafHopperCount'] as int? ?? 0,
+      'Rice bug': result[0]['RiceBugCount'] as int? ?? 0,
+      'Green leaffolder': result[0]['GreenLeaffolderCount'] as int? ?? 0,
+    };
+  }
+
+  Future<String> countEntriesByLocationAndMonth(
+      String location, String month) async {
+    final db = await database; // Access the database instance
+
+    // Perform the query to count entries with the given location and month
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM $scanningHistory WHERE location = ? AND month = ?',
+      [location, month], // Use parameterized query to prevent SQL injection
+    );
+
+    // Extract the count value from the query result
+    int count = Sqflite.firstIntValue(result) ?? 0;
+    return count.toString(); // Convert the count to a string
+  }
+
+  Future<String> countEntriesByLocationAndYear(
+      String location, String year) async {
+    final db = await database; // Access the database instance
+
+    // Perform the query to count entries with the given location and year
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM $scanningHistory WHERE location = ? AND year = ?',
+      [location, year], // Use parameterized query to prevent SQL injection
+    );
+
+    // Extract the count value from the query result
+    int count = Sqflite.firstIntValue(result) ?? 0; // Default to 0 if null
+    return count.toString(); // Convert the count to a string
+  }
 }

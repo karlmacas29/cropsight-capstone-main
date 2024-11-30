@@ -125,124 +125,127 @@ class _ScanPageState extends State<ScanPage> {
       //   automaticallyImplyLeading: true,
       //   title: const Text('Results'),
       // ),
-      body: ListView(
-        children: [
-          Column(
-            children: [
-              Stack(children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.file(
-                    widget.imageSc!,
-                    height: 300,
-                    width: 400,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                IconButton(
-                    style: const ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(Colors.white),
-                    ),
-                    color: Colors.black,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.arrow_back)),
-              ]),
-              const SizedBox(height: 16),
-              Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        color: double.parse(percent) >= 100.00
-                            ? Colors.green
-                            : double.parse(percent) >= 80.00
-                                ? Colors.orange
-                                : double.parse(percent) >= 50.00
-                                    ? Colors.red
-                                    : Colors.black,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Text(
-                      'Confidence: $percent %',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  Text(
-                    "Disease: ${widget.output![0]['label']}",
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            imgInsectPath,
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          insectName,
-                          maxLines: 2,
-                          style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Container(
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: ListView(
+          children: [
+            Column(
+              children: [
+                Stack(children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.file(
+                      widget.imageSc!,
+                      height: 300,
                       width: 400,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  IconButton(
+                      style: const ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.white),
+                      ),
+                      color: Colors.black,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.arrow_back)),
+                ]),
+                const SizedBox(height: 16),
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          color: double.parse(percent) >= 100.00
+                              ? Colors.green
+                              : double.parse(percent) >= 80.00
+                                  ? Colors.orange
+                                  : double.parse(percent) >= 50.00
+                                      ? Colors.red
+                                      : Colors.black,
+                          borderRadius: BorderRadius.circular(10)),
                       child: Text(
-                        textAlign: TextAlign.justify,
-                        insectDesc,
+                        'Confidence: $percent %',
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
-                    idNum == '0'
-                        ? const Text('')
-                        : Center(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ManageDesc(
-                                      id: idNum,
-                                    ),
-                                  ),
-                                );
-                              },
-                              style: const ButtonStyle(
-                                  backgroundColor:
-                                      WidgetStatePropertyAll(Colors.green)),
-                              child: const Text(
-                                'Solution',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          )
+                    Text(
+                      "Disease: ${widget.output![0]['label']}",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 20),
+                    ),
                   ],
                 ),
-              )
-            ],
-          )
-        ],
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                              imgInsectPath,
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            insectName,
+                            maxLines: 2,
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        width: 400,
+                        child: Text(
+                          textAlign: TextAlign.justify,
+                          insectDesc,
+                        ),
+                      ),
+                      idNum == '0'
+                          ? const Text('')
+                          : Center(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ManageDesc(
+                                        id: idNum,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                style: const ButtonStyle(
+                                    backgroundColor:
+                                        WidgetStatePropertyAll(Colors.green)),
+                                child: const Text(
+                                  'Solution',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            )
+                    ],
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
