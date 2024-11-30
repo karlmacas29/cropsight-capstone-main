@@ -4,6 +4,7 @@ import 'package:cropsight/views/navigation/reports_tagging.dart';
 import 'package:cropsight/views/navigation/home.dart';
 import 'package:cropsight/views/navigation/history.dart';
 import 'package:cropsight/views/pages/settings.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,10 +25,10 @@ class _HomePageNavState extends State<HomePageNav> {
   ];
 
   final _iconappbar = [
-    Icons.home_rounded,
-    Icons.auto_stories,
-    Icons.list_alt,
-    Icons.analytics,
+    FluentIcons.home_12_regular,
+    FluentIcons.book_search_24_regular,
+    FluentIcons.history_24_regular,
+    FluentIcons.clipboard_data_bar_20_regular,
   ];
 
   final _titleAppbar = [
@@ -114,16 +115,17 @@ class _HomePageNavState extends State<HomePageNav> {
                   },
                 ),
                 IconButton(
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SettingsApp(),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.settings))
+                  iconSize: 30,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SettingsApp(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(FluentIcons.settings_24_regular),
+                )
               ],
               leadingWidth: 28,
               leading: Icon(

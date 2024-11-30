@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cropsight/views/pages/scanning.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -129,7 +130,7 @@ class _HomeTabState extends State<HomeTab> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.mobile_friendly,
+                        FluentIcons.phone_checkmark_20_regular,
                         color: Color.fromRGBO(86, 144, 51, 1),
                         size: 38,
                       ),
@@ -154,7 +155,7 @@ class _HomeTabState extends State<HomeTab> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.image,
+                        FluentIcons.image_search_24_regular,
                         color: Color.fromRGBO(86, 144, 51, 1),
                         size: 38,
                       ),
@@ -179,7 +180,7 @@ class _HomeTabState extends State<HomeTab> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
-                        Icons.auto_stories,
+                        FluentIcons.book_search_24_regular,
                         color: Color.fromRGBO(86, 144, 51, 1),
                         size: 38,
                       ),
@@ -247,7 +248,7 @@ class _HomeTabState extends State<HomeTab> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
                             child: const Icon(
-                              Icons.camera_rounded,
+                              FluentIcons.camera_add_24_filled,
                               color: Colors.white,
                               size: 40,
                             )),
@@ -296,7 +297,7 @@ class _HomeTabState extends State<HomeTab> {
                             ),
                           ),
                           child: const Icon(
-                            Icons.photo_library_rounded,
+                            FluentIcons.image_add_24_filled,
                             color: Colors.white,
                             size: 40,
                           ),

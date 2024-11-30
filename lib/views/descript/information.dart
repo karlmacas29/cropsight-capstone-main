@@ -1,6 +1,7 @@
 import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/descript/mandesc.dart';
 import 'package:cropsight/widgets/imageview.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
@@ -214,28 +215,40 @@ class _InfoPageState extends State<InfoPage> {
                           textAlign: TextAlign.justify,
                         ),
                         sbx,
-                        const Text(
-                          'Where to find',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24),
-                          textAlign: TextAlign.justify,
+                        ExpansionTile(
+                          iconColor: Colors.green,
+                          leading:
+                              const Icon(FluentIcons.question_circle_12_filled),
+                          title: const Text(
+                            'Where to find',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 24),
+                            textAlign: TextAlign.justify,
+                          ),
+                          children: [
+                            Text(
+                              descWhere.toString(),
+                              textAlign: TextAlign.justify,
+                            ),
+                          ],
                         ),
                         sbx,
-                        Text(
-                          descWhere.toString(),
-                          textAlign: TextAlign.justify,
-                        ),
-                        sbx,
-                        const Text(
-                          'Damage',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24),
-                          textAlign: TextAlign.justify,
-                        ),
-                        sbx,
-                        Text(
-                          descDamage.toString(),
-                          textAlign: TextAlign.justify,
+                        ExpansionTile(
+                          iconColor: Colors.green,
+                          leading: const Icon(
+                              FluentIcons.book_question_mark_20_filled),
+                          title: const Text(
+                            'Damage',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 24),
+                            textAlign: TextAlign.justify,
+                          ),
+                          children: [
+                            Text(
+                              descDamage.toString(),
+                              textAlign: TextAlign.justify,
+                            ),
+                          ],
                         ),
                       ],
                     ),

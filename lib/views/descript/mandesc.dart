@@ -1,5 +1,6 @@
 import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/widgets/imageview.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 class ManageDesc extends StatefulWidget {
@@ -144,59 +145,80 @@ class _ManageDescState extends State<ManageDesc> {
                           const SizedBox(
                             height: 10,
                           ),
-                          const Text(
-                            'Cultural',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ExpansionTile(
+                            iconColor: Colors.green,
+                            leading: const Icon(
+                                FluentIcons.book_question_mark_20_filled),
+                            title: const Text(
+                              'Cultural',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            children: [
+                              ListView(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                children: cultureMn.map((value) {
+                                  return ListTile(
+                                    title: Text(
+                                      value,
+                                      textAlign: TextAlign.justify,
+                                      style: const TextStyle(height: 1.1),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
                           ),
-                          ListView(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            children: cultureMn.map((value) {
-                              return ListTile(
-                                title: Text(
-                                  value,
-                                  textAlign: TextAlign.justify,
-                                  style: const TextStyle(height: 1.1),
-                                ),
-                              );
-                            }).toList(),
+                          ExpansionTile(
+                            iconColor: Colors.green,
+                            leading: const Icon(
+                                FluentIcons.book_question_mark_20_filled),
+                            title: const Text(
+                              'Biological',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            children: [
+                              ListView(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                children: cultureMn.map((value) {
+                                  return ListTile(
+                                    title: Text(
+                                      value,
+                                      textAlign: TextAlign.justify,
+                                      style: const TextStyle(height: 1.1),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
                           ),
-                          const Text(
-                            'Biological',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                          ListView(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            children: cultureMn.map((value) {
-                              return ListTile(
-                                title: Text(
-                                  value,
-                                  textAlign: TextAlign.justify,
-                                  style: const TextStyle(height: 1.1),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                          const Text(
-                            'Chemical',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                          ),
-                          ListView(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            children: cultureMn.map((value) {
-                              return ListTile(
-                                title: Text(
-                                  value,
-                                  textAlign: TextAlign.justify,
-                                  style: const TextStyle(height: 1.1),
-                                ),
-                              );
-                            }).toList(),
+                          ExpansionTile(
+                            iconColor: Colors.green,
+                            leading: const Icon(
+                                FluentIcons.book_question_mark_20_filled),
+                            title: const Text(
+                              'Chemical',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            children: [
+                              ListView(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                children: cultureMn.map((value) {
+                                  return ListTile(
+                                    title: Text(
+                                      value,
+                                      textAlign: TextAlign.justify,
+                                      style: const TextStyle(height: 1.1),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
                           ),
                         ],
                       )
