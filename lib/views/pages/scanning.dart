@@ -175,7 +175,7 @@ class _ScanPageState extends State<ScanPage> {
                       widget.imageSc!,
                       height: 300,
                       width: 400,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                     ),
                   ),
                   IconButton(

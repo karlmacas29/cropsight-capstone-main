@@ -3,6 +3,7 @@ import 'package:cropsight/views/pages/scanning.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -86,6 +87,44 @@ class _HomeTabState extends State<HomeTab> {
       }));
     } on Exception catch (e) {
       print('Code error: $e');
+    }
+  }
+
+  Future<void> _cropImage(File imageFile) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: imageFile.path,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
+          toolbarColor: Colors.green,
+          activeControlsWidgetColor: Colors.green,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9
+          ],
+        ),
+        IOSUiSettings(
+          title: 'Crop Image',
+        ),
+      ],
+    );
+
+    if (croppedFile != null) {
+      setState(() {
+        _image = File(croppedFile.path);
+      });
+
+      // Run TFLite model on the cropped image
+      showBottomModal(context);
+      Future.delayed(const Duration(seconds: 3), () async {
+        await runModelOnImage(_image);
+      });
     }
   }
 
@@ -328,6 +367,7 @@ class _HomeTabState extends State<HomeTab> {
       try {
         FilePickerResult? result = await FilePicker.platform.pickFiles(
           type: FileType.image,
+          compressionQuality: 100,
         );
 
         if (result != null && result.files.single.path != null) {
@@ -336,10 +376,7 @@ class _HomeTabState extends State<HomeTab> {
             _image = File(result.files.single.path!);
           });
           var im = _image = File(result.files.single.path!);
-          showBottomModal(context);
-          Future.delayed(const Duration(seconds: 3), () {
-            runModelOnImage(im);
-          });
+          await _cropImage(im);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('No image selected')),
@@ -415,7 +452,10 @@ class _HomeTabState extends State<HomeTab> {
       }
 
       // Pick image from camera/gallery
-      final pickedFile = await ImagePicker().getImage(source: source);
+      final pickedFile = await ImagePicker().getImage(
+        source: source,
+        imageQuality: 100,
+      );
 
       if (pickedFile != null) {
         setState(() {
@@ -423,12 +463,7 @@ class _HomeTabState extends State<HomeTab> {
           _image = File(pickedFile.path);
         });
 
-        showBottomModal(context);
-
-        // Delay model inference
-        await Future.delayed(const Duration(seconds: 3), () {
-          runModelOnImage(_image!);
-        });
+        await _cropImage(_image!);
       } else {
         _showSnackbar(context, 'No image selected');
       }
