@@ -7,7 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tflite_v2/tflite_v2.dart';
+import 'package:tensorflow_lite_flutter/tensorflow_lite_flutter.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -69,7 +69,7 @@ class _HomeTabState extends State<HomeTab> {
       var img = image;
       var output = await Tflite.runModelOnImage(
         path: img!.path,
-        numResults: 1,
+        numResults: 3,
         threshold: 0.05,
         imageMean: 0.0,
         imageStd: 1.0,

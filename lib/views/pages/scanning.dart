@@ -78,13 +78,7 @@ class _ScanPageState extends State<ScanPage> {
         });
       }
     } else {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('This is unknown'),
-          ),
-        );
-      }
+      print('unknown cannot added');
     }
   }
 

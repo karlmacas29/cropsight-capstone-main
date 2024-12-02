@@ -52,7 +52,7 @@ class _HomePageNavState extends State<HomePageNav> {
     'Nanyo',
   ];
 
-  String? selectedValue;
+  String? selectedValue = 'Panabo';
 
   // Method to load the saved value from SharedPreferences
   _loadSavedValue() async {
@@ -103,6 +103,8 @@ class _HomePageNavState extends State<HomePageNav> {
               scrolledUnderElevation: 0.0,
               actions: [
                 DropdownButton<String>(
+                  iconEnabledColor: Colors.green,
+                  icon: const Icon(FluentIcons.location_12_filled),
                   dropdownColor:
                       Theme.of(context).brightness == Brightness.light
                           ? const Color.fromRGBO(244, 253, 255, 1)
