@@ -49,7 +49,7 @@ class _HomeTabState extends State<HomeTab> {
   Future<void> loadML() async {
     try {
       await Tflite.loadModel(
-        model: "assets/mobilenet.tflite", // trained model
+        model: "assets/mbNet.tflite", // trained model
         labels: "assets/labels.txt", // class label by order
         numThreads: 1, // defaults to 1
         isAsset:
@@ -68,8 +68,8 @@ class _HomeTabState extends State<HomeTab> {
       var img = image;
       var output = await Tflite.runModelOnImage(
         path: img!.path,
-        numResults: 3,
-        threshold: 0.0,
+        numResults: 1,
+        threshold: 0.05,
         imageMean: 0.0,
         imageStd: 1.0,
         asynch: true,

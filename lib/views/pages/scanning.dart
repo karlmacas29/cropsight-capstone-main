@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/descript/mandesc.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -76,26 +77,52 @@ class _ScanPageState extends State<ScanPage> {
           saveImgFile = savedPath;
         });
       }
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('This is unknown'),
+          ),
+        );
+      }
     }
   }
 
-  String imgInsectPath = 'assets/images/stemborer/2s.jpg';
+  String getConfidencePercentage(dynamic output) {
+    try {
+      // Ensure output is not null and has at least one element
+      if (output != null && output.isNotEmpty) {
+        // Clamp the confidence between 0 and 1 to prevent unexpected values
+        double confidence = (output[0]['confidence'] as double).clamp(0.0, 1.0);
+
+        // Multiply by 100 and format to two decimal places
+        return (confidence * 100).toStringAsFixed(2);
+      }
+      return 'N/A';
+    } catch (e) {
+      print('Error calculating confidence: $e');
+      return 'Error';
+    }
+  }
+
+  String imgInsectPath = 'assets/images/question-mark-909830_640.png';
   String insectName = 'Unknown';
   String insectDesc = 'This image is unknown';
   String idNum = '0';
   String percent = '0';
+  bool isUnknown = true;
 
   @override
   void initState() {
     super.initState();
-    someMethod();
     conditionStatus();
+    isUnknown ? someMethod() : print('this image is unknown');
     print('path load to: ${widget.imageSc}');
   }
 
   void conditionStatus() {
     setState(() {
-      percent = (widget.output![0]['confidence'] * 100).toStringAsFixed(2);
+      percent = getConfidencePercentage(widget.output);
     });
     //
     if (widget.output![0]['label'].toString() == "Tungro") {
@@ -115,7 +142,17 @@ class _ScanPageState extends State<ScanPage> {
         idNum = '2';
       });
     } else if (widget.output![0]['label'].toString() == "Healthy") {
-    } else {}
+      imgInsectPath = 'assets/images/11_organicrice.jpg';
+      insectName = 'No Insect';
+      insectDesc = 'This is healthy rice';
+      idNum = '0';
+    } else {
+      insectName = 'Unknown';
+      insectDesc = 'This image capture is invalid';
+      setState(() {
+        isUnknown = false;
+      });
+    }
   }
 
   @override
@@ -153,6 +190,7 @@ class _ScanPageState extends State<ScanPage> {
                 ]),
                 const SizedBox(height: 16),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(5),
@@ -174,6 +212,20 @@ class _ScanPageState extends State<ScanPage> {
                       "Disease: ${widget.output![0]['label']}",
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 20),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(FluentIcons.location_16_filled),
+                          Text(
+                            textAlign: TextAlign.justify,
+                            widget.location.toString(),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

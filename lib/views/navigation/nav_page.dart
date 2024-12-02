@@ -123,6 +123,8 @@ class _HomePageNavState extends State<HomePageNav> {
                     _saveValue(newValue);
                     // Print the current selected value
                     print('Selected value: $selectedValue');
+
+                    _loadSavedValue();
                   },
                 ),
                 IconButton(

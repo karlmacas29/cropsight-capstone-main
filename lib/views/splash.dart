@@ -26,14 +26,18 @@ class _SplashScreenState extends State<SplashScreen> {
     if (isFirstLaunch) {
       await prefs.setBool('isFirstLaunch', false);
       if (mounted) {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const WelcomePageOne()),
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const WelcomePageOne(),
+          ),
         );
       }
     } else {
       if (mounted) {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const HomePageNav()),
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const HomePageNav(),
+          ),
         );
       }
     }
