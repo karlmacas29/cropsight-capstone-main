@@ -146,6 +146,9 @@ class _ScanPageState extends State<ScanPage> {
       insectName = 'No Insect';
       insectDesc = 'This is healthy rice';
       idNum = '0';
+      setState(() {
+        isUnknown = false;
+      });
     } else {
       insectName = 'Unknown';
       insectDesc = 'This image capture is invalid';
@@ -168,26 +171,38 @@ class _ScanPageState extends State<ScanPage> {
           children: [
             Column(
               children: [
-                Stack(children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.file(
-                      widget.imageSc!,
-                      height: 300,
-                      width: 400,
-                      fit: BoxFit.contain,
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.green,
+                      width: 2.0,
                     ),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  IconButton(
-                      style: const ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(Colors.white),
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.file(
+                          widget.imageSc!,
+                          height: 300,
+                          width: 400,
+                          fit: BoxFit.contain,
+                        ),
                       ),
-                      color: Colors.black,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.arrow_back)),
-                ]),
+                      IconButton(
+                        style: const ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(Colors.green),
+                        ),
+                        color: Colors.white,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.arrow_back),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 16),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
