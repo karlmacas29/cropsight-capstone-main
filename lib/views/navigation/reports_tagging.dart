@@ -425,7 +425,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 10),
+            // const SizedBox(height: 5),
             Text(
               '${location.totalScans}',
               style: const TextStyle(

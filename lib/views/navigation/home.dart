@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:cropsight/views/pages/scanning.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -66,26 +68,63 @@ class _HomeTabState extends State<HomeTab> {
   //run tflite
   Future<void> runModelOnImage(File? image) async {
     try {
-      var img = image;
-      var output = await Tflite.runModelOnImage(
-        path: img!.path,
+      // Load the image
+      Uint8List imageBytes = await image!.readAsBytes();
+      img.Image? originalImage = img.decodeImage(imageBytes);
+
+      // Resize the image to 224x224 (model input size)
+      img.Image resizedImage =
+          img.copyResize(originalImage!, width: 224, height: 224);
+
+      // Normalize the image data to [0, 1] range
+      List<List<List<double>>> normalizeImage(img.Image image) {
+        List<List<List<double>>> normalized = List.generate(
+          224,
+          (y) => List.generate(
+            224,
+            (x) => [
+              image.getPixel(x, y).r / 255.0, // Red channel
+              image.getPixel(x, y).g / 255.0, // Green channel
+              image.getPixel(x, y).b / 255.0, // Blue channel
+            ],
+          ),
+        );
+        return normalized;
+      }
+
+      // Flatten and convert to Float32List for TFLite
+      List<List<List<double>>> normalizedData = normalizeImage(resizedImage);
+      Float32List inputBuffer = Float32List(224 * 224 * 3);
+      int index = 0;
+
+      for (var row in normalizedData) {
+        for (var pixel in row) {
+          inputBuffer[index++] = pixel[0]; // Red
+          inputBuffer[index++] = pixel[1]; // Green
+          inputBuffer[index++] = pixel[2]; // Blue
+        }
+      }
+
+      // Run the TFLite model with the processed image data
+      var output = await Tflite.runModelOnBinary(
+        binary:
+            inputBuffer.buffer.asUint8List(), // Convert Float32 to Uint8List
         numResults: 3,
         threshold: 0.05,
-        imageMean: 0.0,
-        imageStd: 1.0,
-        asynch: true,
       );
 
       print(output);
+
+      // Navigate to the ScanPage with the output
       Navigator.pop(context);
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return ScanPage(
-          imageSc: img,
+          imageSc: image,
           output: output,
           location: selectedValue,
         );
       }));
-    } on Exception catch (e) {
+    } catch (e) {
       print('Code error: $e');
     }
   }
