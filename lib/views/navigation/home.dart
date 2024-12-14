@@ -52,7 +52,7 @@ class _HomeTabState extends State<HomeTab> {
   Future<void> loadML() async {
     try {
       await Tflite.loadModel(
-        model: "assets/mbNet.tflite", // trained model
+        model: "assets/MobileNetV2(Insect).tflite", // trained model
         labels: "assets/labels.txt", // class label by order
         numThreads: 1, // defaults to 1
         isAsset:

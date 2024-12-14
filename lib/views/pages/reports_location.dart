@@ -190,7 +190,7 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Total Scan in ${widget.locationName}',
+                    'Total Insect Scan in ${widget.locationName}',
                     style: const TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
@@ -207,11 +207,12 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     'Total Insect Scanning in ${isMonthlyView ? rightTitle : 'Years'}',
                     style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -416,13 +417,13 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
   Color _getColorForInsect(int index) {
     switch (index) {
       case 0:
-        return Colors.green;
-      case 1:
-        return Colors.red;
-      case 2:
-        return Colors.blue;
-      case 3:
         return Colors.orange;
+      case 1:
+        return Colors.purple;
+      case 2:
+        return Colors.brown;
+      case 3:
+        return Colors.cyanAccent;
       default:
         return Colors.grey;
     }

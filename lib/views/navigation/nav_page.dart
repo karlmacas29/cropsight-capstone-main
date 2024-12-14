@@ -52,7 +52,7 @@ class _HomePageNavState extends State<HomePageNav> {
     'Nanyo',
   ];
 
-  String? selectedValue = 'Panabo';
+  String? selectedValue;
 
   // Method to load the saved value from SharedPreferences
   _loadSavedValue() async {
@@ -78,10 +78,10 @@ class _HomePageNavState extends State<HomePageNav> {
 
   @override
   void initState() {
-    super.initState();
     // Load the saved value when the widget is first initialized
     _loadSavedValue();
     print('Location $selectedValue');
+    super.initState();
   }
 
   @override

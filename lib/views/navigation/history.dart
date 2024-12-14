@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/pages/history_data.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HistoryPages extends StatefulWidget {
   const HistoryPages({super.key});
@@ -13,22 +14,40 @@ class HistoryPages extends StatefulWidget {
 
 class _HistoryPagesState extends State<HistoryPages> {
   late Future<List<Map<String, dynamic>>> scanningHistoryData;
+
+  // Method to load the saved value from SharedPreferences
+  _loadSavedValue() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey('selectedDropdownValue')) {
+      setState(() {
+        selectedValue = prefs.getString('selectedDropdownValue');
+        _fetchData(); // Debug log
+      });
+      print("Loaded value: $selectedValue");
+    } else {
+      print("No value found in SharedPreferences");
+    }
+  }
+
   String _currentSort = 'latest'; // Default sort option
   int _currentLimit = 10; // Default limit option
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchData(); // Initial data fetch
-  }
+  String? selectedValue;
 
   void _fetchData() {
     setState(() {
       scanningHistoryData = CropSightDatabase().getScanningHistory(
         sortBy: _currentSort,
         limit: _currentLimit,
+        location: selectedValue.toString(),
       );
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedValue();
+    _fetchData();
   }
 
   @override
@@ -36,7 +55,16 @@ class _HistoryPagesState extends State<HistoryPages> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 3),
+            child: Text(
+              '${selectedValue.toString()} Scan History',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ),
           _buildFilterControls(),
           Expanded(
             child: FutureBuilder<List<Map<String, dynamic>>>(
@@ -56,27 +84,41 @@ class _HistoryPagesState extends State<HistoryPages> {
                   itemBuilder: (context, index) {
                     var item = snapshot.data![index];
                     return ListTile(
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        final res = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => HistoryDataScreen(
-                                insectId: (item['insectId']).toString(),
-                                insectName: item['insectName'],
-                                insectDamage: item['insectDamage'],
-                                insectPic: File(item['insectPic']),
-                                insectPercent: item['insectPercent'],
-                                location: item['location'],
-                                month: item['month'],
-                                year: item['year']),
+                              id: (item['id']).toString(),
+                              insectId: (item['insectId']).toString(),
+                              insectName: item['insectName'],
+                              insectDamage: item['insectDamage'],
+                              insectPic: File(item['insectPic']),
+                              insectPercent: item['insectPercent'],
+                              location: item['location'],
+                              month: item['month'],
+                              year: item['year'],
+                            ),
                           ),
                         );
+
+                        if (res == 'deleted') {
+                          setState(() {
+                            _fetchData();
+                          });
+                        }
                       },
-                      leading: (File(item['insectPic']).existsSync())
-                          ? Image.file(File(item['insectPic']),
-                              width: 50, height: 50)
-                          : const Icon(Icons.image_not_supported,
-                              size: 50), // Adjust path handling as needed
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: (File(item['insectPic']).existsSync())
+                            ? Image.file(
+                                File(item['insectPic']),
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.fill,
+                              )
+                            : const Icon(Icons.image_not_supported, size: 50),
+                      ), // Adjust path handling as needed
                       title: Text(item['insectName']),
                       subtitle: Text(
                         '${item['insectDamage']} - ${item['month']}, ${item['year']}',

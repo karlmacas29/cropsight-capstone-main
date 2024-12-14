@@ -1,12 +1,15 @@
 import 'dart:io';
 
+import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/descript/information.dart';
 import 'package:cropsight/views/descript/mandesc.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 class HistoryDataScreen extends StatefulWidget {
   const HistoryDataScreen({
     super.key,
+    required this.id,
     required this.insectId,
     required this.insectName,
     required this.insectDamage,
@@ -16,7 +19,8 @@ class HistoryDataScreen extends StatefulWidget {
     required this.month,
     required this.year,
   });
-  final String? insectId,
+  final String? id,
+      insectId,
       insectName,
       insectDamage,
       insectPercent,
@@ -48,6 +52,14 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
+        actions: [
+          IconButton(
+              onPressed: () => handleDelete(int.parse(widget.id.toString())),
+              icon: const Icon(
+                FluentIcons.delete_16_regular,
+                color: Colors.redAccent,
+              ))
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -205,6 +217,88 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
         ),
       ),
     );
+  }
+
+  Future<bool?> showDeleteConfirmationDialog(BuildContext context) async {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false, // User must tap a button to close
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).brightness == Brightness.light
+              ? const Color.fromRGBO(244, 253, 255, 1)
+              : const Color.fromARGB(255, 41, 41, 41),
+          title: const Text('Confirm Delete'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure you want to delete this item?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop(false); // Return false when cancelled
+              },
+            ),
+            TextButton(
+              child: const Text('Delete', style: TextStyle(color: Colors.red)),
+              onPressed: () {
+                Navigator.of(context).pop(true); // Return true when confirmed
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Usage in a method
+  void handleDelete(int id1) async {
+    bool? confirmDelete = await showDeleteConfirmationDialog(context);
+    if (confirmDelete == true) {
+      // Perform actual deletion
+      try {
+        CropSightDatabase().deleteScanningHistoryEntry(id1).then((_) {
+          if (mounted) {
+            // Optional: Show a success dialog or snackbar
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Entry deleted successfully'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+
+          // Optional: Refresh the list or update UI
+          // For example, you might call a state update method
+          setState(() {
+            // Refresh your list of scanning history entries
+          });
+        }).catchError((error) {
+          // Show error dialog or snackbar
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('Failed to delete entry: $error'),
+              backgroundColor: Colors.red,
+            ));
+          }
+        });
+        if (mounted) {
+          Navigator.pop(context, 'deleted');
+        }
+      } catch (e) {
+        // Handle any unexpected errors
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('An unexpected error occurred'),
+            backgroundColor: Colors.red,
+          ));
+        }
+      }
+    }
   }
 
   Widget _buildDetailRow(String label, String value) {

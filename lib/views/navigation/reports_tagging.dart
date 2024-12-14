@@ -34,10 +34,10 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     try {
       // Initialize locations with default values
       locations = [
-        LocationData(name: 'Carmen', totalScans: 0, color: Colors.orange),
-        LocationData(name: 'Panabo', totalScans: 0, color: Colors.amber),
+        LocationData(name: 'Carmen', totalScans: 0, color: Colors.green),
+        LocationData(name: 'Panabo', totalScans: 0, color: Colors.green),
         LocationData(name: 'Dujali', totalScans: 0, color: Colors.green),
-        LocationData(name: 'Nanyo', totalScans: 0, color: Colors.brown),
+        LocationData(name: 'Nanyo', totalScans: 0, color: Colors.green),
       ];
 
       // Fetch counts for each location asynchronously
@@ -78,7 +78,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
         monthlyScan.reduce((curr, next) => curr > next ? curr : next);
 
     // Add some padding (e.g., 10% more than the max)
-    return maxValue * 1.2;
+    return maxValue * 1.1;
   }
 
   double _getMaxYYear() {
@@ -88,7 +88,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
         .reduce((curr, next) => curr > next ? curr : next);
 
     // Add some padding (e.g., 10% more than the max)
-    return maxValue * 1.2;
+    return maxValue * 1.1;
   }
 
   // Get the current month and year
@@ -215,7 +215,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             DropdownButton<String>(
               dropdownColor: Theme.of(context).brightness == Brightness.light
                   ? const Color.fromRGBO(244, 253, 255, 1)
@@ -234,13 +234,13 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
                 });
               },
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 5),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Total Scan',
+                  'Total Insect Scans',
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -281,13 +281,13 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
   Color _getColorForQuarter(int index) {
     switch (index) {
       case 0:
-        return Colors.blue;
+        return Colors.green;
       case 1:
         return Colors.green;
       case 2:
-        return Colors.orange;
+        return Colors.green;
       default:
-        return Colors.blue;
+        return Colors.green;
     }
   }
 
@@ -313,7 +313,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
             barRods: [
               BarChartRodData(
                 toY: entry.value,
-                color: Colors.blue,
+                color: Colors.green,
                 width: 16,
               )
             ],
@@ -413,34 +413,35 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
         );
       },
       child: Card(
-        color: location.color,
+        shadowColor: Colors.grey,
+        color: Theme.of(context).brightness == Brightness.light
+            ? const Color.fromRGBO(244, 253, 255, 1)
+            : const Color.fromRGBO(18, 18, 18, 1),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               location.name,
               style: const TextStyle(
-                color: Colors.white,
                 fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.normal,
               ),
             ),
             // const SizedBox(height: 5),
             Text(
               '${location.totalScans}',
               style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24,
+                fontSize: 30,
                 fontWeight: FontWeight.w900,
               ),
             ),
-            const Text(
-              'Total Scans',
-              style: TextStyle(
-                color: Colors.white70,
-                fontSize: 14,
-              ),
-            ),
+            // const Text(
+            //   'Total Insect Scans',
+            //   style: TextStyle(
+            //     color: Colors.white70,
+            //     fontSize: 14,
+            //   ),
+            // ),
           ],
         ),
       ),

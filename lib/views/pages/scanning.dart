@@ -133,7 +133,7 @@ class _ScanPageState extends State<ScanPage> {
         insectName = 'Stem Borer';
         insectDesc =
             'Rice stem borers (RSB) can be present in all rice growing areas. During tillering, the typical damage symptom is deadheart, while in flowering stage, it causes whitehead. The larvae also produce tiny holes on the stem and deposit faces within it, which is seen when the stem is cut open.';
-        idNum = '2';
+        idNum = '4';
       });
     } else if (widget.output![0]['label'].toString() == "Healthy") {
       imgInsectPath = 'assets/images/11_organicrice.jpg';
@@ -143,6 +143,12 @@ class _ScanPageState extends State<ScanPage> {
       setState(() {
         isUnknown = false;
       });
+    } else if (widget.output![0]['label'].toString() == "Leaf Folder") {
+      imgInsectPath = 'assets/images/riceleaffolder/factsheet-leaffolder-1.jpg';
+      insectName = 'Rice Leaffolder';
+      insectDesc =
+          'Leaffolder caterpillars fold a rice leaf around themselves and attach the leaf margins together with silk strands. They feed inside the folded leaf creating longitudinal white and transparent streaks on the blade.';
+      idNum = '2';
     } else {
       insectName = 'Unknown';
       insectDesc = 'This image capture is invalid';
@@ -218,7 +224,7 @@ class _ScanPageState extends State<ScanPage> {
                       ),
                     ),
                     Text(
-                      "Disease: ${widget.output![0]['label']}",
+                      "Damage: ${widget.output![0]['label']}",
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 20),
                     ),

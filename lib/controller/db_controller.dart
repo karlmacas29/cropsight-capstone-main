@@ -300,8 +300,11 @@ class CropSightDatabase {
   }
 
   // Fetch data from scanningHistory with sorting and limit
-  Future<List<Map<String, dynamic>>> getScanningHistory(
-      {String sortBy = 'latest', int limit = 10}) async {
+  Future<List<Map<String, dynamic>>> getScanningHistory({
+    String sortBy = 'latest',
+    int limit = 10,
+    String location = 'Panabo', // Add an optional location parameter
+  }) async {
     final db = await database;
 
     // Determine sort order based on user selection
@@ -320,10 +323,16 @@ class CropSightDatabase {
     // Limit query
     String queryLimit = (limit > 0) ? 'LIMIT $limit' : ''; // No LIMIT if -1
 
-    // Build and execute query
-    final query =
-        'SELECT * FROM $scanningHistory ORDER BY $orderByClause $queryLimit';
-    return await db.rawQuery(query);
+    // Build the query with optional location filter
+    String query;
+    List<dynamic> queryArgs = [];
+
+    query =
+        'SELECT * FROM $scanningHistory WHERE location = ? ORDER BY $orderByClause $queryLimit';
+    queryArgs.add(location);
+
+    // Execute the query with or without location filter
+    return await db.rawQuery(query, queryArgs);
   }
 
   //
@@ -380,7 +389,7 @@ class CropSightDatabase {
       SUM(CASE WHEN insectName = 'Stem Borer' THEN 1 ELSE 0 END) AS StemBorerCount,
       SUM(CASE WHEN insectName = 'Green Leafhopper' THEN 1 ELSE 0 END) AS GreenLeafhopperCount,
       SUM(CASE WHEN insectName = 'Rice bug' THEN 1 ELSE 0 END) AS RiceBugCount,
-      SUM(CASE WHEN insectName = 'Green leaffolder' THEN 1 ELSE 0 END) AS GreenLeaffolderCount
+      SUM(CASE WHEN insectName = 'Rice Leaffolder' THEN 1 ELSE 0 END) AS GreenLeaffolderCount
     FROM $scanningHistory
     WHERE location = ? AND month = ?
   ''', [location, month]);
@@ -405,7 +414,7 @@ class CropSightDatabase {
       SUM(CASE WHEN insectName = 'Stem Borer' THEN 1 ELSE 0 END) AS StemBorerCount,
       SUM(CASE WHEN insectName = 'Green Leafhopper' THEN 1 ELSE 0 END) AS GreenLeafHopperCount,
       SUM(CASE WHEN insectName = 'Rice bug' THEN 1 ELSE 0 END) AS RiceBugCount,
-      SUM(CASE WHEN insectName = 'Green leaffolder' THEN 1 ELSE 0 END) AS GreenLeaffolderCount
+      SUM(CASE WHEN insectName = 'Rice Leaffolder' THEN 1 ELSE 0 END) AS GreenLeaffolderCount
     FROM $scanningHistory
     WHERE location = ? AND year = ?
   ''', [location, year]);
@@ -447,5 +456,29 @@ class CropSightDatabase {
     // Extract the count value from the query result
     int count = Sqflite.firstIntValue(result) ?? 0; // Default to 0 if null
     return count.toString(); // Convert the count to a string
+  }
+
+  // Method to delete a specific scanning history entry by its ID
+  Future<int> deleteScanningHistoryEntry(int id) async {
+    final db = await database; // Ensure database is initialized
+    try {
+      // Delete the entry with the matching ID from scanningHistory table
+      int deletedCount = await db.delete(
+        scanningHistory, // Table name
+        where: 'id = ?', // Condition to match the specific ID
+        whereArgs: [id], // Pass the ID as an argument
+      );
+
+      if (deletedCount > 0) {
+        print('Deleted scanning history entry with ID: $id');
+      } else {
+        print('No scanning history entry found with ID: $id');
+      }
+
+      return deletedCount; // Return the number of rows deleted
+    } catch (e) {
+      print('Error deleting scanning history entry: $e');
+      throw Exception('Failed to delete scanning history entry: $e');
+    }
   }
 }
