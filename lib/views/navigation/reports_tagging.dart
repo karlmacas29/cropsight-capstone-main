@@ -259,12 +259,13 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
             // Location Cards
             Expanded(
               child: GridView.builder(
+                shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   childAspectRatio: 1.5,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 7,
+                  mainAxisSpacing: 7,
                 ),
                 itemCount: locations.length,
                 itemBuilder: (context, index) {
@@ -347,7 +348,10 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
                       .format(DateTime(yearForPreviousMonth, previousMonth)),
                   ' ${DateFormat.MMMM().format(DateTime(currentYear, currentMonth))}',
                 ];
-                return Text(months[value.toInt()]);
+                return Text(
+                  months[value.toInt()],
+                  style: const TextStyle(fontSize: 12),
+                );
               },
             ),
           ),

@@ -188,11 +188,12 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     'Total Insect Scan in ${widget.locationName}',
                     style: const TextStyle(
-                      fontSize: 25,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -309,7 +310,10 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                   return DateFormat.MMMM()
                       .format(DateTime(targetYear, targetMonth));
                 });
-                return Text(months[value.toInt()]);
+                return Text(
+                  months[value.toInt()],
+                  style: const TextStyle(fontSize: 12),
+                );
               },
             ),
           ),
@@ -367,7 +371,9 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
             sideTitles: SideTitles(
               showTitles: true,
               getTitlesWidget: (value, meta) {
-                return Text(value.toInt().toString()); // Year labels
+                return Text(
+                  value.toInt().toString(),
+                ); // Year labels
               },
             ),
           ),
@@ -399,14 +405,18 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
+              reservedSize: 40,
               showTitles: true,
               getTitlesWidget: (value, meta) {
-                return Text(
-                  insectNames[value.toInt()],
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 10,
+                return Container(
+                  width: 80,
+                  child: Text(
+                    insectNames[value.toInt()],
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 12,
+                    ),
+                    maxLines: 2,
                   ),
                 );
               },
