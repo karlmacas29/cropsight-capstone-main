@@ -159,7 +159,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
                       ),
                       const Divider(),
                       _buildDetailRow(
-                        'Detected',
+                        'Scan Date',
                         '${widget.month} ${widget.year}',
                       ),
                     ],

@@ -38,7 +38,7 @@ class _HomePageNavState extends State<HomePageNav> {
 
   final _titleAppbar = [
     'Home',
-    'Cropsight',
+    'Rice Pest',
     'History',
     'Reports',
   ];
@@ -75,7 +75,7 @@ class _HomePageNavState extends State<HomePageNav> {
   }
 
   bool isHide() {
-    if (_titleAppbar[_currentIndex] == 'Cropsight' ||
+    if (_titleAppbar[_currentIndex] == 'Rice Pest' ||
         _titleAppbar[_currentIndex] == 'Reports') {
       return true;
     }

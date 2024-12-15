@@ -302,7 +302,7 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                       Expanded(
                         child: Text(
-                          'Turn your mobile phone into a crop insect identifier.',
+                          'Turn your mobile phone into a rice crop pest identifier.',
                           style: TextStyle(
                             overflow: TextOverflow.clip,
                           ),
@@ -327,7 +327,7 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                       Expanded(
                         child: Text(
-                          'With just one photo, CropSight diagnoses infected crops and offers management options for any insect damage.',
+                          'With just one photo, CropSight diagnoses damage to rice crops and offers management options for any pest damage.',
                           style: TextStyle(
                             overflow: TextOverflow.clip,
                           ),
@@ -352,7 +352,7 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                       Expanded(
                         child: Text(
-                          'CropSight will give you an insect wikipedia page with information about different crop insects.',
+                          'CropSight will give you a rice pest list page with information about different pest in rice crops',
                           style: TextStyle(
                             overflow: TextOverflow.clip,
                           ),

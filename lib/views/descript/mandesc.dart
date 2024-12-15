@@ -183,7 +183,7 @@ class _ManageDescState extends State<ManageDesc> {
                               ListView(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                children: cultureMn.map((value) {
+                                children: biologicalMn.map((value) {
                                   return ListTile(
                                     title: Text(
                                       value,
@@ -208,7 +208,7 @@ class _ManageDescState extends State<ManageDesc> {
                               ListView(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                children: cultureMn.map((value) {
+                                children: chemicalMn.map((value) {
                                   return ListTile(
                                     title: Text(
                                       value,
