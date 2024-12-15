@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cropsight/views/navigation/notifier/change_notifier.dart';
 import 'package:cropsight/views/pages/scanning.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -8,6 +9,7 @@ import 'package:image/image.dart' as img;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tensorflow_lite_flutter/tensorflow_lite_flutter.dart';
 
@@ -19,9 +21,32 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
+  void updateLocation(String? newLocation) {
+    setState(() {
+      selectedValue = newLocation;
+    });
+  }
+
   final picker = ImagePicker();
   File? _image;
-  String? selectedValue = 'Panabo';
+  String? selectedValue;
+
+  // List of locations
+  final List<String> locations = [
+    'Panabo',
+    'Carmen',
+    'Dujali',
+    'Nanyo',
+  ];
+
+  // Method to save the selected value to SharedPreferences
+  _saveValue(String? value) async {
+    if (value != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('selectedDropdownValue', value);
+      print("Saved value: $value");
+    }
+  }
 
   // Method to load the saved value from SharedPreferences
   _loadSavedValue() async {
@@ -33,19 +58,57 @@ class _HomeTabState extends State<HomeTab> {
       print("Loaded value: $selectedValue"); // Debug log
     } else {
       print("No value found in SharedPreferences");
+      _showLocationModal();
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _loadSavedValue();
-    Tflite.close();
-    loadML().then((value) {
-      setState(() {
-        print('Model has been loaded!');
-      });
-    });
+  // Function to show the modal
+  void _showLocationModal() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) {
+        final locationProvider =
+            Provider.of<LocationProvider>(context, listen: false);
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Select Location',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: locations.length,
+                itemBuilder: (context, index) {
+                  final location = locations[index];
+                  return ListTile(
+                    title: Text(location),
+                    trailing: selectedValue == location
+                        ? const Icon(Icons.check, color: Colors.blue)
+                        : null,
+                    onTap: () {
+                      setState(() {
+                        selectedValue = location; // Update selected value
+                      });
+                      locationProvider.updateLocation(location);
+                      _saveValue(location);
+                      _loadSavedValue();
+                      Navigator.pop(context); // Close the modal
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   //function Future
@@ -164,6 +227,28 @@ class _HomeTabState extends State<HomeTab> {
       Future.delayed(const Duration(seconds: 3), () async {
         await runModelOnImage(_image);
       });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedValue();
+    Tflite.close();
+    loadML().then((value) {
+      setState(() {
+        print('Model has been loaded!');
+      });
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final locationProvider = Provider.of<LocationProvider>(context);
+    if (locationProvider.selectedLocation != selectedValue) {
+      updateLocation(locationProvider.selectedLocation);
     }
   }
 

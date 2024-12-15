@@ -1,4 +1,5 @@
 import 'package:cropsight/controller/db_controller.dart';
+import 'package:cropsight/views/navigation/notifier/change_notifier.dart';
 import 'package:cropsight/views/pages/settings.dart';
 import 'package:cropsight/views/splash.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,11 @@ void main() async {
     print('Error initializing database: $e');
   }
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => LocationProvider()),
+      ],
       child: const MyApp(),
     ),
   );

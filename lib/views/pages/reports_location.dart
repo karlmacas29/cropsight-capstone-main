@@ -284,7 +284,8 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
               BarChartRodData(
                 toY: entry.value.toDouble(),
                 color: widget.locationColorCode,
-                width: 16,
+                width: 36,
+                borderRadius: BorderRadius.circular(0),
               )
             ],
           );
@@ -353,7 +354,8 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
               BarChartRodData(
                 toY: entry.value,
                 color: widget.locationColorCode,
-                width: 16,
+                width: 36,
+                borderRadius: BorderRadius.circular(0),
               ),
             ],
           );
@@ -386,7 +388,8 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
               BarChartRodData(
                 toY: entry.value,
                 color: _getColorForInsect(entry.key),
-                width: 16,
+                width: 36,
+                borderRadius: BorderRadius.circular(0),
               )
             ],
           );
@@ -421,9 +424,9 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
       case 1:
         return Colors.purple;
       case 2:
-        return Colors.brown;
+        return Colors.indigoAccent;
       case 3:
-        return Colors.cyanAccent;
+        return Colors.redAccent;
       default:
         return Colors.grey;
     }
@@ -451,6 +454,7 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                 toY: insectEntry.value,
                 color: _getColorForInsect(insectEntry.key),
                 width: 16,
+                borderRadius: BorderRadius.circular(0),
               );
             }).toList(),
           );

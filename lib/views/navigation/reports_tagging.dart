@@ -314,7 +314,8 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
               BarChartRodData(
                 toY: entry.value,
                 color: Colors.green,
-                width: 16,
+                width: 36,
+                borderRadius: BorderRadius.circular(0),
               )
             ],
           );
@@ -367,7 +368,8 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
               return BarChartRodData(
                 toY: subEntry.value,
                 color: _getColorForQuarter(subEntry.key),
-                width: 16,
+                width: 36,
+                borderRadius: BorderRadius.circular(0),
               );
             }).toList(),
           );
@@ -415,7 +417,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
       child: Card(
         shadowColor: Colors.grey,
         color: Theme.of(context).brightness == Brightness.light
-            ? const Color.fromRGBO(244, 253, 255, 1)
+            ? Colors.white
             : const Color.fromRGBO(18, 18, 18, 1),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
