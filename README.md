@@ -10,4 +10,4 @@
 
 ## From pre deployment
 - Reports and Graphs (Month and Year based with barangay from panabo)(online based)
-- 4 specific barangay based on panabo (not specified yet)(Mindanao)(Philippines)
+- 4 specific barangay based on panabo (Southern, Nanyo, Datu Abdul, and Dujali)(Mindanao)(Philippines)
