@@ -1,6 +1,7 @@
 import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/pages/reports_location.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -34,16 +35,16 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     try {
       // Initialize locations with default values
       locations = [
-        LocationData(name: 'Carmen', totalScans: 0, color: Colors.green),
-        LocationData(name: 'Panabo', totalScans: 0, color: Colors.green),
+        LocationData(name: 'Southern', totalScans: 0, color: Colors.green),
+        LocationData(name: 'Datu Abdul', totalScans: 0, color: Colors.green),
         LocationData(name: 'Dujali', totalScans: 0, color: Colors.green),
         LocationData(name: 'Nanyo', totalScans: 0, color: Colors.green),
       ];
 
       // Fetch counts for each location asynchronously
       await Future.wait([
-        _fetchTotalScansForLocation('Carmen'),
-        _fetchTotalScansForLocation('Panabo'),
+        _fetchTotalScansForLocation('Southern'),
+        _fetchTotalScansForLocation('Datu Abdul'),
         _fetchTotalScansForLocation('Dujali'),
         _fetchTotalScansForLocation('Nanyo'),
       ]);
@@ -112,6 +113,15 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
       {'month': currentMonth, 'year': currentYear}
     ];
 
+    // Adjust the year for previous months if necessary
+    for (int i = 0; i < months.length - 1; i++) {
+      if (months[i]['month'] > currentMonth) {
+        months[i]['year'] = currentYear - 1;
+      } else {
+        months[i]['year'] = currentYear;
+      }
+    }
+
     // Fetch data for each month
     for (int i = 0; i < months.length; i++) {
       await _fetchCountForMonth(months[i]);
@@ -122,7 +132,6 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     int month = currentMonth - subtractMonths;
     int year = DateTime.now().year;
 
-    // Handle year change
     if (month <= 0) {
       month += 12;
       year--;
@@ -140,18 +149,26 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
           .format(DateTime(monthData['year'], monthData['month']));
 
       // Fetch count from database
-      String count = await dbHelper.countEntriesByMonth(monthName);
+      String count = await dbHelper.countEntriesByMonth(
+          monthName, monthData['year'].toString());
       double doubleValue = double.tryParse(count) ?? 0.0;
 
       setState(() {
         // Determine the index in monthlyScan based on the month's relative position
         int index = _getMonthIndex(monthData['month'], DateTime.now().month);
-        monthlyScan[index] = doubleValue;
+
+        // Ensure the index is within the bounds of monthlyScan
+        if (index >= 0 && index < monthlyScan.length) {
+          monthlyScan[index] = doubleValue;
+        } else {
+          print('Index out of bounds: $index');
+        }
       });
 
-      print('Number of entries in $monthName: $count');
+      print('Number of entries in $monthName ${monthData['year']}: $count');
     } catch (e) {
-      print('Error fetching count for month ${monthData['month']}: $e');
+      print(
+          'Error fetching count for month ${monthData['month']} and year ${monthData['year']}: $e');
     }
   }
 
@@ -216,23 +233,40 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 5),
-            DropdownButton<String>(
-              dropdownColor: Theme.of(context).brightness == Brightness.light
-                  ? const Color.fromRGBO(244, 253, 255, 1)
-                  : const Color.fromRGBO(18, 18, 18, 1),
-              value: selectedPeriod,
-              items: ['Monthly', 'Yearly']
-                  .map((period) => DropdownMenuItem(
-                        value: period,
-                        child: Text(period),
-                      ))
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedPeriod = value!;
-                  isMonthlyView = value == 'Monthly';
-                });
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                DropdownButton<String>(
+                  dropdownColor:
+                      Theme.of(context).brightness == Brightness.light
+                          ? const Color.fromRGBO(244, 253, 255, 1)
+                          : const Color.fromRGBO(18, 18, 18, 1),
+                  value: selectedPeriod,
+                  items: ['Monthly', 'Yearly']
+                      .map((period) => DropdownMenuItem(
+                            value: period,
+                            child: Text(period),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedPeriod = value!;
+                      isMonthlyView = value == 'Monthly';
+                    });
+                  },
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    print('Refresh');
+                  },
+                  icon: const Icon(FluentIcons.arrow_sync_12_filled),
+                  label: const Text('Refresh'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.green,
+                  ),
+                )
+              ],
             ),
             const SizedBox(height: 5),
 
@@ -297,13 +331,28 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     int currentMonth = DateTime.now().month;
     int currentYear = DateTime.now().year;
 
-    // Calculate the previous month and handle the year change if it's January
+    // Calculate the previous months and handle the year change if necessary
+    int previousMonth3 = currentMonth - 3;
+    int previousMonth2 = currentMonth - 2;
+    int previousMonth1 = currentMonth - 1;
 
-    int previousMonth2 = currentMonth == 1 ? 12 : currentMonth - 3;
-    int previousMonth1 = currentMonth == 1 ? 12 : currentMonth - 2;
-    int previousMonth = currentMonth == 1 ? 12 : currentMonth - 1;
-    int yearForPreviousMonth =
-        currentMonth == 1 ? currentYear - 1 : currentYear;
+    int yearForPreviousMonth3 = currentYear;
+    int yearForPreviousMonth2 = currentYear;
+    int yearForPreviousMonth1 = currentYear;
+
+    if (previousMonth3 <= 0) {
+      previousMonth3 += 12;
+      yearForPreviousMonth3 -= 1;
+    }
+    if (previousMonth2 <= 0) {
+      previousMonth2 += 12;
+      yearForPreviousMonth2 -= 1;
+    }
+    if (previousMonth1 <= 0) {
+      previousMonth1 += 12;
+      yearForPreviousMonth1 -= 1;
+    }
+
     return BarChart(
       BarChartData(
         alignment: BarChartAlignment.spaceAround,
@@ -322,15 +371,6 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
           );
         }).toList(),
         titlesData: FlTitlesData(
-          // leftTitles: AxisTitles(
-          //   sideTitles: SideTitles(
-          //     showTitles: true,
-          //     reservedSize: 40,
-          //     getTitlesWidget: (value, meta) {
-          //       return Text((value / 1000).toString());
-          //     },
-          //   ),
-          // ),
           rightTitles:
               const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           topTitles:
@@ -341,12 +381,12 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
               getTitlesWidget: (value, meta) {
                 final months = [
                   DateFormat.MMMM()
-                      .format(DateTime(yearForPreviousMonth, previousMonth2)),
+                      .format(DateTime(yearForPreviousMonth3, previousMonth3)),
                   DateFormat.MMMM()
-                      .format(DateTime(yearForPreviousMonth, previousMonth1)),
+                      .format(DateTime(yearForPreviousMonth2, previousMonth2)),
                   DateFormat.MMMM()
-                      .format(DateTime(yearForPreviousMonth, previousMonth)),
-                  ' ${DateFormat.MMMM().format(DateTime(currentYear, currentMonth))}',
+                      .format(DateTime(yearForPreviousMonth1, previousMonth1)),
+                  DateFormat.MMMM().format(DateTime(currentYear, currentMonth)),
                 ];
                 return Text(
                   months[value.toInt()],

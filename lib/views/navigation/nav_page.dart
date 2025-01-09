@@ -44,8 +44,8 @@ class _HomePageNavState extends State<HomePageNav> {
   ];
 
   final List<String> dropdownItems = [
-    'Panabo',
-    'Carmen',
+    'Southern',
+    'Datu Abdul',
     'Dujali',
     'Nanyo',
   ];

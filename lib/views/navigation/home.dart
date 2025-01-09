@@ -33,8 +33,8 @@ class _HomeTabState extends State<HomeTab> {
 
   // List of locations
   final List<String> locations = [
-    'Panabo',
-    'Carmen',
+    'Southern',
+    'Datu Abdul',
     'Dujali',
     'Nanyo',
   ];
@@ -576,7 +576,7 @@ class _HomeTabState extends State<HomeTab> {
       }
 
       // Pick image from camera/gallery
-      final pickedFile = await ImagePicker().getImage(
+      final pickedFile = await ImagePicker().pickImage(
         source: source,
         imageQuality: 100,
       );

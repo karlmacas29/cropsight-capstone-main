@@ -335,7 +335,8 @@ class CropSightDatabase {
     return await db.rawQuery(query, queryArgs);
   }
 
-  //
+  //Reports that based on history
+
   Future<int> countEntriesByYear(String targetYear) async {
     final db = await database; // Access the database instance
 
@@ -350,13 +351,17 @@ class CropSightDatabase {
     return count;
   }
 
-  Future<String> countEntriesByMonth(String targetMonth) async {
+  Future<String> countEntriesByMonth(
+      String targetMonth, String targetYear) async {
     final db = await database; // Access the database instance
 
-    // Perform the query to count entries with the given month
+    // Perform the query to count entries with the given month and year
     final result = await db.rawQuery(
-      'SELECT COUNT(*) as count FROM $scanningHistory WHERE month = ?',
-      [targetMonth], // Use parameterized query to prevent SQL injection
+      'SELECT COUNT(*) as count FROM $scanningHistory WHERE month = ? AND year = ?',
+      [
+        targetMonth,
+        targetYear
+      ], // Use parameterized query to prevent SQL injection
     );
 
     // Extract the count value from the query result
@@ -380,10 +385,10 @@ class CropSightDatabase {
 
   // based on month
   Future<Map<String, int>> countEntriesByLocationAndInsect(
-      String location, String month) async {
+      String location, String month, String year) async {
     final db = await database; // Access the database instance
 
-    // Perform the query to count entries for each insectName with the given location and month
+    // Perform the query to count entries for each insectName with the given location, month, and year
     final result = await db.rawQuery('''
     SELECT
       SUM(CASE WHEN insectName = 'Stem Borer' THEN 1 ELSE 0 END) AS StemBorerCount,
@@ -391,8 +396,8 @@ class CropSightDatabase {
       SUM(CASE WHEN insectName = 'Rice bug' THEN 1 ELSE 0 END) AS RiceBugCount,
       SUM(CASE WHEN insectName = 'Rice Leaffolder' THEN 1 ELSE 0 END) AS GreenLeaffolderCount
     FROM $scanningHistory
-    WHERE location = ? AND month = ?
-  ''', [location, month]);
+    WHERE location = ? AND month = ? AND year = ?
+  ''', [location, month, year]);
 
     // Extract the counts from the query result
     return {

@@ -193,7 +193,7 @@ class _InfoPageState extends State<InfoPage> {
                       ],
                       options: ExpandableCarouselOptions(
                         showIndicator: true,
-                        slideIndicator: const CircularSlideIndicator(),
+                        slideIndicator: CircularSlideIndicator(),
                       ),
                     ),
                     const SizedBox(

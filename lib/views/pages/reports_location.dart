@@ -40,13 +40,14 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
     final dbHelper = CropSightDatabase(); // Instance of your database class
 
     try {
-      // Get current month and format it
+      // Get current month and year, and format the month
       String currentMonth = DateFormat('MMMM').format(DateTime.now());
+      String currentYear = DateFormat('yyyy').format(DateTime.now());
       String currentLocation = loc; // You can make this dynamic if needed
 
-      // Fetch counts for the given location and month
+      // Fetch counts for the given location, month, and year
       Map<String, int> counts = await dbHelper.countEntriesByLocationAndInsect(
-          currentLocation, currentMonth);
+          currentLocation, currentMonth, currentYear);
 
       setState(() {
         // Update insect counts in the same order as insectNames
@@ -59,7 +60,7 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
       // Print the counts for debugging
       insectNames.asMap().forEach((index, name) {
         print(
-            '$name count in $currentLocation by $currentMonth : ${insectCounts[index]}');
+            '$name count in $currentLocation by $currentMonth $currentYear: ${insectCounts[index]}');
       });
     } catch (e) {
       print('Error fetching insect counts: $e');
@@ -292,8 +293,10 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
           );
         }).toList(),
         titlesData: FlTitlesData(
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: const SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: const SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -365,8 +368,10 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
           );
         }).toList(),
         titlesData: FlTitlesData(
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: const SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: const SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -401,8 +406,10 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
           );
         }).toList(),
         titlesData: FlTitlesData(
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: const SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: const SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               reservedSize: 40,
@@ -470,8 +477,10 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
           );
         }).toList(),
         titlesData: FlTitlesData(
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles:
+              const AxisTitles(sideTitles: const SideTitles(showTitles: false)),
+          topTitles:
+              const AxisTitles(sideTitles: const SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -487,7 +496,7 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
               getTitlesWidget: (value, meta) {
                 // Display numbers on the left side
                 return Text(value.toInt().toString(),
-                    style: TextStyle(fontSize: 10));
+                    style: const TextStyle(fontSize: 10));
               },
             ),
           ),
