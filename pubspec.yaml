@@ -54,10 +54,11 @@ dependencies:
   fluentui_system_icons: ^1.1.265
   uuid: ^4.5.1
   image_cropper: ^8.0.2
-  tensorflow_lite_flutter: ^2.0.1
+  # tensorflow_lite_flutter: ^2.0.1 # https://pub.dev/packages/tensorflow_lite_flutter
   internet_connection_checker: ^3.0.1
   supabase_flutter: ^2.8.3
-  
+  # flutter_tflite: ^1.0.1
+  # tflite: ^1.1.2
 
   
   # tflite_flutter: ^0.10.4

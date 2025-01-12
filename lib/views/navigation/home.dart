@@ -11,7 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tensorflow_lite_flutter/tensorflow_lite_flutter.dart';
+// import 'package:tensorflow_lite_flutter/tensorflow_lite_flutter.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -111,135 +111,135 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 
-  //function Future
-  Future<void> loadML() async {
-    try {
-      await Tflite.loadModel(
-        model: "assets/MobileNetV2(Insect).tflite", // trained model
-        labels: "assets/labels.txt", // class label by order
-        numThreads: 1, // defaults to 1
-        isAsset:
-            true, // defaults to true, set to false to load resources outside assets
-        useGpuDelegate:
-            false, // defaults to false, set to true to use GPU delegate
-      );
-    } on Exception catch (e) {
-      print('Error loading model: ${e.toString()}');
-    }
-  }
+  // //function Future
+  // Future<void> loadML() async {
+  //   try {
+  //     await Tflite.loadModel(
+  //       model: "assets/MobileNetV2(Insect).tflite", // trained model
+  //       labels: "assets/labels.txt", // class label by order
+  //       numThreads: 1, // defaults to 1
+  //       isAsset:
+  //           true, // defaults to true, set to false to load resources outside assets
+  //       useGpuDelegate:
+  //           false, // defaults to false, set to true to use GPU delegate
+  //     );
+  //   } on Exception catch (e) {
+  //     print('Error loading model: ${e.toString()}');
+  //   }
+  // }
 
-  //run tflite
-  Future<void> runModelOnImage(File? image) async {
-    try {
-      // Load the image
-      Uint8List imageBytes = await image!.readAsBytes();
-      img.Image? originalImage = img.decodeImage(imageBytes);
+  // //run tflite
+  // Future<void> runModelOnImage(File? image) async {
+  //   try {
+  //     // Load the image
+  //     Uint8List imageBytes = await image!.readAsBytes();
+  //     img.Image? originalImage = img.decodeImage(imageBytes);
 
-      // Resize the image to 224x224 (model input size)
-      img.Image resizedImage =
-          img.copyResize(originalImage!, width: 224, height: 224);
+  //     // Resize the image to 224x224 (model input size)
+  //     img.Image resizedImage =
+  //         img.copyResize(originalImage!, width: 224, height: 224);
 
-      // Normalize the image data to [0, 1] range
-      List<List<List<double>>> normalizeImage(img.Image image) {
-        List<List<List<double>>> normalized = List.generate(
-          224,
-          (y) => List.generate(
-            224,
-            (x) => [
-              image.getPixel(x, y).r / 255.0, // Red channel
-              image.getPixel(x, y).g / 255.0, // Green channel
-              image.getPixel(x, y).b / 255.0, // Blue channel
-            ],
-          ),
-        );
-        return normalized;
-      }
+  //     // Normalize the image data to [0, 1] range
+  //     List<List<List<double>>> normalizeImage(img.Image image) {
+  //       List<List<List<double>>> normalized = List.generate(
+  //         224,
+  //         (y) => List.generate(
+  //           224,
+  //           (x) => [
+  //             image.getPixel(x, y).r / 255.0, // Red channel
+  //             image.getPixel(x, y).g / 255.0, // Green channel
+  //             image.getPixel(x, y).b / 255.0, // Blue channel
+  //           ],
+  //         ),
+  //       );
+  //       return normalized;
+  //     }
 
-      // Flatten and convert to Float32List for TFLite
-      List<List<List<double>>> normalizedData = normalizeImage(resizedImage);
-      Float32List inputBuffer = Float32List(224 * 224 * 3);
-      int index = 0;
+  //     // Flatten and convert to Float32List for TFLite
+  //     List<List<List<double>>> normalizedData = normalizeImage(resizedImage);
+  //     Float32List inputBuffer = Float32List(224 * 224 * 3);
+  //     int index = 0;
 
-      for (var row in normalizedData) {
-        for (var pixel in row) {
-          inputBuffer[index++] = pixel[0]; // Red
-          inputBuffer[index++] = pixel[1]; // Green
-          inputBuffer[index++] = pixel[2]; // Blue
-        }
-      }
+  //     for (var row in normalizedData) {
+  //       for (var pixel in row) {
+  //         inputBuffer[index++] = pixel[0]; // Red
+  //         inputBuffer[index++] = pixel[1]; // Green
+  //         inputBuffer[index++] = pixel[2]; // Blue
+  //       }
+  //     }
 
-      // Run the TFLite model with the processed image data
-      var output = await Tflite.runModelOnBinary(
-        binary:
-            inputBuffer.buffer.asUint8List(), // Convert Float32 to Uint8List
-        numResults: 3,
-        threshold: 0.05,
-      );
+  //     // Run the TFLite model with the processed image data
+  //     var output = await Tflite.runModelOnBinary(
+  //       binary:
+  //           inputBuffer.buffer.asUint8List(), // Convert Float32 to Uint8List
+  //       numResults: 3,
+  //       threshold: 0.05,
+  //     );
 
-      print(output);
+  //     print(output);
 
-      // Navigate to the ScanPage with the output
-      Navigator.pop(context);
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return ScanPage(
-          imageSc: image,
-          output: output,
-          location: selectedValue,
-        );
-      }));
-    } catch (e) {
-      print('Code error: $e');
-    }
-  }
+  //     // Navigate to the ScanPage with the output
+  //     Navigator.pop(context);
+  //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+  //       return ScanPage(
+  //         imageSc: image,
+  //         output: output,
+  //         location: selectedValue,
+  //       );
+  //     }));
+  //   } catch (e) {
+  //     print('Code error: $e');
+  //   }
+  // }
 
-  Future<void> _cropImage(File imageFile) async {
-    CroppedFile? croppedFile = await ImageCropper().cropImage(
-      sourcePath: imageFile.path,
-      uiSettings: [
-        AndroidUiSettings(
-          toolbarTitle: 'Crop Image',
-          toolbarColor: Colors.green,
-          activeControlsWidgetColor: Colors.green,
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio3x2,
-            CropAspectRatioPreset.original,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio16x9
-          ],
-        ),
-        IOSUiSettings(
-          title: 'Crop Image',
-        ),
-      ],
-    );
+  // Future<void> _cropImage(File imageFile) async {
+  //   CroppedFile? croppedFile = await ImageCropper().cropImage(
+  //     sourcePath: imageFile.path,
+  //     uiSettings: [
+  //       AndroidUiSettings(
+  //         toolbarTitle: 'Crop Image',
+  //         toolbarColor: Colors.green,
+  //         activeControlsWidgetColor: Colors.green,
+  //         toolbarWidgetColor: Colors.white,
+  //         initAspectRatio: CropAspectRatioPreset.original,
+  //         lockAspectRatio: false,
+  //         aspectRatioPresets: [
+  //           CropAspectRatioPreset.square,
+  //           CropAspectRatioPreset.ratio3x2,
+  //           CropAspectRatioPreset.original,
+  //           CropAspectRatioPreset.ratio4x3,
+  //           CropAspectRatioPreset.ratio16x9
+  //         ],
+  //       ),
+  //       IOSUiSettings(
+  //         title: 'Crop Image',
+  //       ),
+  //     ],
+  //   );
 
-    if (croppedFile != null) {
-      setState(() {
-        _image = File(croppedFile.path);
-      });
+  //   if (croppedFile != null) {
+  //     setState(() {
+  //       _image = File(croppedFile.path);
+  //     });
 
-      // Run TFLite model on the cropped image
-      showBottomModal(context);
-      Future.delayed(const Duration(seconds: 3), () async {
-        await runModelOnImage(_image);
-      });
-    }
-  }
+  //     // Run TFLite model on the cropped image
+  //     showBottomModal(context);
+  //     Future.delayed(const Duration(seconds: 3), () async {
+  //       await runModelOnImage(_image);
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
     _loadSavedValue();
-    Tflite.close();
-    loadML().then((value) {
-      setState(() {
-        print('Model has been loaded!');
-      });
-    });
+    // Tflite.close();
+    // loadML().then((value) {
+    //   setState(() {
+    //     print('Model has been loaded!');
+    //   });
+    // });
   }
 
   @override
@@ -254,7 +254,7 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   void dispose() {
-    Tflite.close();
+    // Tflite.close();
     super.dispose();
   }
 
@@ -500,7 +500,7 @@ class _HomeTabState extends State<HomeTab> {
             _image = File(result.files.single.path!);
           });
           var im = _image = File(result.files.single.path!);
-          await _cropImage(im);
+          // await _cropImage(im);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('No image selected')),
@@ -587,7 +587,7 @@ class _HomeTabState extends State<HomeTab> {
           _image = File(pickedFile.path);
         });
 
-        await _cropImage(_image!);
+        // await _cropImage(_image!);
       } else {
         _showSnackbar(context, 'No image selected');
       }
