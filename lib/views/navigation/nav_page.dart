@@ -1,13 +1,13 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:cropsight/views/navigation/cropsight.dart';
-import 'package:cropsight/views/navigation/notifier/change_notifier.dart';
+// import 'package:cropsight/views/navigation/notifier/change_notifier.dart';
 import 'package:cropsight/views/navigation/reports_tagging.dart';
 import 'package:cropsight/views/navigation/home.dart';
 import 'package:cropsight/views/navigation/history.dart';
 import 'package:cropsight/views/pages/settings.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePageNav extends StatefulWidget {
@@ -66,20 +66,20 @@ class _HomePageNavState extends State<HomePageNav> {
   }
 
   // Method to save the selected value to SharedPreferences
-  _saveValue(String? value) async {
-    if (value != null) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('selectedDropdownValue', value);
-      print("Saved value: $value");
-    }
-  }
+  // _saveValue(String? value) async {
+  //   if (value != null) {
+  //     final prefs = await SharedPreferences.getInstance();
+  //     await prefs.setString('selectedDropdownValue', value);
+  //     print("Saved value: $value");
+  //   }
+  // }
 
   bool isHide() {
     if (_titleAppbar[_currentIndex] == 'Rice Pest' ||
         _titleAppbar[_currentIndex] == 'Reports') {
-      return true;
+      return false;
     }
-    return false;
+    return true;
   }
 
   @override
@@ -99,7 +99,7 @@ class _HomePageNavState extends State<HomePageNav> {
 
   @override
   Widget build(BuildContext context) {
-    final locationProvider = Provider.of<LocationProvider>(context);
+    // final locationProvider = Provider.of<LocationProvider>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).brightness == Brightness.light
           ? const Color.fromRGBO(244, 253, 255, 1)
@@ -117,39 +117,47 @@ class _HomePageNavState extends State<HomePageNav> {
               scrolledUnderElevation: 0.0,
               actions: [
                 isHide()
-                    ? const SizedBox.shrink()
-                    : DropdownButton<String>(
-                        iconEnabledColor: Colors.green,
-                        icon: const Icon(FluentIcons.location_12_filled),
-                        dropdownColor:
-                            Theme.of(context).brightness == Brightness.light
-                                ? const Color.fromRGBO(244, 253, 255, 1)
-                                : const Color.fromRGBO(18, 18, 18, 1),
-                        hint: const Text('Location?'),
-                        value:
-                            selectedValue ?? locationProvider.selectedLocation,
-                        items: dropdownItems.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          locationProvider.updateLocation(newValue);
-                          setState(() {
-                            selectedValue = newValue;
-                          });
-                          // Save the new value
-                          _saveValue(newValue);
-                          Provider.of<LocationProvider>(context, listen: false)
-                              .updateLocation(newValue);
+                    ? Container(
+                        child: Row(
+                          children: [
+                            Icon(FluentIcons.location_12_filled),
+                            Text('${selectedValue.toString()}, Panabo'),
+                          ],
+                        ),
+                      )
+                    : SizedBox.shrink(),
+                // DropdownButton<String>(
+                //     iconEnabledColor: Colors.green,
+                //     icon: const Icon(FluentIcons.location_12_filled),
+                //     dropdownColor:
+                //         Theme.of(context).brightness == Brightness.light
+                //             ? const Color.fromRGBO(244, 253, 255, 1)
+                //             : const Color.fromRGBO(18, 18, 18, 1),
+                //     hint: const Text('Location?'),
+                //     value:
+                //         selectedValue ?? locationProvider.selectedLocation,
+                //     items: dropdownItems.map((String value) {
+                //       return DropdownMenuItem<String>(
+                //         value: value,
+                //         child: Text(value),
+                //       );
+                //     }).toList(),
+                //     onChanged: (String? newValue) {
+                //       locationProvider.updateLocation(newValue);
+                //       setState(() {
+                //         selectedValue = newValue;
+                //       });
+                //       // Save the new value
+                //       _saveValue(newValue);
+                //       Provider.of<LocationProvider>(context, listen: false)
+                //           .updateLocation(newValue);
 
-                          // Print the current selected value
-                          print('Selected value: $selectedValue');
+                //       // Print the current selected value
+                //       print('Selected value: $selectedValue');
 
-                          _loadSavedValue();
-                        },
-                      ),
+                //       _loadSavedValue();
+                //     },
+                //   ),
                 IconButton(
                   iconSize: 30,
                   onPressed: () {

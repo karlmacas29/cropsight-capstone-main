@@ -210,11 +210,11 @@ class _ScanPageState extends State<ScanPage> {
                     Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                          color: double.parse(percent) >= 90.00
+                          color: double.parse(percent) >= 85.00
                               ? Colors.green
                               : double.parse(percent) >= 80.00
                                   ? Colors.orange
-                                  : double.parse(percent) >= 50.00
+                                  : double.parse(percent) >= 60.00
                                       ? Colors.red
                                       : Colors.black,
                           borderRadius: BorderRadius.circular(10)),

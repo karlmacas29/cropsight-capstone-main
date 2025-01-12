@@ -92,7 +92,7 @@ class _HistoryPagesState extends State<HistoryPages> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 3),
                   child: Text(
-                    '${selectedValue ?? "Select"} Scan History',
+                    'Scan History',
                     style: const TextStyle(
                         fontSize: 24, fontWeight: FontWeight.bold),
                   ),
@@ -175,46 +175,68 @@ class _HistoryPagesState extends State<HistoryPages> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Sorting Dropdown
-          DropdownButton<String>(
-            dropdownColor: Theme.of(context).brightness == Brightness.light
-                ? const Color.fromRGBO(244, 253, 255, 1)
-                : const Color.fromRGBO(18, 18, 18, 1),
-            value: _currentSort,
-            items: const [
-              DropdownMenuItem(value: 'latest', child: Text('Latest')),
-              DropdownMenuItem(value: 'year', child: Text('By Year')),
-              DropdownMenuItem(value: 'month', child: Text('By Month')),
-            ],
-            onChanged: (value) {
-              setState(() {
-                _currentSort = value!;
-                _fetchData();
-              });
-            },
+          Container(
+            height: 40,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.green),
+            ),
+            child: DropdownButton<String>(
+              underline: Container(
+                height: 0,
+              ),
+              dropdownColor: Theme.of(context).brightness == Brightness.light
+                  ? const Color.fromRGBO(244, 253, 255, 1)
+                  : const Color.fromRGBO(18, 18, 18, 1),
+              value: _currentSort,
+              items: const [
+                DropdownMenuItem(value: 'latest', child: Text('Latest')),
+                DropdownMenuItem(value: 'year', child: Text('By Year')),
+                DropdownMenuItem(value: 'month', child: Text('By Month')),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _currentSort = value!;
+                  _fetchData();
+                });
+              },
+            ),
           ),
 
           // Limit Dropdown
-          DropdownButton<int>(
-            dropdownColor: Theme.of(context).brightness == Brightness.light
-                ? const Color.fromRGBO(244, 253, 255, 1)
-                : const Color.fromRGBO(18, 18, 18, 1),
-            value: _currentLimit,
-            items: const [
-              DropdownMenuItem(value: 10, child: Text('10')),
-              DropdownMenuItem(value: 20, child: Text('20')),
-              DropdownMenuItem(value: 50, child: Text('50')),
-              DropdownMenuItem(
-                  value: -1, child: Text('All')), // -1 for no limit
-            ],
-            onChanged: (value) {
-              if (value != null) {
-                setState(() {
-                  _currentLimit =
-                      value == -1 ? -1 : value; // Use -1 directly for 'All'
-                  _fetchData();
-                });
-              }
-            },
+          Container(
+            height: 40,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.green),
+            ),
+            child: DropdownButton<int>(
+              underline: Container(
+                height: 0,
+              ),
+              dropdownColor: Theme.of(context).brightness == Brightness.light
+                  ? const Color.fromRGBO(244, 253, 255, 1)
+                  : const Color.fromRGBO(18, 18, 18, 1),
+              value: _currentLimit,
+              items: const [
+                DropdownMenuItem(value: 10, child: Text('10')),
+                DropdownMenuItem(value: 20, child: Text('20')),
+                DropdownMenuItem(value: 50, child: Text('50')),
+                DropdownMenuItem(
+                    value: -1, child: Text('All')), // -1 for no limit
+              ],
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() {
+                    _currentLimit =
+                        value == -1 ? -1 : value; // Use -1 directly for 'All'
+                    _fetchData();
+                  });
+                }
+              },
+            ),
           ),
         ],
       ),

@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/pages/reports_location.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class ReportsTaggingView extends StatefulWidget {
   const ReportsTaggingView({super.key});
@@ -12,10 +15,23 @@ class ReportsTaggingView extends StatefulWidget {
   State<ReportsTaggingView> createState() => _ReportsTaggingViewState();
 }
 
+enum ConnectionStatus { checking, connected, disconnected }
+
 class _ReportsTaggingViewState extends State<ReportsTaggingView> {
   String formattedDate = DateFormat('E MMMM dd, y').format(DateTime.now());
   bool isMonthlyView = true;
   String selectedPeriod = 'Monthly';
+// Initialize controllers and variables
+  final connectionController = StreamController<ConnectionStatus>.broadcast();
+  late StreamSubscription internetSubscription;
+
+  // Add this in dispose
+  @override
+  void dispose() {
+    internetSubscription.cancel();
+    connectionController.close();
+    super.dispose();
+  }
 
   //
   @override
@@ -24,6 +40,83 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     _fetchYearlyData();
     _fetchMonthlyData();
     _initializeLocations();
+
+    checkInternetConnection();
+
+    // Setup internet connection listener
+    internetSubscription =
+        InternetConnectionChecker.instance.onStatusChange.listen((status) {
+      if (status == InternetConnectionStatus.connected) {
+        if (!connectionController.isClosed) {
+          connectionController.add(ConnectionStatus.connected);
+        }
+      } else {
+        if (!connectionController.isClosed) {
+          connectionController.add(ConnectionStatus.disconnected);
+        }
+      }
+    });
+  }
+
+  Future<void> checkInternetConnection() async {
+    connectionController.add(ConnectionStatus.checking);
+    await Future.delayed(const Duration(seconds: 2));
+
+    var status = await InternetConnectionChecker.instance.hasConnection;
+    if (!connectionController.isClosed) {
+      connectionController.add(
+          status ? ConnectionStatus.connected : ConnectionStatus.disconnected);
+    }
+  }
+
+  Widget connectionStatus() {
+    return StreamBuilder<ConnectionStatus>(
+      stream: connectionController.stream,
+      builder: (context, snapshot) {
+        return SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Container(
+            height: 20,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: _getStatusColor(snapshot.data),
+            ),
+            child: Center(
+              child: Text(
+                _getStatusMessage(snapshot.data),
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Color _getStatusColor(ConnectionStatus? status) {
+    switch (status) {
+      case ConnectionStatus.checking:
+        return Colors.blue;
+      case ConnectionStatus.connected:
+        return Colors.green;
+      case ConnectionStatus.disconnected:
+        return Colors.black45;
+      default:
+        return Colors.blue;
+    }
+  }
+
+  String _getStatusMessage(ConnectionStatus? status) {
+    switch (status) {
+      case ConnectionStatus.checking:
+        return 'Checking Connection...';
+      case ConnectionStatus.connected:
+        return 'Connected';
+      case ConnectionStatus.disconnected:
+        return 'No Internet Connection';
+      default:
+        return 'Checking Connection...';
+    }
   }
 
   //
@@ -232,34 +325,49 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            connectionStatus(),
             const SizedBox(height: 5),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                DropdownButton<String>(
-                  dropdownColor:
-                      Theme.of(context).brightness == Brightness.light
-                          ? const Color.fromRGBO(244, 253, 255, 1)
-                          : const Color.fromRGBO(18, 18, 18, 1),
-                  value: selectedPeriod,
-                  items: ['Monthly', 'Yearly']
-                      .map((period) => DropdownMenuItem(
-                            value: period,
-                            child: Text(period),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedPeriod = value!;
-                      isMonthlyView = value == 'Monthly';
-                    });
-                  },
+                Container(
+                  height: 40,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.green),
+                  ),
+                  child: DropdownButton<String>(
+                    underline: Container(
+                      height: 0,
+                    ),
+                    dropdownColor:
+                        Theme.of(context).brightness == Brightness.light
+                            ? const Color.fromRGBO(244, 253, 255, 1)
+                            : const Color.fromRGBO(18, 18, 18, 1),
+                    value: selectedPeriod,
+                    items: ['Monthly', 'Yearly']
+                        .map((period) => DropdownMenuItem(
+                              value: period,
+                              child: Text(period),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedPeriod = value!;
+                        isMonthlyView = value == 'Monthly';
+                      });
+                    },
+                  ),
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
-                    print('Refresh');
+                    checkInternetConnection();
                   },
-                  icon: const Icon(FluentIcons.arrow_sync_12_filled),
+                  icon: const Icon(
+                    FluentIcons.arrow_sync_12_filled,
+                    color: Colors.white,
+                  ),
                   label: const Text('Refresh'),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -307,6 +415,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
                 },
               ),
             ),
+            const SizedBox(height: 5),
           ],
         ),
       ),

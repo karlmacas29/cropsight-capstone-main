@@ -11,6 +11,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tflite_flutter/tflite_flutter.dart';
+import 'dart:math' as math;
+// import 'package:tensorflow_lite_flutter/tensorflow_lite_flutter.dart';
 // import 'package:tensorflow_lite_flutter/tensorflow_lite_flutter.dart';
 
 class HomeTab extends StatefulWidget {
@@ -78,7 +81,7 @@ class _HomeTabState extends State<HomeTab> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
-                'Select Location',
+                'Select Your Barangay in Panabo City',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
@@ -111,135 +114,198 @@ class _HomeTabState extends State<HomeTab> {
     );
   }
 
-  // //function Future
-  // Future<void> loadML() async {
-  //   try {
-  //     await Tflite.loadModel(
-  //       model: "assets/MobileNetV2(Insect).tflite", // trained model
-  //       labels: "assets/labels.txt", // class label by order
-  //       numThreads: 1, // defaults to 1
-  //       isAsset:
-  //           true, // defaults to true, set to false to load resources outside assets
-  //       useGpuDelegate:
-  //           false, // defaults to false, set to true to use GPU delegate
-  //     );
-  //   } on Exception catch (e) {
-  //     print('Error loading model: ${e.toString()}');
-  //   }
-  // }
+  Interpreter? _interpreter;
 
-  // //run tflite
-  // Future<void> runModelOnImage(File? image) async {
-  //   try {
-  //     // Load the image
-  //     Uint8List imageBytes = await image!.readAsBytes();
-  //     img.Image? originalImage = img.decodeImage(imageBytes);
+  // Revised loadML function
+  Future<void> loadML() async {
+    try {
+      final options = InterpreterOptions()
+        ..threads = 4
+        ..useNnApiForAndroid = true;
 
-  //     // Resize the image to 224x224 (model input size)
-  //     img.Image resizedImage =
-  //         img.copyResize(originalImage!, width: 224, height: 224);
+      _interpreter = await Interpreter.fromAsset(
+        'assets/MobileNetV2(Insect).tflite',
+        options: options,
+      );
 
-  //     // Normalize the image data to [0, 1] range
-  //     List<List<List<double>>> normalizeImage(img.Image image) {
-  //       List<List<List<double>>> normalized = List.generate(
-  //         224,
-  //         (y) => List.generate(
-  //           224,
-  //           (x) => [
-  //             image.getPixel(x, y).r / 255.0, // Red channel
-  //             image.getPixel(x, y).g / 255.0, // Green channel
-  //             image.getPixel(x, y).b / 255.0, // Blue channel
-  //           ],
-  //         ),
-  //       );
-  //       return normalized;
-  //     }
+      print('Model loaded successfully');
+    } catch (e) {
+      print('Error loading model: $e');
+    }
+  }
 
-  //     // Flatten and convert to Float32List for TFLite
-  //     List<List<List<double>>> normalizedData = normalizeImage(resizedImage);
-  //     Float32List inputBuffer = Float32List(224 * 224 * 3);
-  //     int index = 0;
+  // Revised runModelOnImage function
+  Future<void> runModelOnImage(File? image) async {
+    if (image == null || _interpreter == null) {
+      print('Image or interpreter is null');
+      return;
+    }
 
-  //     for (var row in normalizedData) {
-  //       for (var pixel in row) {
-  //         inputBuffer[index++] = pixel[0]; // Red
-  //         inputBuffer[index++] = pixel[1]; // Green
-  //         inputBuffer[index++] = pixel[2]; // Blue
-  //       }
-  //     }
+    try {
+      // Load and process the image
+      final imageBytes = await image.readAsBytes();
+      final originalImage = img.decodeImage(imageBytes);
 
-  //     // Run the TFLite model with the processed image data
-  //     var output = await Tflite.runModelOnBinary(
-  //       binary:
-  //           inputBuffer.buffer.asUint8List(), // Convert Float32 to Uint8List
-  //       numResults: 3,
-  //       threshold: 0.05,
-  //     );
+      if (originalImage == null) {
+        print('Failed to decode image');
+        return;
+      }
 
-  //     print(output);
+      // Resize image to 224x224
+      final resizedImage = img.copyResize(
+        originalImage,
+        width: 224,
+        height: 224,
+        interpolation: img.Interpolation.linear,
+      );
 
-  //     // Navigate to the ScanPage with the output
-  //     Navigator.pop(context);
-  //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-  //       return ScanPage(
-  //         imageSc: image,
-  //         output: output,
-  //         location: selectedValue,
-  //       );
-  //     }));
-  //   } catch (e) {
-  //     print('Code error: $e');
-  //   }
-  // }
+      // Prepare input data - normalize to [0, 1]
+      final inputBuffer = Float32List(1 * 224 * 224 * 3);
+      var pixelIndex = 0;
 
-  // Future<void> _cropImage(File imageFile) async {
-  //   CroppedFile? croppedFile = await ImageCropper().cropImage(
-  //     sourcePath: imageFile.path,
-  //     uiSettings: [
-  //       AndroidUiSettings(
-  //         toolbarTitle: 'Crop Image',
-  //         toolbarColor: Colors.green,
-  //         activeControlsWidgetColor: Colors.green,
-  //         toolbarWidgetColor: Colors.white,
-  //         initAspectRatio: CropAspectRatioPreset.original,
-  //         lockAspectRatio: false,
-  //         aspectRatioPresets: [
-  //           CropAspectRatioPreset.square,
-  //           CropAspectRatioPreset.ratio3x2,
-  //           CropAspectRatioPreset.original,
-  //           CropAspectRatioPreset.ratio4x3,
-  //           CropAspectRatioPreset.ratio16x9
-  //         ],
-  //       ),
-  //       IOSUiSettings(
-  //         title: 'Crop Image',
-  //       ),
-  //     ],
-  //   );
+      for (var y = 0; y < resizedImage.height; y++) {
+        for (var x = 0; x < resizedImage.width; x++) {
+          final pixel = resizedImage.getPixel(x, y);
 
-  //   if (croppedFile != null) {
-  //     setState(() {
-  //       _image = File(croppedFile.path);
-  //     });
+          // Normalize RGB values to [0, 1]
+          inputBuffer[pixelIndex] = pixel.r.toDouble() / 255.0;
+          inputBuffer[pixelIndex + 1] = pixel.g.toDouble() / 255.0;
+          inputBuffer[pixelIndex + 2] = pixel.b.toDouble() / 255.0;
 
-  //     // Run TFLite model on the cropped image
-  //     showBottomModal(context);
-  //     Future.delayed(const Duration(seconds: 3), () async {
-  //       await runModelOnImage(_image);
-  //     });
-  //   }
-  // }
+          pixelIndex += 3;
+        }
+      }
+
+      // Reshape input to match model's expected shape [1, 224, 224, 3]
+      final input = inputBuffer.reshape([1, 224, 224, 3]);
+
+      // Get model output shape from interpreter
+      var outputShape = _interpreter!.getOutputTensor(0).shape;
+      print('Model output shape: $outputShape');
+
+      // Create output buffer with correct shape
+      final outputBuffer =
+          List<double>.filled(outputShape[0] * outputShape[1], 0)
+              .reshape(outputShape);
+
+      // Run inference
+      _interpreter!.run(input, outputBuffer);
+
+      // Convert output to probabilities using softmax
+      final probabilities = _softmax(outputBuffer[0], temperature: 0.25);
+
+      print('Probabilities: $probabilities');
+
+      int maxIndex = 0;
+      double maxProb = probabilities[0];
+      for (int i = 1; i < probabilities.length; i++) {
+        if (probabilities[i] > maxProb) {
+          maxProb = probabilities[i];
+          maxIndex = i;
+        }
+      }
+
+      // Map the index to label
+      final labels = [
+        "Healthy",
+        "Leaf Folder",
+        "Rice Dead Heart",
+        "Tungro",
+        "Unknown",
+      ]; // Adjust based on your labels
+      String predictedLabel = labels[maxIndex];
+
+      // Apply confidence threshold
+      if (maxProb < 0.5) {
+        print('Low confidence prediction. Label: Unknown');
+        predictedLabel = 'Unknown';
+      } else {
+        predictedLabel = labels[maxIndex];
+      }
+      // Format output to match ScanPage expectations
+      final output = [
+        {
+          'label': predictedLabel,
+          'confidence': maxProb,
+        }
+      ];
+
+      print(
+          'Prediction: $predictedLabel with confidence: ${(maxProb * 100).toStringAsFixed(2)}%');
+
+      // Navigate to results page
+      Navigator.pop(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ScanPage(
+            imageSc: image,
+            output: output,
+            location: selectedValue,
+          ),
+        ),
+      );
+    } catch (e, stackTrace) {
+      print('Error running model: $e');
+      print('Stack trace: $stackTrace');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error analyzing image: $e')),
+      );
+    }
+  }
+
+  // Helper function to compute softmax probabilities
+  List<double> _softmax(List<double> inputs, {double temperature = 1.0}) {
+    double max = inputs.reduce(math.max);
+    List<double> exp =
+        inputs.map((x) => math.exp((x - max) / temperature)).toList();
+    double sum = exp.reduce((a, b) => a + b);
+    return exp.map((x) => x / sum).toList();
+  }
+
+  Future<void> _cropImage(File imageFile) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: imageFile.path,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
+          toolbarColor: Colors.green,
+          activeControlsWidgetColor: Colors.green,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9
+          ],
+        ),
+        IOSUiSettings(
+          title: 'Crop Image',
+        ),
+      ],
+    );
+
+    if (croppedFile != null) {
+      setState(() {
+        _image = File(croppedFile.path);
+      });
+
+      // Run TFLite model on the cropped image
+      showBottomModal(context);
+      Future.delayed(const Duration(seconds: 3), () async {
+        await runModelOnImage(_image);
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _loadSavedValue();
-    // Tflite.close();
-    // loadML().then((value) {
-    //   setState(() {
-    //     print('Model has been loaded!');
-    //   });
-    // });
+    loadML();
   }
 
   @override
@@ -254,7 +320,7 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   void dispose() {
-    // Tflite.close();
+    _interpreter?.close(); // Clean up interpreter
     super.dispose();
   }
 
@@ -500,7 +566,7 @@ class _HomeTabState extends State<HomeTab> {
             _image = File(result.files.single.path!);
           });
           var im = _image = File(result.files.single.path!);
-          // await _cropImage(im);
+          await _cropImage(im);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('No image selected')),
@@ -587,7 +653,7 @@ class _HomeTabState extends State<HomeTab> {
           _image = File(pickedFile.path);
         });
 
-        // await _cropImage(_image!);
+        await _cropImage(_image!);
       } else {
         _showSnackbar(context, 'No image selected');
       }

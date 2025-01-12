@@ -168,23 +168,35 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10),
-              DropdownButton<String>(
-                dropdownColor: Theme.of(context).brightness == Brightness.light
-                    ? const Color.fromRGBO(244, 253, 255, 1)
-                    : const Color.fromRGBO(18, 18, 18, 1),
-                value: selectedPeriod,
-                items: ['Monthly', 'Yearly']
-                    .map((period) => DropdownMenuItem(
-                          value: period,
-                          child: Text(period),
-                        ))
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedPeriod = value!;
-                    isMonthlyView = value == 'Monthly';
-                  });
-                },
+              Container(
+                height: 40,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.green),
+                ),
+                child: DropdownButton<String>(
+                  underline: Container(
+                    height: 0,
+                  ),
+                  dropdownColor:
+                      Theme.of(context).brightness == Brightness.light
+                          ? const Color.fromRGBO(244, 253, 255, 1)
+                          : const Color.fromRGBO(18, 18, 18, 1),
+                  value: selectedPeriod,
+                  items: ['Monthly', 'Yearly']
+                      .map((period) => DropdownMenuItem(
+                            value: period,
+                            child: Text(period),
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedPeriod = value!;
+                      isMonthlyView = value == 'Monthly';
+                    });
+                  },
+                ),
               ),
               const SizedBox(height: 20),
               Row(
