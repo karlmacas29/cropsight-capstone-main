@@ -10,4 +10,4 @@
 
 ## From pre deployment
 - Reports and Graphs (Month and Year based with barangay from panabo)(online based)
-- 4 specific barangay based on Panabo (Southern, Nanyo, Datu Abdul, and Dujali)(Davao Del Norte)(Mindanao)(Philippines)
+- 4 specific barangay based on Panabo (Southern, Nanyo, Datu Abdul, and Malitbog)(Davao Del Norte)(Mindanao)(Philippines)
