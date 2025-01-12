@@ -130,7 +130,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
       locations = [
         LocationData(name: 'Southern', totalScans: 0, color: Colors.green),
         LocationData(name: 'Datu Abdul', totalScans: 0, color: Colors.green),
-        LocationData(name: 'Dujali', totalScans: 0, color: Colors.green),
+        LocationData(name: 'Malitbog', totalScans: 0, color: Colors.green),
         LocationData(name: 'Nanyo', totalScans: 0, color: Colors.green),
       ];
 
@@ -138,7 +138,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
       await Future.wait([
         _fetchTotalScansForLocation('Southern'),
         _fetchTotalScansForLocation('Datu Abdul'),
-        _fetchTotalScansForLocation('Dujali'),
+        _fetchTotalScansForLocation('Malitbog'),
         _fetchTotalScansForLocation('Nanyo'),
       ]);
     } catch (e) {
