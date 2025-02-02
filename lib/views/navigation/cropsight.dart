@@ -22,7 +22,7 @@ class _CropsightTabState extends State<CropsightTab> {
     });
   }
 
-  //data read print
+  //data read debugPrint
   Future<void> displayInsectData() async {
     final db = CropSightDatabase();
 
@@ -30,18 +30,19 @@ class _CropsightTabState extends State<CropsightTab> {
       // Get all insects
       final insects = await db.getAllInsects();
       for (var insect in insects) {
-        print('Insect: ${insect['insectName']}');
+        debugPrint('Insect: ${insect['insectName']}');
 
         // Get management data for this insect
         final management = await db.getInsectManagement(insect['insectID']);
         if (management != null) {
           // Decode the JSON strings back into lists
           final decodedManagement = db.decodeManagementData(management);
-          print('Management methods: ${decodedManagement['cultureMn'].length}');
+          debugPrint(
+              'Management methods: ${decodedManagement['cultureMn'].length}');
         }
       }
     } catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
     }
   }
 

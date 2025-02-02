@@ -7,23 +7,35 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+void startSyncListener() async {
+  bool isConnected = await InternetConnectionChecker.instance.hasConnection;
+  if (isConnected) {
+    await SyncService().syncData();
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  // Load environment variables
+  await dotenv.load(fileName: ".env");
   // Initialize Supabase
   await Supabase.initialize(
-    url: 'https://your-supabase-url.supabase.co',
-    anonKey: 'your-anon-key',
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
 
   final db = CropSightDatabase();
   try {
     // This will only populate if the database is empty
     await db.populateDatabase();
-    print('Database initialization complete');
+    debugPrint('Database initialization complete');
   } catch (e) {
-    print('Error initializing database: $e');
+    debugPrint('Error initializing database: $e');
   }
+
+  startSyncListener();
 
   runApp(
     MultiProvider(

@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class CropSightDatabase {
   static final CropSightDatabase _instance = CropSightDatabase._internal();
@@ -72,6 +75,7 @@ class CropSightDatabase {
         location TEXT,
         month TEXT,
         year TEXT,
+        isSynced INTEGER DEFAULT 0,
         FOREIGN KEY (insectId) REFERENCES $insectListTable (insectID)
       )
     ''');
@@ -83,7 +87,7 @@ class CropSightDatabase {
           await rootBundle.loadString('assets/resources/cropsight.json');
       return json.decode(jsonString);
     } catch (e) {
-      print('Error loading JSON data: $e');
+      debugPrint('Error loading JSON data: $e');
       throw Exception('Failed to load cropsight.json: $e');
     }
   }
@@ -136,13 +140,13 @@ class CropSightDatabase {
           },
           conflictAlgorithm: ConflictAlgorithm.ignore,
         );
-        print('Inserted insect: ${insect['insectName']}');
+        debugPrint('Inserted insect: ${insect['insectName']}');
       } else {
-        print(
+        debugPrint(
             'Insect ${insect['insectName']} already exists, skipping insertion');
       }
     } catch (e) {
-      print('Error inserting insect: $e');
+      debugPrint('Error inserting insect: $e');
       throw Exception('Failed to insert insect data: $e');
     }
   }
@@ -171,13 +175,13 @@ class CropSightDatabase {
           },
           conflictAlgorithm: ConflictAlgorithm.ignore,
         );
-        print('Inserted management for: ${manage['insectName']}');
+        debugPrint('Inserted management for: ${manage['insectName']}');
       } else {
-        print(
+        debugPrint(
             'Management data for ${manage['insectName']} already exists, skipping insertion');
       }
     } catch (e) {
-      print('Error inserting management data: $e');
+      debugPrint('Error inserting management data: $e');
       throw Exception('Failed to insert management data: $e');
     }
   }
@@ -203,12 +207,12 @@ class CropSightDatabase {
           await insertInsectManage(manage);
         }
 
-        print('Initial database population completed');
+        debugPrint('Initial database population completed');
       } else {
-        print('Database already contains data, skipping population');
+        debugPrint('Database already contains data, skipping population');
       }
     } catch (e) {
-      print('Error populating database: $e');
+      debugPrint('Error populating database: $e');
       throw Exception('Failed to populate database: $e');
     }
   }
@@ -221,10 +225,10 @@ class CropSightDatabase {
         insectListTable,
         orderBy: 'insectID',
       );
-      print('Retrieved ${insects.length} insects');
+      debugPrint('Retrieved ${insects.length} insects');
       return insects;
     } catch (e) {
-      print('Error getting insects: $e');
+      debugPrint('Error getting insects: $e');
       throw Exception('Failed to get insects: $e');
     }
   }
@@ -244,7 +248,7 @@ class CropSightDatabase {
       }
       return null;
     } catch (e) {
-      print('Error getting insect management: $e');
+      debugPrint('Error getting insect management: $e');
       throw Exception('Failed to get insect management: $e');
     }
   }
@@ -264,7 +268,7 @@ class CropSightDatabase {
       }
       return null;
     } catch (e) {
-      print('Error getting insect management: $e');
+      debugPrint('Error getting insect management: $e');
       throw Exception('Failed to get insect management: $e');
     }
   }
@@ -296,6 +300,23 @@ class CropSightDatabase {
       scanningHistory, // Table name
       data,
       conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  //sync to online supabase
+  Future<List<Map<String, dynamic>>> getUnsyncedScans() async {
+    final db = await database;
+    return await db
+        .query('scanningHistory', where: 'isSynced = ?', whereArgs: [0]);
+  }
+
+  Future<void> markAsSynced(int id) async {
+    final db = await database;
+    await db.update(
+      'scanningHistory',
+      {'isSynced': 1},
+      where: 'id = ?',
+      whereArgs: [id],
     );
   }
 
@@ -475,15 +496,178 @@ class CropSightDatabase {
       );
 
       if (deletedCount > 0) {
-        print('Deleted scanning history entry with ID: $id');
+        debugPrint('Deleted scanning history entry with ID: $id');
       } else {
-        print('No scanning history entry found with ID: $id');
+        debugPrint('No scanning history entry found with ID: $id');
       }
 
       return deletedCount; // Return the number of rows deleted
     } catch (e) {
-      print('Error deleting scanning history entry: $e');
+      debugPrint('Error deleting scanning history entry: $e');
       throw Exception('Failed to delete scanning history entry: $e');
     }
+  }
+}
+
+class OnlineDatabase {
+  final SupabaseClient _supabase = Supabase.instance.client;
+
+  Future<void> uploadScan(Map<String, dynamic> scan) async {
+    await _supabase.from('scanningHistory').insert({
+      'insectId': scan['insectId'],
+      'insectName': scan['insectName'],
+      'insectDamage': scan['insectDamage'],
+      'insectPic': scan['insectPic'],
+      'insectPercent': scan['insectPercent'],
+      'location': scan['location'],
+      'month': scan['month'],
+      'year': scan['year'],
+    });
+  }
+
+  // Count entries by year
+  Future<int> countEntriesByYear(String targetYear) async {
+    final response = await _supabase
+        .from('scanningHistory')
+        .select('id')
+        .eq('year', targetYear)
+        .count(CountOption.exact);
+
+    return response.count;
+  }
+
+  // Count entries by month and year
+  Future<String> countEntriesByMonth(
+      String targetMonth, String targetYear) async {
+    final response = await _supabase
+        .from('scanningHistory')
+        .select('id')
+        .eq('month', targetMonth)
+        .eq('year', targetYear)
+        .count(CountOption.exact);
+
+    return (response.count).toString();
+  }
+
+  // Count entries by location
+  Future<String> countEntriesByLocation(String targetLocation) async {
+    final response = await _supabase
+        .from('scanningHistory')
+        .select('id')
+        .eq('location', targetLocation)
+        .count(CountOption.exact);
+
+    return (response.count).toString();
+  }
+
+  // Count entries by location, month, and year for specific insects
+  Future<Map<String, int>> countEntriesByLocationAndInsect(
+      String location, String month, String year) async {
+    final response = await _supabase
+        .from('scanningHistory')
+        .select('insectName')
+        .eq('location', location)
+        .eq('month', month)
+        .eq('year', year);
+
+    // Count occurrences of each insect
+    int stemBorerCount =
+        response.where((entry) => entry['insectName'] == 'Stem Borer').length;
+    int greenLeafhopperCount = response
+        .where((entry) => entry['insectName'] == 'Green Leafhopper')
+        .length;
+    int riceBugCount =
+        response.where((entry) => entry['insectName'] == 'Rice bug').length;
+    int greenLeaffolderCount = response
+        .where((entry) => entry['insectName'] == 'Rice Leaffolder')
+        .length;
+
+    return {
+      'Stem Borer': stemBorerCount,
+      'Green Leafhopper': greenLeafhopperCount,
+      'Rice bug': riceBugCount,
+      'Green leaffolder': greenLeaffolderCount,
+    };
+  }
+
+  // Count entries by location and year for specific insects
+  Future<Map<String, int>> countEntriesByLocationAndInsectForYear(
+      String location, String year) async {
+    final response = await _supabase
+        .from('scanningHistory')
+        .select('insectName')
+        .eq('location', location)
+        .eq('year', year);
+
+    // Count occurrences of each insect
+    int stemBorerCount =
+        response.where((entry) => entry['insectName'] == 'Stem Borer').length;
+    int greenLeafhopperCount = response
+        .where((entry) => entry['insectName'] == 'Green Leafhopper')
+        .length;
+    int riceBugCount =
+        response.where((entry) => entry['insectName'] == 'Rice bug').length;
+    int greenLeaffolderCount = response
+        .where((entry) => entry['insectName'] == 'Rice Leaffolder')
+        .length;
+
+    return {
+      'Stem Borer': stemBorerCount,
+      'Green Leafhopper': greenLeafhopperCount,
+      'Rice bug': riceBugCount,
+      'Green leaffolder': greenLeaffolderCount,
+    };
+  }
+
+  // Count entries by location and month
+  Future<String> countEntriesByLocationAndMonth(
+      String location, String month) async {
+    final response = await _supabase
+        .from('scanningHistory')
+        .select('id')
+        .eq('location', location)
+        .eq('month', month)
+        .count(CountOption.exact);
+
+    return (response.count).toString();
+  }
+
+  // Count entries by location and year
+  Future<String> countEntriesByLocationAndYear(
+      String location, String year) async {
+    final response = await _supabase
+        .from('scanningHistory')
+        .select('id')
+        .eq('location', location)
+        .eq('year', year)
+        .count(CountOption.exact);
+
+    return (response.count).toString();
+  }
+}
+
+class SyncService {
+  final CropSightDatabase _localDatabase = CropSightDatabase();
+  final OnlineDatabase _onlineDatabase = OnlineDatabase();
+
+  Future<void> syncData() async {
+    // Check internet connection using internet_connection_checker
+    bool isConnected = await InternetConnectionChecker.instance.hasConnection;
+    if (!isConnected) {
+      debugPrint('No internet connection');
+      return; // No internet connection
+    }
+
+    // Get unsynced scans from local database
+    List<Map<String, dynamic>> unsyncedScans =
+        await _localDatabase.getUnsyncedScans();
+
+    // Upload unsynced scans to Supabase
+    for (var scan in unsyncedScans) {
+      await _onlineDatabase.uploadScan(scan);
+      await _localDatabase.markAsSynced(scan['id']);
+    }
+
+    // debugPrint('Sync Complete');
   }
 }

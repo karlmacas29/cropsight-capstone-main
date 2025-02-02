@@ -27,8 +27,8 @@ class _InfoPageState extends State<InfoPage> {
     final db = CropSightDatabase();
     final insectData = await db.getInsectID(insectId);
     if (insectData != null) {
-      print('Insect Name: ${insectData['insectName']}');
-      print('Insect Pic: ${insectData['insectPic']}');
+      debugPrint('Insect Name: ${insectData['insectName']}');
+      debugPrint('Insect Pic: ${insectData['insectPic']}');
 
       setState(() {
         name = insectData['insectName'].toString();
@@ -66,7 +66,7 @@ class _InfoPageState extends State<InfoPage> {
         });
       }
     } else {
-      print('No data found for insect ID $insectId');
+      debugPrint('No data found for insect ID $insectId');
     }
   }
 

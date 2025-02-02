@@ -26,12 +26,12 @@ class _ManageDescState extends State<ManageDesc> {
     final db = CropSightDatabase();
     final insectData = await db.getInsectManagement(insectId);
     if (insectData != null) {
-      print('Insect Name: ${insectData['insectName']}');
-      print('Insect Pic: ${insectData['insectPic']}');
+      debugPrint('Insect Name: ${insectData['insectName']}');
+      debugPrint('Insect Pic: ${insectData['insectPic']}');
 
       final decodedManagement = db.decodeManagementData(insectData);
 
-      // print('cultureMN: ${decodedManagement['cultureMn'][1]}');
+      // debugPrint('cultureMN: ${decodedManagement['cultureMn'][1]}');
       setState(() {
         name = insectData['insectName'].toString();
         insectPic = insectData['insectPic'].toString();
@@ -44,7 +44,7 @@ class _ManageDescState extends State<ManageDesc> {
         _isLoading = false;
       });
     } else {
-      print('No data found for insect ID $insectId');
+      debugPrint('No data found for insect ID $insectId');
     }
   }
 

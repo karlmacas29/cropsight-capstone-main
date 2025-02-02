@@ -76,7 +76,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
+                        color: Colors.grey.withAlpha(5),
                         spreadRadius: 2,
                         blurRadius: 7,
                         offset: const Offset(0, 3),

@@ -27,9 +27,9 @@ class _HistoryPagesState extends State<HistoryPages> {
         _fetchData(); // Debug log
       });
 
-      print("Loaded value: $selectedValue");
+      debugPrint("Loaded value: $selectedValue");
     } else {
-      print("No value found in SharedPreferences");
+      debugPrint("No value found in SharedPreferences");
     }
   }
 

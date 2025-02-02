@@ -33,7 +33,7 @@ class _ScanPageState extends State<ScanPage> {
   String? saveImgFile;
   Future<String?> saveImageWithUniqueName(File? imageSc) async {
     if (imageSc == null) {
-      print("No image file to save.");
+      debugPrint("No image file to save.");
       return null; // Changed from 'pathError' to null for clarity
     }
 
@@ -61,10 +61,10 @@ class _ScanPageState extends State<ScanPage> {
         _savedData(int.parse(idNum), savedImage.path);
       });
 
-      print("Image saved at: ${savedImage.path}");
+      debugPrint("Image saved at: ${savedImage.path}");
       return savedImage.path;
     } catch (e) {
-      print("Error saving image: $e");
+      debugPrint("Error saving image: $e");
       return null; // Changed from 'pathErro' to null
     }
   }
@@ -78,7 +78,7 @@ class _ScanPageState extends State<ScanPage> {
         });
       }
     } else {
-      print('unknown cannot added');
+      debugPrint('unknown cannot added');
     }
   }
 
@@ -94,7 +94,7 @@ class _ScanPageState extends State<ScanPage> {
       }
       return 'N/A';
     } catch (e) {
-      print('Error calculating confidence: $e');
+      debugPrint('Error calculating confidence: $e');
       return 'Error';
     }
   }
@@ -110,8 +110,8 @@ class _ScanPageState extends State<ScanPage> {
   void initState() {
     super.initState();
     conditionStatus();
-    isUnknown ? someMethod() : print('this image is unknown');
-    print('path load to: ${widget.imageSc}');
+    isUnknown ? someMethod() : debugPrint('this image is unknown');
+    debugPrint('path load to: ${widget.imageSc}');
   }
 
   void conditionStatus() {
@@ -342,7 +342,10 @@ class _ScanPageState extends State<ScanPage> {
     };
 
     int id = await dbHelper.insertScanningHistory(newRow);
-    print('Inserted row id: $id');
+    debugPrint('Inserted row id: $id');
+
+    // Trigger sync after inserting new data
+    await SyncService().syncData();
   }
 
   //save all data
@@ -366,7 +369,7 @@ class _ScanPageState extends State<ScanPage> {
         year: crntYr,
       );
     } catch (e) {
-      print('error: $e');
+      debugPrint('error: $e');
     }
   }
 }
