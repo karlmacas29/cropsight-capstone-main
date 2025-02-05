@@ -311,7 +311,9 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
             label,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: Colors.grey[800],
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? const Color.fromRGBO(244, 253, 255, 1)
+                  : const Color.fromARGB(255, 41, 41, 41),
             ),
           ),
           Text(

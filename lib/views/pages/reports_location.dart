@@ -1,8 +1,12 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:cropsight/controller/connection_ctrl.dart';
 import 'package:cropsight/views/navigation/report_graph/bargraph_r.dart';
 import 'package:cropsight/views/navigation/report_graph/bargraph_r_location.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 
@@ -26,6 +30,7 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
   String selectedPeriod = 'Monthly';
   late String locn = widget.locationName;
   String rightTitle = DateFormat('MMMM').format(DateTime.now()).toString();
+
   //
   bool isLoad = true;
   bool isOnline = false;
@@ -72,15 +77,6 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
   List<double> monthlyInsectScan = [0, 0, 0, 0]; // Default empty data
   Map<int, List<double>> yearlyScan = {};
 
-  void _refreshData() async {
-    await _fetchInsectData(widget.locationName);
-    if (mounted) {
-      setState(() {
-        isLoad = false;
-      });
-    }
-  }
-
   Future<void> _checkConnection() async {
     setState(() {
       _fetchInsectData(widget.locationName);
@@ -92,7 +88,7 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
         setState(() {
           isOnline = true;
         });
-        _fetchInsectData(widget.locationName);
+        await _fetchInsectData(widget.locationName);
         if (mounted) {
           setState(() {
             isLoad = false;
@@ -102,7 +98,7 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
         setState(() {
           isOnline = false;
         });
-        _fetchInsectData(widget.locationName);
+        await _fetchInsectData(widget.locationName);
         if (mounted) {
           setState(() {
             isLoad = false;
@@ -112,10 +108,58 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
     }
   }
 
+  void _refreshData() async {
+    await _fetchInsectData(widget.locationName);
+
+    if (mounted) {
+      setState(() {
+        isLoad = false;
+      });
+    }
+  }
+
+  final Connectivity _connectivity = Connectivity();
+  List<ConnectivityResult> _connectionStatus = [ConnectivityResult.none];
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initConnectivity() async {
+    late List<ConnectivityResult> result;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      debugPrint('Couldn\'t check connectivity status: $e');
+      return;
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(result);
+  }
+
+  Future<void> _updateConnectionStatus(List<ConnectivityResult> result) async {
+    setState(() {
+      _connectionStatus = result;
+    });
+    // ignore: avoid_print
+    debugPrint('Connectivity changed: $_connectionStatus');
+    _checkConnection();
+    _refreshData();
+  }
+
   @override
   void initState() {
-    _refreshData();
+    initConnectivity();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -129,7 +173,7 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
             ? const Color.fromRGBO(244, 253, 255, 1)
             : const Color.fromARGB(255, 41, 41, 41),
         title: Text(
-          "${widget.locationName}, Panabo City",
+          "Brgy. ${widget.locationName}, Panabo City",
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -178,14 +222,26 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                     ),
                   ),
                   ElevatedButton.icon(
-                    onPressed: () {
-                      _checkConnection();
-                    },
-                    icon: const Icon(
-                      FluentIcons.arrow_sync_12_filled,
+                    onPressed: isOnline
+                        ? isLoad
+                            ? null
+                            : () {
+                                _checkConnection();
+                              }
+                        : null,
+                    icon: Icon(
+                      isOnline
+                          ? isLoad
+                              ? FluentIcons.arrow_sync_12_filled //isload
+                              : FluentIcons.arrow_sync_12_filled
+                          : FluentIcons.wifi_off_24_regular,
                       color: Colors.white,
                     ),
-                    label: const Text('Refresh'),
+                    label: isOnline
+                        ? isLoad
+                            ? Text('Loading')
+                            : Text('Refresh')
+                        : Text('Offline'),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.green,
@@ -199,7 +255,7 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Total Scan in ${widget.locationName}',
+                    'Total Scan Report',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -230,7 +286,7 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Total Scanning in ${isMonthlyView ? rightTitle : 'Years'}',
+                    'Total Scan in ${isMonthlyView ? rightTitle : 'Years'}',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

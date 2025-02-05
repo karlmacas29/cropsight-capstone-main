@@ -47,7 +47,7 @@ class _HomeTabState extends State<HomeTab> {
     if (value != null) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('selectedDropdownValue', value);
-      print("Saved value: $value");
+      debugPrint("Saved value: $value");
     }
   }
 
@@ -58,9 +58,9 @@ class _HomeTabState extends State<HomeTab> {
       setState(() {
         selectedValue = prefs.getString('selectedDropdownValue');
       });
-      print("Loaded value: $selectedValue"); // Debug log
+      debugPrint("Loaded value: $selectedValue"); // Debug log
     } else {
-      print("No value found in SharedPreferences");
+      debugPrint("No value found in SharedPreferences");
       _showLocationModal();
     }
   }
@@ -128,16 +128,16 @@ class _HomeTabState extends State<HomeTab> {
         options: options,
       );
 
-      print('Model loaded successfully');
+      debugPrint('Model loaded successfully');
     } catch (e) {
-      print('Error loading model: $e');
+      debugPrint('Error loading model: $e');
     }
   }
 
   // Revised runModelOnImage function
   Future<void> runModelOnImage(File? image) async {
     if (image == null || _interpreter == null) {
-      print('Image or interpreter is null');
+      debugPrint('Image or interpreter is null');
       return;
     }
 
@@ -147,7 +147,7 @@ class _HomeTabState extends State<HomeTab> {
       final originalImage = img.decodeImage(imageBytes);
 
       if (originalImage == null) {
-        print('Failed to decode image');
+        debugPrint('Failed to decode image');
         return;
       }
 
@@ -181,7 +181,7 @@ class _HomeTabState extends State<HomeTab> {
 
       // Get model output shape from interpreter
       var outputShape = _interpreter!.getOutputTensor(0).shape;
-      print('Model output shape: $outputShape');
+      debugPrint('Model output shape: $outputShape');
 
       // Create output buffer with correct shape
       final outputBuffer =
@@ -194,7 +194,7 @@ class _HomeTabState extends State<HomeTab> {
       // Convert output to probabilities using softmax
       final probabilities = _softmax(outputBuffer[0], temperature: 0.25);
 
-      print('Probabilities: $probabilities');
+      debugPrint('Probabilities: $probabilities');
 
       int maxIndex = 0;
       double maxProb = probabilities[0];
@@ -217,7 +217,7 @@ class _HomeTabState extends State<HomeTab> {
 
       // Apply confidence threshold
       if (maxProb < 0.5) {
-        print('Low confidence prediction. Label: Unknown');
+        debugPrint('Low confidence prediction. Label: Unknown');
         predictedLabel = 'Unknown';
       } else {
         predictedLabel = labels[maxIndex];
@@ -230,27 +230,31 @@ class _HomeTabState extends State<HomeTab> {
         }
       ];
 
-      print(
+      debugPrint(
           'Prediction: $predictedLabel with confidence: ${(maxProb * 100).toStringAsFixed(2)}%');
 
       // Navigate to results page
-      Navigator.pop(context);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ScanPage(
-            imageSc: image,
-            output: output,
-            location: selectedValue,
+      if (mounted) {
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ScanPage(
+              imageSc: image,
+              output: output,
+              location: selectedValue,
+            ),
           ),
-        ),
-      );
+        );
+      }
     } catch (e, stackTrace) {
-      print('Error running model: $e');
-      print('Stack trace: $stackTrace');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error analyzing image: $e')),
-      );
+      debugPrint('Error running model: $e');
+      debugPrint('Stack trace: $stackTrace');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error analyzing image: $e')),
+        );
+      }
     }
   }
 
@@ -294,7 +298,9 @@ class _HomeTabState extends State<HomeTab> {
       });
 
       // Run TFLite model on the cropped image
-      showBottomModal(context);
+      if (mounted) {
+        showBottomModal(context);
+      }
       Future.delayed(const Duration(seconds: 3), () async {
         await runModelOnImage(_image);
       });
@@ -568,20 +574,26 @@ class _HomeTabState extends State<HomeTab> {
           var im = _image = File(result.files.single.path!);
           await _cropImage(im);
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('No image selected')),
-          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('No image selected')),
+            );
+          }
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to pick image: $e')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to pick image: $e')),
+          );
+        }
       }
     } else {
       // Handle the case when permission is denied
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Permission denied')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Permission denied')),
+        );
+      }
     }
   }
 
@@ -626,6 +638,7 @@ class _HomeTabState extends State<HomeTab> {
         if (!mediaStatus.isGranted) {
           _showSnackbar(
               context, 'Photo access permission is required for Android 13+');
+
           return;
         }
       }

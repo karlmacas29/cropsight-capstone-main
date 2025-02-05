@@ -49,6 +49,8 @@ Widget buildMonthlyChart({
     yearForPreviousMonth1 -= 1;
   }
 
+  double maxY = monthlyScan.reduce((a, b) => a > b ? a : b);
+
   return Skeletonizer(
     enabled: isLoad,
     child: Skeleton.leaf(
@@ -57,42 +59,42 @@ Widget buildMonthlyChart({
             ? Colors.white
             : const Color.fromRGBO(18, 18, 18, 1),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(15.0),
           child: BarChart(
             curve: Curves.easeInOut,
             BarChartData(
+              maxY: maxY,
               borderData: FlBorderData(
                 show: true,
-                border: const Border(
-                  bottom: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  left: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  right: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  top: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey, width: 1),
+                  left: BorderSide(color: Colors.grey, width: 1),
+                  right: BorderSide.none,
+                  top: BorderSide.none,
                 ),
+              ),
+              extraLinesData: ExtraLinesData(
+                horizontalLines: [
+                  HorizontalLine(
+                    y: maxY,
+                    color: Colors.grey,
+                    strokeWidth: 1,
+                    dashArray: [5],
+                  ),
+                ],
               ),
               gridData: FlGridData(
                 show: true,
                 // checkToShowHorizontalLine: (value) => value % 10 == 0,
-                getDrawingVerticalLine: (value) => FlLine(
-                  color: Colors.grey,
-                  strokeWidth: 0.5,
-                  dashArray: [5],
-                ),
+                // getDrawingVerticalLine: (value) => FlLine(
+                //   color: Colors.grey,
+                //   strokeWidth: 0.5,
+                //   dashArray: [5],
+                // ),
+                checkToShowVerticalLine: (value) => value % 1 == 0,
                 getDrawingHorizontalLine: (value) => FlLine(
                   color: Colors.grey,
-                  strokeWidth: 0.5,
+                  strokeWidth: 1,
                   dashArray: [5],
                 ),
               ),
@@ -188,6 +190,9 @@ Widget buildYearlyChart({
   required bool isLoad,
   required Map<int, List<double>> yearlyScan,
 }) {
+  double maxY =
+      yearlyScan.values.expand((list) => list).reduce((a, b) => a > b ? a : b);
+
   return Skeletonizer(
     enabled: isLoad,
     child: Skeleton.leaf(
@@ -196,43 +201,43 @@ Widget buildYearlyChart({
             ? Colors.white
             : const Color.fromRGBO(18, 18, 18, 1),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(15.0),
           child: BarChart(
             curve: Curves.easeInOut,
             BarChartData(
+              maxY: maxY,
               gridData: FlGridData(
                 show: true,
+                checkToShowVerticalLine: (value) => value % 1 == 0,
                 getDrawingVerticalLine: (value) => FlLine(
                   color: Colors.grey,
-                  strokeWidth: 0.5,
+                  strokeWidth: 1,
                   dashArray: [5],
                 ),
                 getDrawingHorizontalLine: (value) => FlLine(
                   color: Colors.grey,
-                  strokeWidth: 0.5,
+                  strokeWidth: 1,
                   dashArray: [5],
                 ),
               ),
               borderData: FlBorderData(
                 show: true,
-                border: const Border(
-                  bottom: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  left: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  right: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  top: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey, width: 1),
+                  left: BorderSide(color: Colors.grey, width: 1),
+                  right: BorderSide.none,
+                  top: BorderSide.none,
                 ),
+              ),
+              extraLinesData: ExtraLinesData(
+                horizontalLines: [
+                  HorizontalLine(
+                    y: maxY,
+                    color: Colors.grey,
+                    strokeWidth: 1,
+                    dashArray: [5],
+                  ),
+                ],
               ),
               alignment: BarChartAlignment.spaceAround,
               // maxY: _getMaxYYear(),

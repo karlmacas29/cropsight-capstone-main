@@ -107,7 +107,7 @@ class _HistoryPagesState extends State<HistoryPages> {
                       } else if (snapshot.hasError) {
                         return Center(child: Text('Error: ${snapshot.error}'));
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Center(child: Text('No data found'));
+                        return const Center(child: Text('Empty Scan History'));
                       }
 
                       // Build the ListView with fetched data

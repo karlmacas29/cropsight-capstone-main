@@ -141,8 +141,11 @@ class _HomePageNavState extends State<HomePageNav> {
                                 ),
                                 Text(
                                   "$value , Panabo",
-                                  style: const TextStyle(
-                                    color: Colors.black,
+                                  style: TextStyle(
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.dark
+                                        ? const Color.fromRGBO(244, 253, 255, 1)
+                                        : const Color.fromARGB(255, 41, 41, 41),
                                   ),
                                 ),
                               ],

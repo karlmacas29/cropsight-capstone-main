@@ -37,6 +37,7 @@ Widget buildInsectTotalChartBasedMonth({
   required List<double> insectCounts,
   required bool isLoad,
 }) {
+  double maxY = insectCounts.reduce((a, b) => a > b ? a : b);
   return Skeletonizer(
     enabled: isLoad,
     child: Skeleton.leaf(
@@ -45,29 +46,43 @@ Widget buildInsectTotalChartBasedMonth({
             ? Colors.white
             : const Color.fromARGB(255, 26, 26, 26),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(15.0),
           child: BarChart(
             curve: Curves.easeInOut,
             BarChartData(
+              maxY: maxY,
+              extraLinesData: ExtraLinesData(
+                horizontalLines: [
+                  HorizontalLine(
+                    y: maxY,
+                    color: Colors.grey,
+                    strokeWidth: 1,
+                    dashArray: [5],
+                  ),
+                ],
+              ),
+              gridData: FlGridData(
+                show: true,
+                // checkToShowHorizontalLine: (value) => value % 10 == 0,
+                // getDrawingVerticalLine: (value) => FlLine(
+                //   color: Colors.grey,
+                //   strokeWidth: 0.5,
+                //   dashArray: [5],
+                // ),
+                checkToShowVerticalLine: (value) => value % 1 == 0,
+                getDrawingHorizontalLine: (value) => FlLine(
+                  color: Colors.grey,
+                  strokeWidth: 1,
+                  dashArray: [5],
+                ),
+              ),
               borderData: FlBorderData(
                 show: true,
-                border: const Border(
-                  bottom: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  left: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  right: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  top: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey, width: 1),
+                  left: BorderSide(color: Colors.grey, width: 1),
+                  right: BorderSide.none,
+                  top: BorderSide.none,
                 ),
               ),
               alignment: BarChartAlignment.spaceAround,
@@ -136,6 +151,10 @@ Widget buildYearlyInsectChart({
   required Map<int, List<double>> yearlyInsectCounts,
   required bool isLoad,
 }) {
+  double maxY = yearlyInsectCounts.values
+      .expand((list) => list)
+      .reduce((a, b) => a > b ? a : b);
+
   return Skeletonizer(
     enabled: isLoad,
     child: Skeleton.leaf(
@@ -144,29 +163,42 @@ Widget buildYearlyInsectChart({
             ? Colors.white
             : const Color.fromARGB(255, 26, 26, 26),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(15.0),
           child: BarChart(
             curve: Curves.easeInOut,
             BarChartData(
+              extraLinesData: ExtraLinesData(
+                horizontalLines: [
+                  HorizontalLine(
+                    y: maxY,
+                    color: Colors.grey,
+                    strokeWidth: 1,
+                    dashArray: [5],
+                  ),
+                ],
+              ),
+              gridData: FlGridData(
+                show: true,
+                // checkToShowHorizontalLine: (value) => value % 10 == 0,
+                // getDrawingVerticalLine: (value) => FlLine(
+                //   color: Colors.grey,
+                //   strokeWidth: 0.5,
+                //   dashArray: [5],
+                // ),
+                checkToShowVerticalLine: (value) => value % 1 == 0,
+                getDrawingHorizontalLine: (value) => FlLine(
+                  color: Colors.grey,
+                  strokeWidth: 1,
+                  dashArray: [5],
+                ),
+              ),
               borderData: FlBorderData(
                 show: true,
-                border: const Border(
-                  bottom: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  left: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  right: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
-                  top: BorderSide(
-                    color: Colors.grey,
-                    width: 1,
-                  ),
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey, width: 1),
+                  left: BorderSide(color: Colors.grey, width: 1),
+                  right: BorderSide.none,
+                  top: BorderSide.none,
                 ),
               ),
               alignment: BarChartAlignment.spaceAround,

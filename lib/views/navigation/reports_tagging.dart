@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/pages/reports_location.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -111,15 +113,52 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     }
   }
 
-  @override
-  void initState() {
+  //Data and Wifi chekcer
+  List<ConnectivityResult> _connectionStatus = [ConnectivityResult.none];
+  final Connectivity _connectivity = Connectivity();
+  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initConnectivity() async {
+    late List<ConnectivityResult> result;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      debugPrint('Couldn\'t check connectivity status: $e');
+      return;
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(result);
+  }
+
+  Future<void> _updateConnectionStatus(List<ConnectivityResult> result) async {
+    setState(() {
+      _connectionStatus = result;
+    });
+    // ignore: avoid_print
+    debugPrint('Connectivity changed: $_connectionStatus');
     _checkConnection();
     _refreshData();
+  }
+
+  @override
+  void initState() {
     super.initState();
+    _connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
   }
 
   @override
   void dispose() {
+    _connectivitySubscription.cancel();
     super.dispose();
   }
 
@@ -165,15 +204,28 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
                     },
                   ),
                 ),
+                // Refresh Button
                 ElevatedButton.icon(
-                  onPressed: () {
-                    _checkConnection();
-                  },
-                  icon: const Icon(
-                    FluentIcons.arrow_sync_12_filled,
+                  onPressed: isOnline
+                      ? isLoaded
+                          ? null
+                          : () {
+                              _checkConnection();
+                            }
+                      : null,
+                  icon: Icon(
+                    isOnline
+                        ? isLoaded
+                            ? FluentIcons.arrow_sync_12_filled // Loading Icon
+                            : FluentIcons.arrow_sync_12_filled
+                        : FluentIcons.wifi_off_24_regular,
                     color: Colors.white,
                   ),
-                  label: const Text('Refresh'),
+                  label: isOnline
+                      ? isLoaded
+                          ? Text('Loading')
+                          : Text('Refresh')
+                      : Text('Offline'),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.green,
