@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/navigation/notifier/change_notifier.dart';
 import 'package:cropsight/views/pages/settings.dart';
@@ -14,6 +17,18 @@ void startSyncListener() async {
   if (isConnected) {
     await SyncService().syncData();
   }
+}
+
+//Data and Wifi chekcer
+List<ConnectivityResult> _connectionStatus = [ConnectivityResult.none];
+final Connectivity _connectivity = Connectivity();
+late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
+
+Future<void> _updateConnectionStatus(List<ConnectivityResult> result) async {
+  _connectionStatus = result;
+
+  // ignore: avoid_print
+  debugPrint('Connectivity changed: $_connectionStatus');
 }
 
 void main() async {
@@ -47,6 +62,8 @@ void main() async {
       child: const MyApp(),
     ),
   );
+  _connectivitySubscription =
+      _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
 }
 
 class MyApp extends StatelessWidget {
@@ -92,5 +109,11 @@ class ConnectivityProvider extends ChangeNotifier {
 
   void _refreshData() {
     // Implement your data refresh logic here
+  }
+
+  @override
+  void dispose() {
+    _connectivitySubscription.cancel();
+    super.dispose();
   }
 }

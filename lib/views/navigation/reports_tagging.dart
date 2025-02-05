@@ -113,10 +113,8 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     }
   }
 
-  //Data and Wifi chekcer
   List<ConnectivityResult> _connectionStatus = [ConnectivityResult.none];
   final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initConnectivity() async {
@@ -152,14 +150,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
   @override
   void initState() {
     super.initState();
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
-  }
-
-  @override
-  void dispose() {
-    _connectivitySubscription.cancel();
-    super.dispose();
+    initConnectivity();
   }
 
   @override
