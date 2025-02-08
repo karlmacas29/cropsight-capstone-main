@@ -234,14 +234,18 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                           ? isLoad
                               ? FluentIcons.arrow_sync_12_filled //isload
                               : FluentIcons.arrow_sync_12_filled
-                          : FluentIcons.wifi_off_24_regular,
+                          : isLoad
+                              ? FluentIcons.arrow_sync_12_filled
+                              : FluentIcons.wifi_off_24_regular,
                       color: Colors.white,
                     ),
                     label: isOnline
                         ? isLoad
                             ? Text('Loading')
                             : Text('Refresh')
-                        : Text('Offline'),
+                        : isLoad
+                            ? Text('Loading')
+                            : Text('Offline'),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.green,
@@ -286,9 +290,9 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Total Scan in ${isMonthlyView ? rightTitle : 'Years'}',
+                    'Total Insect Reports this ${isMonthlyView ? rightTitle : 'Years'}',
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

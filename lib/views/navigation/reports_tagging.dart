@@ -115,6 +115,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
 
   List<ConnectivityResult> _connectionStatus = [ConnectivityResult.none];
   final Connectivity _connectivity = Connectivity();
+  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription;
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initConnectivity() async {
@@ -147,10 +148,20 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     _refreshData();
   }
 
+  //Data and Wifi chekcer
+
   @override
   void initState() {
     super.initState();
     initConnectivity();
+    _connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+  }
+
+  @override
+  void dispose() {
+    _connectivitySubscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -209,14 +220,18 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
                         ? isLoaded
                             ? FluentIcons.arrow_sync_12_filled // Loading Icon
                             : FluentIcons.arrow_sync_12_filled
-                        : FluentIcons.wifi_off_24_regular,
+                        : isLoaded
+                            ? FluentIcons.arrow_sync_12_filled
+                            : FluentIcons.wifi_off_24_regular,
                     color: Colors.white,
                   ),
                   label: isOnline
                       ? isLoaded
                           ? Text('Loading')
                           : Text('Refresh')
-                      : Text('Offline'),
+                      : isLoaded
+                          ? Text('Loading')
+                          : Text('Offline'),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.green,
