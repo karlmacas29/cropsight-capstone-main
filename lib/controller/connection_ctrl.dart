@@ -229,7 +229,7 @@ class LoadOnlineData {
       // Update insect counts in the same order as insectNames
       insectCounts[0] = (counts['Green Leafhopper'] ?? 0).toDouble();
       insectCounts[1] = (counts['Stem Borer'] ?? 0).toDouble();
-      insectCounts[2] = (counts['Rice bug'] ?? 0).toDouble();
+      insectCounts[2] = (counts['Rice Bugs'] ?? 0).toDouble();
       insectCounts[3] = (counts['Green leaffolder'] ?? 0).toDouble();
 
       // debugPrint the counts for debugging
@@ -268,7 +268,7 @@ class LoadOnlineData {
         yearlyInsectCounts[year]?[0] =
             (counts['Green Leafhopper'] ?? 0).toDouble();
         yearlyInsectCounts[year]?[1] = (counts['Stem Borer'] ?? 0).toDouble();
-        yearlyInsectCounts[year]?[2] = (counts['Rice bug'] ?? 0).toDouble();
+        yearlyInsectCounts[year]?[2] = (counts['Rice Bugs'] ?? 0).toDouble();
         yearlyInsectCounts[year]?[3] =
             (counts['Green leaffolder'] ?? 0).toDouble();
 

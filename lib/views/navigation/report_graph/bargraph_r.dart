@@ -15,7 +15,7 @@ String _formatNumber(double num) {
   } else if (num >= 1000) {
     return '${(num / 1000).toStringAsFixed(1)}K'; // 1 decimal for 1K-9.9K
   }
-  return num.toString();
+  return num.toStringAsFixed(2);
 }
 
 Widget buildMonthlyChart({
@@ -132,7 +132,7 @@ Widget buildMonthlyChart({
                     getTitlesWidget: (value, meta) {
                       return Text(
                         _formatNumber(value),
-                        style: const TextStyle(fontSize: 10.5),
+                        style: const TextStyle(fontSize: 10),
                       );
                     },
                   ),
@@ -274,7 +274,7 @@ Widget buildYearlyChart({
                     getTitlesWidget: (value, meta) {
                       return Text(
                         _formatNumber(value),
-                        style: const TextStyle(fontSize: 10.5),
+                        style: const TextStyle(fontSize: 10),
                       );
                     },
                   ),

@@ -6,7 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
-import 'package:image_cropper/image_cropper.dart';
+// import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -124,7 +124,7 @@ class _HomeTabState extends State<HomeTab> {
         ..useNnApiForAndroid = true;
 
       _interpreter = await Interpreter.fromAsset(
-        'assets/MobileNetV2(Insect).tflite',
+        'assets/MobileNetV2(InsectRice).tflite',
         options: options,
       );
 
@@ -209,6 +209,7 @@ class _HomeTabState extends State<HomeTab> {
       final labels = [
         "Healthy",
         "Leaf Folder",
+        "Rice Bugs",
         "Rice Dead Heart",
         "Tungro",
         "Unknown",
@@ -267,45 +268,45 @@ class _HomeTabState extends State<HomeTab> {
     return exp.map((x) => x / sum).toList();
   }
 
-  Future<void> _cropImage(File imageFile) async {
-    CroppedFile? croppedFile = await ImageCropper().cropImage(
-      sourcePath: imageFile.path,
-      uiSettings: [
-        AndroidUiSettings(
-          toolbarTitle: 'Crop Image',
-          toolbarColor: Colors.green,
-          activeControlsWidgetColor: Colors.green,
-          toolbarWidgetColor: Colors.white,
-          initAspectRatio: CropAspectRatioPreset.original,
-          lockAspectRatio: false,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio3x2,
-            CropAspectRatioPreset.original,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio16x9
-          ],
-        ),
-        IOSUiSettings(
-          title: 'Crop Image',
-        ),
-      ],
-    );
+  // Future<void> _cropImage(File imageFile) async {
+  //   CroppedFile? croppedFile = await ImageCropper().cropImage(
+  //     sourcePath: imageFile.path,
+  //     uiSettings: [
+  //       AndroidUiSettings(
+  //         toolbarTitle: 'Crop Image',
+  //         toolbarColor: Colors.green,
+  //         activeControlsWidgetColor: Colors.green,
+  //         toolbarWidgetColor: Colors.white,
+  //         initAspectRatio: CropAspectRatioPreset.original,
+  //         lockAspectRatio: false,
+  //         aspectRatioPresets: [
+  //           CropAspectRatioPreset.square,
+  //           CropAspectRatioPreset.ratio3x2,
+  //           CropAspectRatioPreset.original,
+  //           CropAspectRatioPreset.ratio4x3,
+  //           CropAspectRatioPreset.ratio16x9
+  //         ],
+  //       ),
+  //       IOSUiSettings(
+  //         title: 'Crop Image',
+  //       ),
+  //     ],
+  //   );
 
-    if (croppedFile != null) {
-      setState(() {
-        _image = File(croppedFile.path);
-      });
+  //   if (croppedFile != null) {
+  //     setState(() {
+  //       _image = File(croppedFile.path);
+  //     });
 
-      // Run TFLite model on the cropped image
-      if (mounted) {
-        showBottomModal(context);
-      }
-      Future.delayed(const Duration(seconds: 3), () async {
-        await runModelOnImage(_image);
-      });
-    }
-  }
+  //     // Run TFLite model on the cropped image
+  //     if (mounted) {
+  //       showBottomModal(context);
+  //     }
+  //     Future.delayed(const Duration(seconds: 3), () async {
+  //       await runModelOnImage(_image);
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
@@ -572,7 +573,13 @@ class _HomeTabState extends State<HomeTab> {
             _image = File(result.files.single.path!);
           });
           var im = _image = File(result.files.single.path!);
-          await _cropImage(im);
+          // Run TFLite model on the cropped image
+          if (mounted) {
+            showBottomModal(context);
+          }
+          Future.delayed(const Duration(seconds: 3), () async {
+            await runModelOnImage(im);
+          });
         } else {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -666,7 +673,13 @@ class _HomeTabState extends State<HomeTab> {
           _image = File(pickedFile.path);
         });
 
-        await _cropImage(_image!);
+        // Run TFLite model on the cropped image
+        if (mounted) {
+          showBottomModal(context);
+        }
+        Future.delayed(const Duration(seconds: 3), () async {
+          await runModelOnImage(_image);
+        });
       } else {
         _showSnackbar(context, 'No image selected');
       }

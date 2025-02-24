@@ -127,6 +127,14 @@ class _ScanPageState extends State<ScanPage> {
             'Adults and nymphs cause direct damage to the rice plant by sucking the sap from leaf sheaths and leaf blades. GLH also cause indirect damage by injecting toxic chemicals and transmitting viruses (tungro, dwarf, transitory yellowing, and yellow- orange leaf) and a mycoplasma disease (yellow dwarf). They mostly confine themselves and feed on the leaf and leaf sheath of rice. Mild infestations reduce plant vigor and number of productive tillers. Heavy infestations cause withering and complete drying of the crop.';
         idNum = '1';
       });
+    } else if (widget.output![0]['label'].toString() == "Rice Bugs") {
+      setState(() {
+        imgInsectPath = 'assets/images/ricebug/factsheet-ricebug-2.jpg';
+        insectName = 'Rice Bugs';
+        insectDesc =
+            'Rice bugs damage rice by sucking out the contents of developing grains from pre-flowering spikelets to soft dough stage, therefore causing unfilled or empty grains and discoloration. Immature and adult rice bugs both feed on rice grains.';
+        idNum = '3';
+      });
     } else if (widget.output![0]['label'].toString() == "Rice Dead Heart") {
       setState(() {
         imgInsectPath = 'assets/images/stemborer/2s.jpg';

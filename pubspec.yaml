@@ -95,8 +95,7 @@ flutter:
   assets:
       - .env
       - assets/labels.txt
-      - assets/mbNet.tflite
-      - assets/MobileNetV2(Insect).tflite
+      - assets/MobileNetV2(InsectRice).tflite
       - assets/resources/cropsight.json
       - assets/background/
       - assets/background/splash_screen_cs.jpg

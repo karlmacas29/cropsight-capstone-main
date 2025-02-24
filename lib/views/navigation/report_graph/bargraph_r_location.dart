@@ -28,7 +28,7 @@ String _formatNumber(double num) {
   } else if (num >= 1000) {
     return '${(num / 1000).toStringAsFixed(1)}K'; // 1 decimal for 1K-9.9K
   }
-  return num.toString();
+  return num.toStringAsFixed(2);
 }
 
 Widget buildInsectTotalChartBasedMonth({
@@ -282,7 +282,7 @@ Widget buildCardLegend(BuildContext context) {
           const SizedBox(height: 8),
           Row(
             children: [
-              _buildLegendItem('Rice bug', _getColorForInsect(2)),
+              _buildLegendItem('Rice Bugs', _getColorForInsect(2)),
               const SizedBox(width: 16),
               _buildLegendItem('Green leaffolder', _getColorForInsect(3)),
             ],

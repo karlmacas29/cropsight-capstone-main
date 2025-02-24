@@ -414,7 +414,7 @@ class CropSightDatabase {
     SELECT
       SUM(CASE WHEN insectName = 'Stem Borer' THEN 1 ELSE 0 END) AS StemBorerCount,
       SUM(CASE WHEN insectName = 'Green Leafhopper' THEN 1 ELSE 0 END) AS GreenLeafhopperCount,
-      SUM(CASE WHEN insectName = 'Rice bug' THEN 1 ELSE 0 END) AS RiceBugCount,
+      SUM(CASE WHEN insectName = 'Rice Bugs' THEN 1 ELSE 0 END) AS RiceBugCount,
       SUM(CASE WHEN insectName = 'Rice Leaffolder' THEN 1 ELSE 0 END) AS GreenLeaffolderCount
     FROM $scanningHistory
     WHERE location = ? AND month = ? AND year = ?
@@ -424,7 +424,7 @@ class CropSightDatabase {
     return {
       'Stem Borer': result[0]['StemBorerCount'] as int? ?? 0,
       'Green Leafhopper': result[0]['GreenLeafhopperCount'] as int? ?? 0,
-      'Rice bug': result[0]['RiceBugCount'] as int? ?? 0,
+      'Rice Bugs': result[0]['RiceBugCount'] as int? ?? 0,
       'Green leaffolder': result[0]['GreenLeaffolderCount'] as int? ?? 0,
     };
   }
@@ -439,7 +439,7 @@ class CropSightDatabase {
     SELECT
       SUM(CASE WHEN insectName = 'Stem Borer' THEN 1 ELSE 0 END) AS StemBorerCount,
       SUM(CASE WHEN insectName = 'Green Leafhopper' THEN 1 ELSE 0 END) AS GreenLeafHopperCount,
-      SUM(CASE WHEN insectName = 'Rice bug' THEN 1 ELSE 0 END) AS RiceBugCount,
+      SUM(CASE WHEN insectName = 'Rice Bugs' THEN 1 ELSE 0 END) AS RiceBugCount,
       SUM(CASE WHEN insectName = 'Rice Leaffolder' THEN 1 ELSE 0 END) AS GreenLeaffolderCount
     FROM $scanningHistory
     WHERE location = ? AND year = ?
@@ -449,7 +449,7 @@ class CropSightDatabase {
     return {
       'Stem Borer': result[0]['StemBorerCount'] as int? ?? 0,
       'Green Leafhopper': result[0]['GreenLeafHopperCount'] as int? ?? 0,
-      'Rice bug': result[0]['RiceBugCount'] as int? ?? 0,
+      'Rice Bugs': result[0]['RiceBugCount'] as int? ?? 0,
       'Green leaffolder': result[0]['GreenLeaffolderCount'] as int? ?? 0,
     };
   }
@@ -577,7 +577,7 @@ class OnlineDatabase {
         .where((entry) => entry['insectName'] == 'Green Leafhopper')
         .length;
     int riceBugCount =
-        response.where((entry) => entry['insectName'] == 'Rice bug').length;
+        response.where((entry) => entry['insectName'] == 'Rice Bugs').length;
     int greenLeaffolderCount = response
         .where((entry) => entry['insectName'] == 'Rice Leaffolder')
         .length;
@@ -585,7 +585,7 @@ class OnlineDatabase {
     return {
       'Stem Borer': stemBorerCount,
       'Green Leafhopper': greenLeafhopperCount,
-      'Rice bug': riceBugCount,
+      'Rice Bugs': riceBugCount,
       'Green leaffolder': greenLeaffolderCount,
     };
   }
@@ -606,7 +606,7 @@ class OnlineDatabase {
         .where((entry) => entry['insectName'] == 'Green Leafhopper')
         .length;
     int riceBugCount =
-        response.where((entry) => entry['insectName'] == 'Rice bug').length;
+        response.where((entry) => entry['insectName'] == 'Rice Bugs').length;
     int greenLeaffolderCount = response
         .where((entry) => entry['insectName'] == 'Rice Leaffolder')
         .length;
@@ -614,7 +614,7 @@ class OnlineDatabase {
     return {
       'Stem Borer': stemBorerCount,
       'Green Leafhopper': greenLeafhopperCount,
-      'Rice bug': riceBugCount,
+      'Rice Bugs': riceBugCount,
       'Green leaffolder': greenLeaffolderCount,
     };
   }
