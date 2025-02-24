@@ -85,12 +85,6 @@ Widget buildMonthlyChart({
               ),
               gridData: FlGridData(
                 show: true,
-                // checkToShowHorizontalLine: (value) => value % 10 == 0,
-                // getDrawingVerticalLine: (value) => FlLine(
-                //   color: Colors.grey,
-                //   strokeWidth: 0.5,
-                //   dashArray: [5],
-                // ),
                 checkToShowVerticalLine: (value) => value % 1 == 0,
                 getDrawingHorizontalLine: (value) => FlLine(
                   color: Colors.grey,
