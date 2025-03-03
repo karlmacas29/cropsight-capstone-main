@@ -112,21 +112,25 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 2,
                     children: [
                       Text(
-                        'Damage Information',
+                        'Result:',
                         style: TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.bold,
                           color: Colors.red[700],
                         ),
                       ),
                       const SizedBox(height: 10),
                       Text(
                         widget.insectDamage.toString(),
-                        style: const TextStyle(fontSize: 16),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -149,13 +153,26 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildDetailRow(
-                        'Percentage',
-                        '${widget.insectPercent.toString()}%',
+                        'Confidence Percentage',
+                        widget.insectPercent.toString(),
+                        isPercentage: true,
+                        isColor: double.parse(
+                                    widget.insectPercent.toString()) >=
+                                76.00
+                            ? Colors.green
+                            : double.parse(widget.insectPercent.toString()) >=
+                                    51.00
+                                ? Colors.orange
+                                : double.parse(
+                                            widget.insectPercent.toString()) >=
+                                        26.00
+                                    ? Colors.red
+                                    : Colors.red,
                       ),
                       const Divider(),
                       _buildDetailRow(
-                        'Location',
-                        widget.location.toString(),
+                        'Barangay',
+                        '${widget.location.toString()}, Panabo City',
                       ),
                       const Divider(),
                       _buildDetailRow(
@@ -301,7 +318,8 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
     }
   }
 
-  Widget _buildDetailRow(String label, String value) {
+  Widget _buildDetailRow(String label, String value,
+      {bool isPercentage = false, Color? isColor}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -310,19 +328,43 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
           Text(
             label,
             style: TextStyle(
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w400,
               color: Theme.of(context).brightness == Brightness.dark
                   ? const Color.fromRGBO(244, 253, 255, 1)
                   : const Color.fromARGB(255, 41, 41, 41),
             ),
           ),
-          Text(
-            value,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.green[800],
-            ),
-          ),
+          isPercentage
+              ? Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: double.parse(value) >= 76.00
+                        ? Color.fromARGB(35, 76, 175, 79) // green
+                        : double.parse(value) >= 51.00
+                            ? Color.fromARGB(35, 255, 153, 0) //orange
+                            : double.parse(value) >= 26.00
+                                ? Color.fromARGB(35, 255, 0, 0)
+                                : Colors.black,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    "$value %",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: isPercentage
+                          ? (isColor ?? Colors.green)
+                          : Colors.green,
+                    ),
+                  ),
+                )
+              : Text(
+                  value,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color:
+                        isPercentage ? (isColor ?? Colors.green) : Colors.green,
+                  ),
+                ),
         ],
       ),
     );

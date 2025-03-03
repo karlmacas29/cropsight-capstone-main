@@ -213,42 +213,53 @@ class _ScanPageState extends State<ScanPage> {
                 ),
                 const SizedBox(height: 16),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 2,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  // based on chatgpt level confidence color
                   children: [
                     Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                          color: double.parse(percent) >= 85.00
-                              ? Colors.green
-                              : double.parse(percent) >= 80.00
-                                  ? Colors.orange
-                                  : double.parse(percent) >= 60.00
-                                      ? Colors.red
-                                      : Colors.black,
-                          borderRadius: BorderRadius.circular(10)),
+                        color: double.parse(percent) >= 76.00
+                            ? Color.fromARGB(35, 76, 175, 79) // green
+                            : double.parse(percent) >= 51.00
+                                ? Color.fromARGB(35, 255, 153, 0) //orange
+                                : double.parse(percent) >= 26.00
+                                    ? Color.fromARGB(35, 255, 0, 0)
+                                    : Colors.black,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       child: Text(
                         'Confidence: $percent %',
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: double.parse(percent) >= 76.00
+                              ? Colors.green
+                              : double.parse(percent) >= 51.00
+                                  ? Colors.orange
+                                  : double.parse(percent) >= 26.00
+                                      ? Colors.red
+                                      : Colors.red,
+                        ),
                       ),
                     ),
                     Text(
-                      "Damage: ${widget.output![0]['label']}",
+                      "Result: ${widget.output![0]['label']}",
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 10),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(FluentIcons.location_16_filled),
-                          Text(
-                            textAlign: TextAlign.justify,
-                            widget.location.toString(),
-                          ),
-                        ],
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(FluentIcons.location_16_filled),
+                        Text(
+                          'Barangay ${widget.location.toString()}, Panabo City',
+                        ),
+                      ],
                     ),
                   ],
                 ),

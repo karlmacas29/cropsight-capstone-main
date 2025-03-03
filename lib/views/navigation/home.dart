@@ -463,14 +463,7 @@ class _HomeTabState extends State<HomeTab> {
                 },
                 child: Ink(
                   decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            blurStyle: BlurStyle.outer,
-                            spreadRadius: 0.1,
-                            blurRadius: 0.4,
-                            offset: Offset.fromDirection(1))
-                      ],
-                      color: Colors.green,
+                      color: const Color.fromARGB(50, 76, 175, 79),
                       borderRadius:
                           const BorderRadius.all(Radius.circular(20))),
                   child: Padding(
@@ -480,12 +473,11 @@ class _HomeTabState extends State<HomeTab> {
                         Container(
                             padding: const EdgeInsets.all(23),
                             decoration: const BoxDecoration(
-                                color: Colors.green,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
                             child: const Icon(
                               FluentIcons.camera_add_24_filled,
-                              color: Colors.white,
+                              color: Colors.green,
                               size: 40,
                             )),
                         const Text(
@@ -493,7 +485,7 @@ class _HomeTabState extends State<HomeTab> {
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 20,
-                              color: Colors.white),
+                              color: Colors.green),
                         ),
                       ],
                     ),
@@ -510,14 +502,7 @@ class _HomeTabState extends State<HomeTab> {
                 },
                 child: Ink(
                   decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            blurStyle: BlurStyle.outer,
-                            spreadRadius: 0.1,
-                            blurRadius: 0.4,
-                            offset: Offset.fromDirection(1))
-                      ],
-                      color: Colors.blue,
+                      color: const Color.fromARGB(50, 33, 149, 243),
                       borderRadius:
                           const BorderRadius.all(Radius.circular(20))),
                   child: Padding(
@@ -527,14 +512,13 @@ class _HomeTabState extends State<HomeTab> {
                         Container(
                           padding: const EdgeInsets.all(23),
                           decoration: const BoxDecoration(
-                            color: Colors.blue,
                             borderRadius: BorderRadius.all(
                               Radius.circular(10),
                             ),
                           ),
                           child: const Icon(
                             FluentIcons.image_add_24_filled,
-                            color: Colors.white,
+                            color: Colors.blue,
                             size: 40,
                           ),
                         ),
@@ -543,7 +527,7 @@ class _HomeTabState extends State<HomeTab> {
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 20,
-                            color: Colors.white,
+                            color: Colors.blue,
                           ),
                         ),
                       ],

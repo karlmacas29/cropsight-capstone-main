@@ -86,13 +86,13 @@ class _CropsightTabState extends State<CropsightTab> {
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: const BoxDecoration(
-                            color: Colors.black,
+                            color: Color.fromARGB(171, 0, 0, 0),
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
                           child: Text(
                             _allData[index]['insectName'],
                             style: const TextStyle(
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),

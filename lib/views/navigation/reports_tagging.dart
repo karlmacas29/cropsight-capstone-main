@@ -215,16 +215,33 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
                               _checkConnection();
                             }
                       : null,
-                  icon: Icon(
-                    isOnline
-                        ? isLoaded
-                            ? FluentIcons.arrow_sync_12_filled // Loading Icon
-                            : FluentIcons.arrow_sync_12_filled
-                        : isLoaded
-                            ? FluentIcons.arrow_sync_12_filled
-                            : FluentIcons.wifi_off_24_regular,
-                    color: Colors.white,
-                  ),
+                  icon: isOnline
+                      ? isLoaded
+                          ? SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.grey),
+                              ),
+                            )
+                          : Icon(
+                              FluentIcons.arrow_sync_12_filled,
+                              color: Colors.white,
+                            )
+                      : isLoaded
+                          ? SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.grey),
+                              ),
+                            )
+                          : Icon(
+                              FluentIcons.arrow_sync_12_filled,
+                              color: Colors.white,
+                            ),
                   label: isOnline
                       ? isLoaded
                           ? Text('Loading')
@@ -296,6 +313,19 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     );
   }
 
+  String _formatNumber(double num) {
+    if (num >= 1000000000) {
+      return '${(num / 1000000000).toStringAsFixed(num % 1000000000 == 0 ? 0 : 1)}B';
+    } else if (num >= 1000000) {
+      return '${(num / 1000000).toStringAsFixed(num % 1000000 == 0 ? 0 : 1)}M';
+    } else if (num >= 10000) {
+      return '${(num / 1000).toStringAsFixed(0)}K'; // No decimal if 10K+
+    } else if (num >= 1000) {
+      return '${(num / 1000).toStringAsFixed(1)}K'; // 1 decimal for 1K-9.9K
+    }
+    return num.toStringAsFixed(1); // 1 decimal for 0-999
+  }
+
   Widget _buildLocationCard(LocationModel location, bool isLoad) {
     return InkWell(
       onTap: !isLoad
@@ -330,7 +360,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
               ),
               // const SizedBox(height: 5),
               Text(
-                '${location.totalScans}',
+                _formatNumber(double.parse(location.totalScans.toString())),
                 style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w900,

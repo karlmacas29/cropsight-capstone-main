@@ -116,43 +116,62 @@ class _HomePageNavState extends State<HomePageNav> {
               scrolledUnderElevation: 0.0,
               actions: [
                 isHide()
-                    ? DropdownButton<String>(
-                        icon: SizedBox.shrink(),
-                        underline: SizedBox.shrink(),
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 15,
+                          horizontal: 5,
                         ),
-                        dropdownColor:
-                            Theme.of(context).brightness == Brightness.light
-                                ? const Color.fromRGBO(244, 253, 255, 1)
-                                : const Color.fromRGBO(18, 18, 18, 1),
-                        hint: const Text('Location?'),
-                        value:
-                            selectedValue ?? locationProvider.selectedLocation,
-                        items: dropdownItems.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  FluentIcons.location_12_filled,
-                                  color: Colors.green,
-                                ),
-                                Text(
-                                  "$value , Panabo",
-                                  style: TextStyle(
-                                    color: Theme.of(context).brightness ==
-                                            Brightness.dark
-                                        ? const Color.fromRGBO(244, 253, 255, 1)
-                                        : const Color.fromARGB(255, 41, 41, 41),
-                                  ),
-                                ),
-                              ],
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Color.fromARGB(35, 76, 175, 79),
+                          ),
+                          child: DropdownButton<String>(
+                            alignment: AlignmentDirectional.center,
+                            icon: Visibility(
+                                visible: false,
+                                child: Icon(Icons.arrow_downward)),
+                            iconSize: 0,
+                            underline: SizedBox.shrink(),
+                            hint: Text(
+                              'Location?',
+                              style: TextStyle(
+                                color: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Colors.black
+                                    : Colors.white,
+                              ),
                             ),
-                          );
-                        }).toList(),
-                        onChanged: null,
+                            value: selectedValue ??
+                                locationProvider.selectedLocation,
+                            items: dropdownItems.map((String value) {
+                              return DropdownMenuItem<String>(
+                                alignment: AlignmentDirectional.center,
+                                value: value,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      FluentIcons.location_12_filled,
+                                      color: Colors.green,
+                                      size: 20,
+                                    ),
+                                    Text(
+                                      "$value, Panabo",
+                                      style: TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: null,
+                          ),
+                        ),
                       )
                     : SizedBox.shrink(),
                 IconButton(
@@ -213,6 +232,7 @@ class _HomePageNavState extends State<HomePageNav> {
                 _titleAppbar[index],
                 style: TextStyle(
                   color: isActive ? Colors.green : null,
+                  fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                 ),
               ),
             ],

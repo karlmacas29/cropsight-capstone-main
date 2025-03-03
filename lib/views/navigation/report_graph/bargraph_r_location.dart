@@ -28,7 +28,7 @@ String _formatNumber(double num) {
   } else if (num >= 1000) {
     return '${(num / 1000).toStringAsFixed(1)}K'; // 1 decimal for 1K-9.9K
   }
-  return num.toStringAsFixed(2);
+  return num.toStringAsFixed(1);
 }
 
 Widget buildInsectTotalChartBasedMonth({

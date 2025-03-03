@@ -229,16 +229,33 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                                 _checkConnection();
                               }
                         : null,
-                    icon: Icon(
-                      isOnline
-                          ? isLoad
-                              ? FluentIcons.arrow_sync_12_filled //isload
-                              : FluentIcons.arrow_sync_12_filled
-                          : isLoad
-                              ? FluentIcons.arrow_sync_12_filled
-                              : FluentIcons.wifi_off_24_regular,
-                      color: Colors.white,
-                    ),
+                    icon: isOnline
+                        ? isLoad
+                            ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.grey),
+                                ),
+                              )
+                            : Icon(
+                                FluentIcons.arrow_sync_12_filled,
+                                color: Colors.white,
+                              )
+                        : isLoad
+                            ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.grey),
+                                ),
+                              )
+                            : Icon(
+                                FluentIcons.arrow_sync_12_filled,
+                                color: Colors.white,
+                              ),
                     label: isOnline
                         ? isLoad
                             ? Text('Loading')
