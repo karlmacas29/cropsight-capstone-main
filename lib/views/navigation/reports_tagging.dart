@@ -323,7 +323,7 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
     } else if (num >= 1000) {
       return '${(num / 1000).toStringAsFixed(1)}K'; // 1 decimal for 1K-9.9K
     }
-    return num.toStringAsFixed(1); // 1 decimal for 0-999
+    return num.toStringAsFixed(0);
   }
 
   Widget _buildLocationCard(LocationModel location, bool isLoad) {
