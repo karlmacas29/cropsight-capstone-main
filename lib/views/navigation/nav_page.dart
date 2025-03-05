@@ -122,6 +122,9 @@ class _HomePageNavState extends State<HomePageNav> {
                           horizontal: 5,
                         ),
                         child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal:5,
+                          ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: Color.fromARGB(35, 76, 175, 79),
