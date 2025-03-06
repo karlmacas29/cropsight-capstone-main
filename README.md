@@ -10,3 +10,4 @@
 - Flutter (framework)
 - Google colab (python and tensorflow lite)
 - MobileNetv2 (Model)
+- Supabase (Alternative Firebase)
