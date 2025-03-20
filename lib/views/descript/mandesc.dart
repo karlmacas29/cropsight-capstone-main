@@ -2,6 +2,7 @@ import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/widgets/imageview.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ManageDesc extends StatefulWidget {
   const ManageDesc({
@@ -103,8 +104,8 @@ class _ManageDescState extends State<ManageDesc> {
                                 borderRadius: BorderRadius.circular(10),
                                 child: Image.asset(
                                   insectPic.toString(),
-                                  height: 100,
-                                  width: 100,
+                                  height: 98.h,
+                                  width: 98.w,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -121,8 +122,8 @@ class _ManageDescState extends State<ManageDesc> {
                                   textAlign: TextAlign.left,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontSize: 20,
+                                  style: TextStyle(
+                                      fontSize: 20.sp,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -137,10 +138,12 @@ class _ManageDescState extends State<ManageDesc> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
+                          Text(
                             'Management',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 24),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22.sp,
+                            ),
                           ),
                           const SizedBox(
                             height: 10,
@@ -149,10 +152,12 @@ class _ManageDescState extends State<ManageDesc> {
                             iconColor: Colors.green,
                             leading: const Icon(
                                 FluentIcons.book_question_mark_20_filled),
-                            title: const Text(
+                            title: Text(
                               'Cultural',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.sp,
+                              ),
                             ),
                             children: [
                               ListView(
@@ -163,7 +168,10 @@ class _ManageDescState extends State<ManageDesc> {
                                     title: Text(
                                       value,
                                       textAlign: TextAlign.justify,
-                                      style: const TextStyle(height: 1.1),
+                                      style: TextStyle(
+                                        height: 1.1,
+                                        fontSize: 13.sp,
+                                      ),
                                     ),
                                   );
                                 }).toList(),
@@ -174,10 +182,10 @@ class _ManageDescState extends State<ManageDesc> {
                             iconColor: Colors.green,
                             leading: const Icon(
                                 FluentIcons.book_question_mark_20_filled),
-                            title: const Text(
+                            title: Text(
                               'Biological',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
+                                  fontWeight: FontWeight.bold, fontSize: 15.sp),
                             ),
                             children: [
                               ListView(
@@ -188,7 +196,10 @@ class _ManageDescState extends State<ManageDesc> {
                                     title: Text(
                                       value,
                                       textAlign: TextAlign.justify,
-                                      style: const TextStyle(height: 1.1),
+                                      style: TextStyle(
+                                        height: 1.1,
+                                        fontSize: 13.sp,
+                                      ),
                                     ),
                                   );
                                 }).toList(),
@@ -199,10 +210,10 @@ class _ManageDescState extends State<ManageDesc> {
                             iconColor: Colors.green,
                             leading: const Icon(
                                 FluentIcons.book_question_mark_20_filled),
-                            title: const Text(
+                            title: Text(
                               'Chemical',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
+                                  fontWeight: FontWeight.bold, fontSize: 15.sp),
                             ),
                             children: [
                               ListView(
@@ -213,7 +224,10 @@ class _ManageDescState extends State<ManageDesc> {
                                     title: Text(
                                       value,
                                       textAlign: TextAlign.justify,
-                                      style: const TextStyle(height: 1.1),
+                                      style: TextStyle(
+                                        height: 1.1,
+                                        fontSize: 13.sp,
+                                      ),
                                     ),
                                   );
                                 }).toList(),

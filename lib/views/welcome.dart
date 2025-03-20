@@ -1,5 +1,6 @@
 import 'package:cropsight/views/navigation/nav_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WelcomePageOne extends StatefulWidget {
   const WelcomePageOne({super.key});
@@ -38,7 +39,7 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
                   style: TextStyle(
                       color: Colors.white,
                       fontFamily: 'Inter',
-                      fontSize: getResponsiveFontSize(context, 35),
+                      fontSize: 33.sp,
                       fontWeight: FontWeight.bold),
                 ),
               ],
@@ -54,7 +55,7 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
                   style: TextStyle(
                       color: const Color.fromRGBO(196, 196, 196, 1),
                       fontFamily: 'Inter',
-                      fontSize: getResponsiveFontSize(context, 20),
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.w100),
                   textAlign: TextAlign.center,
                 ),
@@ -75,13 +76,16 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
                   backgroundColor: const WidgetStatePropertyAll(
                       Color.fromRGBO(86, 144, 51, 1)),
                 ),
-                child: const Text(
+                child: Text(
                   'Let\'s Get Started',
                   style: TextStyle(
-                      color: Colors.white, fontSize: 16, fontFamily: 'Inter'),
+                    color: Colors.white,
+                    fontSize: 14.sp,
+                    fontFamily: 'Inter',
+                  ),
                 )),
-            const SizedBox(
-              height: 70,
+            SizedBox(
+              height: 70.h,
             ),
             // ClickButton(
             //   backgroundColor: const Color.fromRGBO(2, 101, 0, 1),

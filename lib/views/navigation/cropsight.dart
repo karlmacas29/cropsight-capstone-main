@@ -1,6 +1,7 @@
 import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/descript/information.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CropsightTab extends StatefulWidget {
   const CropsightTab({super.key});
@@ -91,8 +92,8 @@ class _CropsightTabState extends State<CropsightTab> {
                           ),
                           child: Text(
                             _allData[index]['insectName'],
-                            style: const TextStyle(
-                              fontSize: 12,
+                            style: TextStyle(
+                              fontSize: 12.sp,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),

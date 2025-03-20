@@ -57,12 +57,12 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: 20.0),
+                SizedBox(height: 20),
                 Text(
                   '',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 24.0, // You can adjust the font size
+                    fontSize: 24, // You can adjust the font size
                   ),
                 ),
               ],

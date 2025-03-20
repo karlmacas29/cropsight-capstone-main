@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class HomePageNav extends StatefulWidget {
   const HomePageNav({super.key});
 
@@ -123,7 +125,7 @@ class _HomePageNavState extends State<HomePageNav> {
                         ),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                            horizontal:5,
+                            horizontal: 5,
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -155,16 +157,16 @@ class _HomePageNavState extends State<HomePageNav> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       FluentIcons.location_12_filled,
                                       color: Colors.green,
-                                      size: 20,
+                                      size: 19.sp,
                                     ),
                                     Text(
                                       "$value, Panabo",
                                       style: TextStyle(
                                         color: Colors.green,
-                                        fontSize: 12,
+                                        fontSize: 11.sp,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -178,7 +180,7 @@ class _HomePageNavState extends State<HomePageNav> {
                       )
                     : SizedBox.shrink(),
                 IconButton(
-                  iconSize: 30,
+                  iconSize: 28.sp,
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -194,12 +196,11 @@ class _HomePageNavState extends State<HomePageNav> {
               leading: Icon(
                 _iconappbar[_currentIndex],
                 color: const Color.fromRGBO(86, 144, 51, 1),
-                size: 42,
+                size: 36.sp,
               ),
               title: Text(
                 _titleAppbar[_currentIndex],
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -230,10 +231,12 @@ class _HomePageNavState extends State<HomePageNav> {
               Icon(
                 isActive ? _iconFilled[index] : _iconappbar[index],
                 color: isActive ? Colors.green : null,
+                size: 28.sp,
               ),
               Text(
                 _titleAppbar[index],
                 style: TextStyle(
+                  fontSize: 12.sp,
                   color: isActive ? Colors.green : null,
                   fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                 ),

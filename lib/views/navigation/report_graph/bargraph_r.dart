@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 //simple number conversion
 String _formatNumber(double num) {
@@ -109,7 +110,7 @@ Widget buildMonthlyChart({
                           : null,
                       toY: entry.value,
                       color: isOnline ? null : Colors.green,
-                      width: 36,
+                      width: 35.w,
                       borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(6),
                         topRight: const Radius.circular(6),
@@ -126,7 +127,7 @@ Widget buildMonthlyChart({
                     getTitlesWidget: (value, meta) {
                       return Text(
                         _formatNumber(value),
-                        style: const TextStyle(fontSize: 10),
+                        style: TextStyle(fontSize: 10.sp),
                       );
                     },
                   ),
@@ -151,7 +152,7 @@ Widget buildMonthlyChart({
                       ];
                       return Text(
                         months[value.toInt()],
-                        style: const TextStyle(fontSize: 10.5),
+                        style: TextStyle(fontSize: 10.sp),
                       );
                     },
                   ),
@@ -251,7 +252,7 @@ Widget buildYearlyChart({
                           : null,
                       color:
                           isOnline ? null : _getColorForQuarter(subEntry.key),
-                      width: 36,
+                      width: 34.w,
                       borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(6),
                         topRight: const Radius.circular(6),
@@ -268,7 +269,7 @@ Widget buildYearlyChart({
                     getTitlesWidget: (value, meta) {
                       return Text(
                         _formatNumber(value),
-                        style: const TextStyle(fontSize: 10),
+                        style: TextStyle(fontSize: 10.sp),
                       );
                     },
                   ),
@@ -283,7 +284,7 @@ Widget buildYearlyChart({
                     getTitlesWidget: (value, meta) {
                       return Text(
                         value.toInt().toString(),
-                        style: TextStyle(fontSize: 10.5),
+                        style: TextStyle(fontSize: 10.sp),
                       );
                     },
                   ),

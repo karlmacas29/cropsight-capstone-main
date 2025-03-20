@@ -1,9 +1,11 @@
 import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/descript/mandesc.dart';
+import 'package:cropsight/views/pages/settings.dart';
 import 'package:cropsight/widgets/imageview.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class InfoPage extends StatefulWidget {
   const InfoPage({
@@ -22,6 +24,7 @@ class _InfoPageState extends State<InfoPage> {
   bool _isLoading = true;
   String? pic2, pic3;
   //
+  final LanguagePreference _languagePreference = LanguagePreference();
 
   void fetchInsectData(int insectId) async {
     final db = CropSightDatabase();
@@ -111,8 +114,10 @@ class _InfoPageState extends State<InfoPage> {
                           textAlign: TextAlign.left,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontSize: 25.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
@@ -138,7 +143,7 @@ class _InfoPageState extends State<InfoPage> {
                               borderRadius: BorderRadius.circular(10),
                               child: Image.asset(
                                 insectPic.toString(),
-                                height: 200,
+                                height: 200.h,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -161,7 +166,7 @@ class _InfoPageState extends State<InfoPage> {
                               borderRadius: BorderRadius.circular(10),
                               child: Image.asset(
                                 pic2.toString(),
-                                height: 200,
+                                height: 200.h,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -184,7 +189,7 @@ class _InfoPageState extends State<InfoPage> {
                               borderRadius: BorderRadius.circular(10),
                               child: Image.asset(
                                 pic3.toString(),
-                                height: 200,
+                                height: 200.h,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -203,32 +208,38 @@ class _InfoPageState extends State<InfoPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Description',
+                        Text(
+                          _languagePreference.languageCode == 'en'
+                              ? 'Description'
+                              : 'Paghulagway',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24),
+                              fontWeight: FontWeight.bold, fontSize: 20.sp),
                           textAlign: TextAlign.justify,
                         ),
                         sbx,
                         Text(
                           desc.toString(),
                           textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 13.sp),
                         ),
                         sbx,
                         ExpansionTile(
                           iconColor: Colors.green,
                           leading:
                               const Icon(FluentIcons.question_circle_12_filled),
-                          title: const Text(
-                            'Where to find',
+                          title: Text(
+                            _languagePreference.languageCode == 'en'
+                                ? 'Where to find'
+                                : 'Asa makit-an',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 24),
+                                fontWeight: FontWeight.bold, fontSize: 22.sp),
                             textAlign: TextAlign.justify,
                           ),
                           children: [
                             Text(
                               descWhere.toString(),
                               textAlign: TextAlign.justify,
+                              style: TextStyle(fontSize: 13.sp),
                             ),
                           ],
                         ),
@@ -237,16 +248,21 @@ class _InfoPageState extends State<InfoPage> {
                           iconColor: Colors.green,
                           leading: const Icon(
                               FluentIcons.book_question_mark_20_filled),
-                          title: const Text(
-                            'Damage',
+                          title: Text(
+                            _languagePreference.languageCode == 'en'
+                                ? 'Damage'
+                                : 'Pagkadaot',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 24),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22.sp,
+                            ),
                             textAlign: TextAlign.justify,
                           ),
                           children: [
                             Text(
                               descDamage.toString(),
                               textAlign: TextAlign.justify,
+                              style: TextStyle(fontSize: 13.sp),
                             ),
                           ],
                         ),
@@ -269,7 +285,12 @@ class _InfoPageState extends State<InfoPage> {
                             ),
                           );
                         },
-                        child: const Text('Solution'),
+                        child: Text(
+                          _languagePreference.languageCode == 'en'
+                              ? 'Solution'
+                              : 'Solusyon',
+                          style: TextStyle(fontSize: 14.sp),
+                        ),
                       ),
                     ),
                   ],

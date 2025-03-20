@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cropsight/views/pages/settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:sqflite/sqflite.dart';
@@ -9,8 +10,13 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 class CropSightDatabase {
   static final CropSightDatabase _instance = CropSightDatabase._internal();
   static Database? _database;
+
   static const String insectListTable = 'insectList';
   static const String insectManageTable = 'insectManage';
+  //
+  static const String insectListTableCB = 'insectListCB';
+  static const String insectManageTableCB = 'insectManageCB';
+  //
   static const String scanningHistory = 'scanningHistory';
 
   CropSightDatabase._internal();
@@ -52,6 +58,31 @@ class CropSightDatabase {
     // Create insectManage table
     await db.execute('''
       CREATE TABLE $insectManageTable (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        insectId INTEGER,
+        insectName TEXT,
+        insectPic TEXT,
+        cultureMn TEXT,
+        biologicalMn TEXT,
+        chemicalMn TEXT,
+        FOREIGN KEY (insectId) REFERENCES $insectListTable (insectID)
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE $insectListTableCB (
+        insectID INTEGER PRIMARY KEY,
+        insectName TEXT,
+        insectPic TEXT,
+        insectDesc TEXT,
+        insectWhere TEXT,
+        insectDamage TEXT
+      )
+    ''');
+
+    // Create insectManage table
+    await db.execute('''
+      CREATE TABLE $insectManageTableCB (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         insectId INTEGER,
         insectName TEXT,
@@ -108,12 +139,43 @@ class CropSightDatabase {
     return count == 0;
   }
 
+  //cb
+  Future<Map<String, dynamic>> loadJsonDataCB() async {
+    try {
+      final String jsonString = await rootBundle
+          .loadString('assets/resources/cropsight-cebuano.json');
+      return json.decode(jsonString);
+    } catch (e) {
+      debugPrint('Error loading JSON data: $e');
+      throw Exception('Failed to load cropsight.json: $e');
+    }
+  }
+
+  //cb
+  Future<bool> isInsectListEmptyCB() async {
+    final db = await database;
+    final count = Sqflite.firstIntValue(
+        await db.rawQuery('SELECT COUNT(*) FROM $insectListTableCB'));
+    return count == 0;
+  }
+
+  //cb
+  Future<bool> isInsectManageEmptyCB() async {
+    final db = await database;
+    final count = Sqflite.firstIntValue(
+        await db.rawQuery('SELECT COUNT(*) FROM $insectManageTableCB'));
+    return count == 0;
+  }
+
   // Clear all data from tables
   Future<void> clearAllTables() async {
     final db = await database;
     await db.delete(
         insectManageTable); // Delete from manage first due to foreign key
     await db.delete(insectListTable);
+    await db.delete(
+        insectManageTableCB); // Delete from manage first due to foreign key
+    await db.delete(insectListTableCB);
   }
 
   // Insert data into insectList table with check
@@ -130,6 +192,41 @@ class CropSightDatabase {
       if (existing.isEmpty) {
         await db.insert(
           insectListTable,
+          {
+            'insectID': insect['insectID'],
+            'insectName': insect['insectName'],
+            'insectPic': insect['insectPic'],
+            'insectDesc': insect['insectDesc'],
+            'insectWhere': insect['insectWhere'],
+            'insectDamage': insect['insectDamage'],
+          },
+          conflictAlgorithm: ConflictAlgorithm.ignore,
+        );
+        debugPrint('Inserted insect: ${insect['insectName']}');
+      } else {
+        debugPrint(
+            'Insect ${insect['insectName']} already exists, skipping insertion');
+      }
+    } catch (e) {
+      debugPrint('Error inserting insect: $e');
+      throw Exception('Failed to insert insect data: $e');
+    }
+  }
+
+  // ceb
+  Future<void> insertInsectListCB(Map<String, dynamic> insect) async {
+    final db = await database;
+    try {
+      // Check if this specific insect already exists
+      final existing = await db.query(
+        insectListTableCB,
+        where: 'insectID = ?',
+        whereArgs: [insect['insectID']],
+      );
+
+      if (existing.isEmpty) {
+        await db.insert(
+          insectListTableCB,
           {
             'insectID': insect['insectID'],
             'insectName': insect['insectName'],
@@ -186,11 +283,49 @@ class CropSightDatabase {
     }
   }
 
+// cb
+  Future<void> insertInsectManageCB(Map<String, dynamic> manage) async {
+    final db = await database;
+    try {
+      // Check if management data already exists for this insect
+      final existing = await db.query(
+        insectManageTableCB,
+        where: 'insectId = ?',
+        whereArgs: [manage['insectId']],
+      );
+
+      if (existing.isEmpty) {
+        await db.insert(
+          insectManageTableCB,
+          {
+            'insectId': manage['insectId'],
+            'insectName': manage['insectName'],
+            'insectPic': manage['insectPic'],
+            'cultureMn': json.encode(manage['cultureMn']),
+            'biologicalMn': json.encode(manage['biologicalMn']),
+            'chemicalMn': json.encode(manage['chemicalMn']),
+          },
+          conflictAlgorithm: ConflictAlgorithm.ignore,
+        );
+        debugPrint('Inserted management for: ${manage['insectName']}');
+      } else {
+        debugPrint(
+            'Management data for ${manage['insectName']} already exists, skipping insertion');
+      }
+    } catch (e) {
+      debugPrint('Error inserting management data: $e');
+      throw Exception('Failed to insert management data: $e');
+    }
+  }
+
   // Updated populate database function with checks
   Future<void> populateDatabase() async {
     try {
       final bool isInsectEmpty = await isInsectListEmpty();
       final bool isManageEmpty = await isInsectManageEmpty();
+
+      final bool isInsectEmptyCB = await isInsectListEmptyCB();
+      final bool isManageEmptyCB = await isInsectManageEmptyCB();
 
       // Only populate if both tables are empty
       if (isInsectEmpty && isManageEmpty) {
@@ -211,6 +346,27 @@ class CropSightDatabase {
       } else {
         debugPrint('Database already contains data, skipping population');
       }
+
+      // Only populate if both tables are empty
+      if (isInsectEmptyCB && isManageEmptyCB) {
+        final jsonData = await loadJsonDataCB();
+        final cropsightData = jsonData['cropsightData'];
+
+        // Insert insect list data
+        for (var insect in cropsightData['insectList']) {
+          await insertInsectListCB(insect);
+        }
+
+        // Insert insect management data
+        for (var manage in cropsightData['insectManage']) {
+          await insertInsectManageCB(manage);
+        }
+
+        debugPrint('Initial database population completed Cebuano Ver');
+      } else {
+        debugPrint(
+            'Database already contains data, skipping population Cebuano Ver');
+      }
     } catch (e) {
       debugPrint('Error populating database: $e');
       throw Exception('Failed to populate database: $e');
@@ -220,9 +376,17 @@ class CropSightDatabase {
   // Helper function to get all insects
   Future<List<Map<String, dynamic>>> getAllInsects() async {
     final db = await database;
+    final LanguagePreference languagePreference = LanguagePreference();
+    var currentLanguage = languagePreference.languageCode;
+    String insectListT = 'insectList';
+
+    if (currentLanguage == 'cb') {
+      insectListT = 'insectListCB';
+    }
+
     try {
       final insects = await db.query(
-        insectListTable,
+        insectListT,
         orderBy: 'insectID',
       );
       debugPrint('Retrieved ${insects.length} insects');
@@ -236,9 +400,16 @@ class CropSightDatabase {
   // Helper function to get management data for specific insect
   Future<Map<String, dynamic>?> getInsectManagement(int insectId) async {
     final db = await database;
+    final LanguagePreference languagePreference = LanguagePreference();
+    var currentLanguage = languagePreference.languageCode;
+    String insectManageT = 'insectManage';
+
+    if (currentLanguage == 'cb') {
+      insectManageT = 'insectManageCB';
+    }
     try {
       final List<Map<String, dynamic>> results = await db.query(
-        insectManageTable,
+        insectManageT,
         where: 'insectId = ?',
         whereArgs: [insectId],
       );
@@ -256,9 +427,16 @@ class CropSightDatabase {
   //
   Future<Map<String, dynamic>?> getInsectID(int insectId) async {
     final db = await database;
+    final LanguagePreference languagePreference = LanguagePreference();
+    var currentLanguage = languagePreference.languageCode;
+    String insectListT = 'insectList';
+
+    if (currentLanguage == 'cb') {
+      insectListT = 'insectListCB';
+    }
     try {
       final List<Map<String, dynamic>> results = await db.query(
-        insectListTable,
+        insectListT,
         where: 'insectID = ?',
         whereArgs: [insectId],
       );

@@ -11,6 +11,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../controller/connection_ctrl.dart';
 import 'report_graph/bargraph_r.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ReportsTaggingView extends StatefulWidget {
   const ReportsTaggingView({super.key});
@@ -177,13 +178,20 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  height: 40,
+                  height: 40.h,
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.green),
                   ),
                   child: DropdownButton<String>(
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? const Color.fromRGBO(18, 18, 18, 1)
+                          : const Color.fromRGBO(244, 253, 255, 1),
+                      fontWeight: FontWeight.bold,
+                    ),
                     underline: Container(
                       height: 0,
                     ),
@@ -218,8 +226,8 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
                   icon: isOnline
                       ? isLoaded
                           ? SizedBox(
-                              width: 20,
-                              height: 20,
+                              width: 15.w,
+                              height: 15.h,
                               child: CircularProgressIndicator(
                                 valueColor:
                                     AlwaysStoppedAnimation<Color>(Colors.grey),
@@ -231,8 +239,8 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
                             )
                       : isLoaded
                           ? SizedBox(
-                              width: 20,
-                              height: 20,
+                              width: 15.w,
+                              height: 15.h,
                               child: CircularProgressIndicator(
                                 valueColor:
                                     AlwaysStoppedAnimation<Color>(Colors.grey),
@@ -244,11 +252,23 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
                             ),
                   label: isOnline
                       ? isLoaded
-                          ? Text('Loading')
-                          : Text('Refresh')
+                          ? Text(
+                              'Loading',
+                              style: TextStyle(fontSize: 12.sp),
+                            )
+                          : Text(
+                              'Refresh',
+                              style: TextStyle(fontSize: 12.sp),
+                            )
                       : isLoaded
-                          ? Text('Loading')
-                          : Text('Offline'),
+                          ? Text(
+                              'Loading',
+                              style: TextStyle(fontSize: 12.sp),
+                            )
+                          : Text(
+                              'Offline',
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.green,
@@ -260,15 +280,18 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Total Scans',
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 23.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(width: 5),
-                Text(formattedDate)
+                Text(
+                  formattedDate,
+                  style: TextStyle(fontSize: 12.sp),
+                ),
               ],
             ),
             const SizedBox(height: 5),
@@ -353,16 +376,16 @@ class _ReportsTaggingViewState extends State<ReportsTaggingView> {
             children: [
               Text(
                 location.name,
-                style: const TextStyle(
-                  fontSize: 18,
+                style: TextStyle(
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.normal,
                 ),
               ),
               // const SizedBox(height: 5),
               Text(
                 _formatNumber(double.parse(location.totalScans.toString())),
-                style: const TextStyle(
-                  fontSize: 30,
+                style: TextStyle(
+                  fontSize: 25.sp,
                   fontWeight: FontWeight.w900,
                 ),
               ),

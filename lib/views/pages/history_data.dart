@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/descript/information.dart';
 import 'package:cropsight/views/descript/mandesc.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+// import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HistoryDataScreen extends StatefulWidget {
   const HistoryDataScreen({
@@ -46,19 +47,20 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
             : const Color.fromARGB(255, 41, 41, 41),
         title: Text(
           widget.insectName.toString(),
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: 22.sp,
           ),
         ),
         centerTitle: true,
         automaticallyImplyLeading: true,
         actions: [
-          IconButton(
-              onPressed: () => handleDelete(int.parse(widget.id.toString())),
-              icon: const Icon(
-                FluentIcons.delete_16_regular,
-                color: Colors.redAccent,
-              ))
+          // IconButton(
+          //     onPressed: () => handleDelete(int.parse(widget.id.toString())),
+          //     icon: const Icon(
+          //       FluentIcons.delete_16_regular,
+          //       color: Colors.redAccent,
+          //     ))
         ],
       ),
       body: SingleChildScrollView(
@@ -70,8 +72,8 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
               // Insect Image
               Center(
                 child: Container(
-                  width: 250,
-                  height: 250,
+                  width: 240.w,
+                  height: 240.h,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
@@ -120,15 +122,15 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
                       Text(
                         'Result:',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 15.sp,
                           color: Colors.red[700],
                         ),
                       ),
                       const SizedBox(height: 10),
                       Text(
                         widget.insectDamage.toString(),
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style: TextStyle(
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -328,6 +330,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
           Text(
             label,
             style: TextStyle(
+              fontSize: 13.sp,
               fontWeight: FontWeight.w400,
               color: Theme.of(context).brightness == Brightness.dark
                   ? const Color.fromRGBO(244, 253, 255, 1)
@@ -350,6 +353,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
                   child: Text(
                     "$value %",
                     style: TextStyle(
+                      fontSize: 13.sp,
                       fontWeight: FontWeight.bold,
                       color: isPercentage
                           ? (isColor ?? Colors.green)
@@ -360,6 +364,7 @@ class _HistoryDataScreenState extends State<HistoryDataScreen> {
               : Text(
                   value,
                   style: TextStyle(
+                    fontSize: 13.sp,
                     fontWeight: FontWeight.bold,
                     color:
                         isPercentage ? (isColor ?? Colors.green) : Colors.green,

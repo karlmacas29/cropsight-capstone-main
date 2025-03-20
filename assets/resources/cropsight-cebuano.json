@@ -1,0 +1,168 @@
+{
+    "cropsightData": {
+        "insectList": [
+            {
+                "insectID": 1,
+                "insectName": "Green LeafHopper",
+                "insectPic": "assets/images/greenleafhopper/1s.jpg",
+                "insectDesc": "Ang green leafhopper mao ang labing komon nga leafhopper sa mga umahan sa humay ug kritikal kini tungod kay nagasabwag sila sa viral nga sakit nga tungro. Ang duha ka nymphs ug mga hamtong mokaon pinaagi sa pag-extract sa duga sa tanom gamit ang ilang needle-shaped nga baba.",
+                "insectWhere": "Ang mga sagbot nga makita duol sa mga kanal sa irigasyon ug mga levees, ug mga ratoons sa humay maoy angay para sa pagkaon ug pagbutang og itlog. Ang mga yugto sa tillering ug panicle initiation mao ang labing angay para sa ilang pagdaghan, bisan kon ang seedling hangtod sa booting nga mga yugto usab madasig. Sila dali ra nga molukso kon mabalaka. Sila aktibo sa ting-init ug mahimong mahinay atol sa bugnaw nga panahon. Busa, ang ilang gidaghanon mokusog sa pagkunhod. Aron dali silang makita, pwede nga kusog nga pukpokon ang pipila ka mga tanom, mohunong sa matag kadyot samtang naglakaw sa umahan, o ipaspas ang insect net sa mga dahon sa humay.",
+                "insectDamage": "Ang mga hamtong ug nymphs makapahamtang og direkta nga kadaot sa tanom sa humay pinaagi sa pagsuyop sa duga gikan sa leaf sheaths ug leaf blades. Ang GLH usab makapahamtang og indirektang kadaot pinaagi sa pag-injeksyon sa mga toxic nga kemikal ug pagsabwag sa mga virus (tungro, dwarf, transitory yellowing, ug yellow-orange leaf) ug mycoplasma nga sakit (yellow dwarf). Sila kadaghanan maglimita sa ilang kaugalingon ug mokaon sa dahon ug leaf sheath sa humay. Ang arang-arang nga pagpanakod makapakunhod sa kusog sa tanom ug numero sa mga produktibo nga tillers. Ang grabing pagpanakod moresulta sa pagkalaya ug hingpit nga pagkamala sa tanom."
+            },
+            {
+                "insectID": 2,
+                "insectName": "Rice Leaffolder",
+                "insectPic": "assets/images/riceleaffolder/1s.jpg",
+                "insectDesc": "Ang mga caterpillar sa leaffolder molukot sa dahon sa humay ug ilang isumpay ang mga kilid sa dahon gamit ang silky nga mga hilo.",
+                "insectWhere": "Ang mga leaffolders mabuhi sa tanang matang sa palibot apan mas daghan sila atol sa ting-ulan. Ang taas nga humidity, malisngaw nga mga lugar sa umahan, ug sobra nga paggamit sa nitrogenous nga abono makapadasig sa ilang pagdaghan.",
+                "insectDamage": "Ang mga leaffolders makapahamtang og kadaot sa larval nga yugto. Ang mga tanom madasig sa atake hangtod sa 10 ka semana human sa pagtanom (i.e., gikan sa seedling hangtod sa flowering). Ang pagpanakod kasagaran mahitabo atol sa unang mga yugto sa pagtubo sa tanom sa humay. Ang mga larvae mosulod sa mga dahon sa batan-ong mga tanom; ila nga sumpayan ang mga kilid sa dahon ug magpuyo sulod sa niligid nga dahon. Ang grabing pagpanakod makapahimo sa tanom nga morag nasunog, masakiton, ug morag sanga."
+            },
+            {
+                "insectID": 3,
+                "insectName": "Rice Bug",
+                "insectPic": "assets/images/ricebug/factsheet-ricebug-2.jpg",
+                "insectDesc": "Ang mga rice bug modaot sa humay pinaagi sa pagsuyop sa sulod sa nagtubo nga mga lugas gikan sa pre-flowering spikelets hangtod sa soft dough nga yugto, mao nga makapahamtang og walay sulod nga mga lugas ug diskolorasyon. Ang duha, wala pa nahamtong ug hamtong nga rice bugs mokaon sa mga lugas sa humay.",
+                "insectWhere": "Ang mga bug makita sa tanang matang sa palibot apan mas daghang makita sa rainfed wetland o upland nga humay. Sila makadaot sa mga lugar nga adunay maayo nga pag-apod-apod sa ulan sa tibuok tuig, ug usab sa irrigated nga mga tanom. Ang lapad nga mga lugar sa umahan sa humay nga adunay sagbot, ihalas nga mga sagbot duol sa mga kanal, grabe nga kalahian sa pagtanom sa humay, mga umahan sa humay tupad sa mga kalasangan, ug mga plantasyon sa lubi maoy makapadasig sa pagdaghan sa mga bug. Ang mga yugto sa pagtubo gikan sa flowering hangtod sa milky nga yugto mao ang labing madasig.",
+                "insectDamage": "Ang mga hamtong ug nymphs motungha sa batan-ong tanom uban sa unang mga ulan. Sila mosuyop sa duga gikan sa nagtubo nga mga lugas sa milky nga yugto. Tanang humok nga milky nga mga lugas madasig sa atake. Ang mga panicle sa grabing natakdan nga mga umahan magpabilin nga tul-id. Ang pag-atake sa insekto moresulta sa diskolado o naglutok nga mga lugas; di-maayo nga baho sa hilaw ug naluto nga humay, ug di-maayo nga lami sa dagami, nga dili makadani sa mga baka. Sa wala pa ang pagporma sa lugas, ang mga bug mokaon sa mga batan-ong sanga ug mga dahon. Ang mga nymph makadaot og mas dako kaysa mga hamtong."
+            },
+            {
+                "insectID": 4,
+                "insectName": "Stem Borer",
+                "insectPic": "assets/images/stemborer/4s.jpg",
+                "insectDesc": "Ang mga stem borer makadaot sa humay sa bisan unsang yugto sa tanom gikan sa seedling hangtod sa pagkahamtong.",
+                "insectWhere": "Ang larvae sa stem borer molagbas sa ubos sa mga tanom atol sa vegetative nga yugto. Sa mas tigulang nga mga tanom, sila molagbas pinaagi sa ibabaw nga mga node ug mokaon padulong sa ubos. Ang yellow stem borer usa ka peste sa deepwater nga humay. Kini makita sa aquatic nga mga palibot diin adunay padayon nga pagbaha. Ang second instar nga larvae molukop sa ilang kaugalingon sa mga leaf wrapping sa lawas aron makahimo og mga tubo ug ibulag ang ilang kaugalingon gikan sa dahon ug mahulog sa ibabaw sa tubig. Sila mosumpay sa ilang kaugalingon ngadto sa tiller ug molagbas sa stem.",
+                "insectDamage": "Ang yellow stem borer usa ka bantogan nga peste sa deepwater nga humay. Kini daghan sa aquatic nga mga habitat diin adunay pagbaha ug diin daghang mga tanom sa humay ang gitanom matag tuig. Ang mga tanom sa humay sa vegetative ug sayo nga heading nga mga yugto mao ang gipangita para sa pagbutang og itlog. Ang mga tanom nga nakadawat og taas nga nitrogenous nga abono maoy usab angay sa pagpabuhi sa larvae. Usa ra ka larva ang makita sa usa ka stem. Aron masuta ang presensya sa anunogba, balaga ang mga utlanan sa umahan. Aron masusi ang gidaghanon sa larvae, diseksyoni ang mga tillers sa yugto sa tiller elongation ug panicle initiation. Para sa eggmasses, susiha ang seedbed o bag-o ra nga natukod nga tanom sa matag semana sugod sa 3 ka semana human sa pagtanom hangtod sa 9 WAT. Ang pagbutang og itlog mahimong moabot sa 3.5 eggmass/m².\nWhite Stem Borer: \n Nagdominante sa rainfed nga mga lugar diin adunay usa ra ka wet season nga tanom matag tuig, ug diin ang mga stubble gibilin nga wala nabalhin atol sa dry season. Ang upland nga humay madasig sa WSB nga mga species, tungod kay ang mga larvae dili mabuhi sa grabe kaagang kahimtang. Busa, kining insekto wala makita sa mga lugar nga adunay taas nga ulan. Sayo sa season, ang deadhearts makahimo og kadaot sa mga nurseries ug sa batan-ong tanom, samtang sa ulahi sa cropping season, ang sunod-sunod nga mga henerasyon makapahamtang og whiteheads. Ang WSB sa kasamtangan makita sa Visayas ug Mindanao."
+            }
+        ],
+        "insectManage": [
+            {
+                "insectId": 1,
+                "insectName": "Green LeafHopper",
+                "insectPic": "assets/images/greenleafhopper/1s.jpg",
+                "cultureMn": [
+                    "• Ang mga seedbed kinahanglan itaas, layo sa mga tinubdan sa kahayag, ug tabunan og mesh cloth aron limitahan ang impeksyon sa virus ug sayo nga kadaot sa mga leafhopper.",
+                    "• Ang mobile nga mga nursery nga gitanom sa usa ka set sa lain-laing susceptible ug resistant nga mga variety mahimong gamiton aron masusi ang porsento sa impeksyon sa virus sa dili pa ang pagtanom. Ang mga kahon sa nursery mahimong ibutang ubos sa mga suga aron madani ang mga leafhopper. Ang porsento sa natakdan nga mga seedling mahimong matino pinaagi sa iodine diagnostic test.",
+                    "• Itanom ang mas tigulang nga mga seedling aron maminusan ang susceptible nga vegetative nga panahon sa umahan.",
+                    "• Ang sayo nga pagtanom sa dry season makapaminus sa risgo sa sakit nga gisabwag sa insekto.",
+                    "• Tangtanga ang mga sagbot ug volunteer nga humay sa wala natamni nga mga umahan aron matabangan ang pagkunhod sa gidaghanon sa leafhopper.",
+                    "• Ang mas daghang nitrogen (N) nga abono makapadugang sa ZLH nga pag-atake, apan kini usab makapadasig sa tillering ug vigor sa tanom nga gikinahanglan aron mapalig-on ang katakos sa tanom nga makalihok tungod sa kadaot sa peste. Busa, ang optimal ug sakto sa panahon nga paggamit sa N importante.",
+                    "• Ang mas daghang potassium makapadugang sa resistensya sa tanom sa humay samtang ang mga bongbong sa selula mahimong mas baga tungod sa mas daghang pag-absorb sa silica.",
+                    "• Ang crop rotation nga adunay dili-humay nga tanom atol sa dry season makakuha sa mga sagbot ug volunteer nga mga tanom sa humay. Sa samang paagi, sa uplands, kon ang humay giubanan og soybean, kini makapaminus sa GLH incidence kon itandi sa humay nga gisundan og humay.",
+                    "• Ang denso nga pagtanom makapadugang sa gidaghanon sa leafhopper.",
+                    "• Ang pagtan-aw sa ratoon ug volunteer nga humay para sa gidaghanon sa leafhopper makatabang sa pagtino sa ilang kadensidad.",
+                    "• Ang pagdrain sa tubig gikan sa umahan makapaminus sa ilang gidaghanon.",
+                    "• Daghang mga variety nga resistant sa GLH ang anaa sa merkado. Adunay pipila ka mga variety nga adunay resistensya sa sakit sa virus, apan ang lapad nga pagtanom sa GLH-resistant nga mga variety makatabang sa pagpaubos sa incidence sa mga virus."
+                ],
+                "biologicalMn": [
+                    "• Ang gagmay nga mga putyokan mopatay sa mga itlog sa hopper.",
+                    "• Ang dryinids, water bugs, dragonflies, damselflies, mga lawa-lawa, ug mga nematodes moatake sa mga nymph ug hamtong."
+                ],
+                "chemicalMn": [
+                    "• Ang systemic nga insecticide mahimong mas epektibo. Ang mga granules nga gisagol sa yuta mas epektibo kaysa gi-broadcast o gispray sa seedbed.",
+                    "• Ibutang ang insecticide kung ang GLH daghan sa lugar"
+                ]
+            },
+            {
+                "insectId": 2,
+                "insectName": "Rice Leaffolder",
+                "insectPic": "assets/images/riceleaffolder/1s.jpg",
+                "cultureMn": [
+                    "• Ang pagputol sa ibabaw sa gibugtok nga seedlings sa dili pa ang pagtanom makatangtang sa mga itlog.",
+                    "• Ang pagtangtang sa mga sagbot makapugong sa pagdaghan sa leaffolder.",
+                    "• Ang pagkunhod sa kantidad sa nitrogenous nga abono ug pagbahin sa aplikasyon makahimo sa mga tanom sa humay nga dili kaayo angay para sa pagbutang og itlog ug pag-atake sa leaffolder.",
+                    "• Ang potassium makahimo sa mga bongbong sa selula nga mas baga tungod sa mas daghang pag-absorb sa silica, nagahimo sa tanom nga mas makatugbang sa mga leaffolders.",
+                    "• Ang mas taas nga pagpanakod mahitabo sa malisngaw nga mga lugar.",
+                    "• Ang mas lapad nga spacing makapaubos sa pagpanakod.",
+                    "• Ang sayo nga pagtanom makahatag sa mga tanom aron makalikay sa taas nga lebel sa defoliation.",
+                    "• Kadaghanan sa modernong mga variety sa humay makalihok tungod sa leaffolder defoliation; nagahimo sa mga insecticide nga dili na kinahanglan para sa pagkontrol.",
+                    "• Ang mga variety nga adunay manipis nga mga dahon mas resistant sa mga leaffolders kaysa mga variety nga adunay mas lapad nga mga dahon."
+                ],
+                "biologicalMn": [
+                    "• Ang gagmay nga mga putyokan ug mga kriket mopatay sa mga itlog sa leaffolder.",
+                    "• Ang dagko nga mga putyokan, damselflies, mga hulmigas, ug carabid (guitar) nga mga beetle mokaon sa larvae.",
+                    "• Atol sa wet season, ang kasunson nga moderadong pag-ulan makahatag og higayon sa mga pathogen nga makapapas sa tibuok larval nga populasyon. Ang mga fungus ug nuclear polyhydrosis virus (NPV) mopatay sa mga larvae.",
+                    "• Ang mga lawa-lawa mokaon sa hamtong nga mga leaffolders."
+                ],
+                "chemicalMn": ["Walay chemical management sukad karon"]
+            },
+            {
+                "insectId": 3,
+                "insectName": "Rice Bug",
+                "insectPic": "assets/images/ricebug/factsheet-ricebug-2.jpg",
+                "cultureMn": [
+                    "• Tangtanga ang mga sagbot gikan sa mga umahan sa humay, levees, ug mga palibot nga lugar pinaagi sa pagputol o pagsunog aron mamenosan ang mga habitat para sa pagbutang og itlog.",
+                    "• Likayi ang staggered nga pagtanom sa mga umahan aron maputol ang padayon nga tinubdan sa pagkaon.",
+                    "• Ang paggamit sa mga basket o bags nga adunay sticky nga materyal sa sulod mahimong makapawala/makasikop sa mga bug.",
+                    "• Butangi og net ug kuhaa pinaagi sa kamot ang mga bug aron mamenosan ang ilang gidaghanon.",
+                    "• Pagbutang og mga attractants sama sa arasan o bisan unsa nga adunay baho sama sa patay nga kuhol o ilaga. Ang mga bugs nga nadani mahimong sunogon o i-spray og mga kemikal aron mamenosan ang ilang gidaghanon.",
+                    "• Ang mga variety nga adunay awns (bangay) mas resistant.",
+                    "• Ang mga variety nga adunay panicles nga gilukop sa leaf sheath sa mas taas nga panahon makahatag og pipila ka mekanikal nga resistensya sa pagkaon."
+                ],
+                "biologicalMn": [
+                    "• Ang gagmay nga mga putyokan ug long-horned nga mga dulon mopatay sa mga itlog",
+                    "• Ang fungal pathogens moimpeksyon sa mga nymph ug hamtong.",
+                    "• Ang mga lawa-lawa, kriket, lady beetles, ug long-horned nga mga dulon mokaon sa mga nymph ug hamtong."
+                ],
+                "chemicalMn": [
+                    "• Ang foliar sprays o dust formulations epektibo. Spray o dust sa flowering nga yugto sa sayo sa buntag o gabii sa kalmado nga mga adlaw.",
+                    "• Ang granular insecticides dili epektibo."
+                ]
+            },
+            {
+                "insectId": 4,
+                "insectName": "Stem Borer",
+                "insectPic": "assets/images/stemborer/4s.jpg",
+                "cultureMn": [
+                    "Ang mosunod nga mga pamaagi gikinahanglan para sa tibuok komunidad nga implementasyon sa lain-laing yugto sa tanom. Hinuon, kini mag-agad usab sa mga nagalabi nga lokal nga kondisyon.",
+                    "Sa dili pa magtanom: \t",
+                    "• Ang pag-daro/pagkaras sa umahan sa humay diha-diha human sa pag-ani magpalubong sa mga stubbles nga nagsilbing puloy-anan sa mga larvae ug pupae. Sila mahimong matukob sa mga kapuslanan nga organismo o mamala ubos sa kainit sa adlaw. Kini epektibo para sa pagdumala sa yellow, white, ug striped stem borers.",
+                    "• Kon ang populasyon sa mga stubbles taas, ang pagbaha sa umahan sa dili pa ang pag-andam sa yuta para sa sunod nga tanom ug ang pagpabilin niini nga nalusbog hangtod sa usa ka semana makapatay sa mga larvae nga naa didto.",
+                    "• Ang pagbuklad sa dagami ubos sa adlaw makapatay sa mga larvae nga naa didto.",
+                    "• Ang pagpalangan sa pagtanom sa seedbed hangtod sa paglutaw sa anunogba aron malikayan ang pagbutang og itlog.",
+                    "• Ang pagpili sa sakto nga panahon sa pagtanom makapaminus sa pagtubo sa populasyon sa stem borer, ingon man ang paggamit sa seedbed trap crops aron manwal nga matigom ang mga eggmasses, ug usab aron masayran ang kalihokan sa stem borer.",
+                    "• Ang pagpreserba ug pagpalig-on sa kalihokan sa lokal nga kapuslanan nga mga organismo sama sa gagmay ug dagko nga mga putyokan, carabid beetles, ug mga lawa-lawa magkontrol sa pagdaghan sa stem borer.",
+                    "• Ang pagtigom sa mga eggmasses, larvae, ug pupae sa stem borers sa mga sudlanan nga adunay gagmay nga buho aron kon ang mga putyokan mogawas, sila makatibulaag sa umahan.",
+                    "Sa seedling nga yugto: \t",
+                    "• Ang pagsusi sa mga seedbed para sa eggmasses matag human sa 5 ka adlaw makatabang sa epektibo nga desisyon sa pagdumala sa peste.",
+                    "• Ang pag-usab sa pamaagi sa pagpatubo sa seedling. Pananglitan, ang paggamit og plastic nga tabon sa nursery nga yugto makapaminus sa posibilidad sa mga hamtong nga mobutang og itlog.",
+                    "• Ang panalagsa nga pagtaas sa lebel sa tubig sa irigasyon makapalumos sa mga itlog, nga gibutang sa ubos sa tillers ug sa mga leaf sheaths.",
+                    "• Ang pagputol sa ibabaw sa gibugtok nga seedlings sa dili pa ang pagtanom aron matangtang ang mga eggmasses. Kini makapugong sa paglabay sa eggmass gikan sa seedbed ngadto sa gitanom nga umahan.",
+                    "• Ang pagtanom og trap crop. Kini gihimo pinaagi sa pagtanom og susceptible nga variety sa humay sa dili pa ang nag-unang panahon sa pagtanom, pag-apply og N nga abono, ug pag-instalar og light traps aron madani ang mga anunogba para sa pagbutang og itlog. Kini kinahanglan himoon sa tibuok komunidad.",
+                    "• Ang pag-spray og pestisidyo kon ang natural nga kontrol ubos makatabang sa pagpaubos sa lebel sa peste.",
+                    "Human sa pagtanom: \t",
+                    "• Ang pagtangtang sa natakdan nga mga tanom aron patyon ang mga larvae. Kini kinahanglan himoon sa daghang mga tuig sa usa ka lapad nga lugar.",
+                    "• Ang sayo ug ulahi nga pagtanom aron malikayan ang pagpadayon sa tanom ug pagdaghan sa populasyon sa borer. Kini espesipiko sa lokasyon. Ang dili sinkronisado nga pagtanom makahimo og daghang mga panahon sa oviposition nga adunay overlapping nga mga henerasyon, tungod kay adunay padayon nga supply sa pagkaon. Kini usab makapadugang sa larval development. Dasiga ang sinkronisado nga pagtanom (3-4 ka semana nga gidugayon) sa dispersal range sa anunogba (10-20 km). Ang mga tanom nga natukod sulod sa usa ka buwan gikan sa unang petsa sa pagtanom gihunahuna nga regular-planted.",
+                    "• Ang paggamit og light traps aron makuha ang mga anunogba nga naglupad sa gabii. Ang peaks sa light traps mag-agad sa nag-unang mga season sa pagtanom kaysa mga kondisyon sa palibot.",
+                    "• Ang pagtangtang sa mga eggmasses gikan sa umahan. Kini mas epektibo nga mahimo kon i-timing base sa light trap collections (10 ka adlaw human sa peak moth flight) o i-timing nga motakdo sa susceptible nga mga yugto sa pagtubo—stem elongation ug panicle exsertion (1 ka semana sa dili pa ang panicle exsertion). Para sa usa ka ektarya, moabot og mga 4 ka adlaw para sa usa ka eksperto nga tawo aron tangtangon ang mga eggmasses.",
+                    "• Ang transplanted nga humay mas susceptible sa kadaot kaysa direct-seeded nga humay tungod kay ang transplanted nga humay gitanom sa ulahi, adunay mas ubos nga densidad sa tanom, proporsiyon nga mas ubos nga panahon sa pagbaha, ug mas taas nga pagkahamtong. Sa direct-seeded nga humay, adunay kusog nga pagtubo, walay nagbarog nga tubig atol sa vegetative nga yugto, mas mubo nga panahon sa pagkahamtong, ug kini adunay manipis nga mga stem nga mas gahi, mao nga mas daghang first-instar larvae ang mamatay. Busa, itanom sa mas taas nga sakop sa densidad sa tanom.",
+                    "• Ang taas nga kantidad sa potash makapaubos sa incidence sa stem borer. Ang pagtaas sa K makapaubos sa susceptibility sa stem borer tungod kay ang mga bongbong sa selula mahimong mas baga tungod sa mas daghang pag-absorb sa silica.",
+                    "• Ang pagsagol sa abo makapaabunda sa tanom og silicon nga makaapekto sa kalamboan sa stem borer.",
+                    "• Ang pagtaas sa paggamit sa N ug P makapaborable sa pag-atake sa stem borer. Ang taas nga aplikasyon sa nitrogen makapadugang sa gidugayon sa tanom ug pagsurvive sa stem borer, rate sa pagkaon, ug larval size.",
+                    "• Ang pag-ani sa lebel sa yuta makatangtang sa kadaghanan sa larvae sa tanang species.",
+                    "Crop rotation: \t",
+                    "• Ang kusog ug maayo nga napakaon nga tanom mas makatugbang sa stem borers kaysa nabalaka nga tanom.",
+                    "• Ang spot application sa pestisidyo (bio-pesticides o systemic insecticides) maoy usa ka maalam nga praktis.",
+                    "Mga variety: \t",
+                    "• Pagpili og mga variety nga adunay moderado nga resistensya sa stem borer.",
+                    "• Ang modernong mga kultibar dali mahamtong mao nga dili kaayo sila matakod.",
+                    "• Ang taas nga mga variety mas susceptible sa pag-atake. Sila adunay denso nga mga deposito sa silica sa stem.",
+                    "• Pagpili og mga variety nga daghan og sanga tungod sa ilang taas nga kapasidad sa pagbalanse. Kini makahatag sa mga tanom og abilidad nga mobalanse para sa deadhearts."
+                ],
+                "biologicalMn": [
+                    "• Ang taas nga parasitization sa eggmasses sa gagmay nga mga putyokan masayran pinaagi sa pagpatubo sa field-collected nga eggmasses.",
+                    "• Ang long-horned nga mga dulon, fire ants, ug mga kriket mao ang mga predator sa itlog. Ang long-horned nga dulon mas gusto sa yellow ug white stem borer nga eggmasses. Ang mga kriket ug mirids mokaon sa uban nga stem borer species. Mas gusto nila ang hubo nga mga itlog.",
+                    "• Ang carabid beetles, lady beetles, fire ants, larvae sa water beetle, water striders, mga lawa-lawa, ug isda mokaon sa bag-ong naluto nga larvae nga nahulog sa ibabaw sa tubig.",
+                    "• Ang mga lawa-lawa, dragonflies, ug damselflies mokaon sa mga hamtong.",
+                    "• Ang dagko nga mga predator sa mga anunogba mao ang mga baki, pato, ug mga ngiwngiw. Paghatag og mas daghang perching places para sa mga ngiwngiw sa umahan. Sila modakop sa mga anunogba sa gabii.",
+                    "• Ang rice stubble modunot uban sa taas nga kahumogon. Kini usab makadasig sa white fungal growth sa mga larvae ug pupae nga nanimuyo sa stem.",
+                    "• Ang bakterya (Bacillus thuringiensis) usab moimpeksyon sa mga larvae. Ang duha ka natural nga nahitabo nga Bt ug komersyal nga Bt formulations moimpeksyon sa larvae."
+                ],
+                "chemicalMn": [
+                    "• Ang paggamit og insecticide lisud human ang mga larvae sa stem borer nakasulod na sa tillers.",
+                    "• Sa tillering nga yugto, ang sprays ug granules parehas epektibo sa nabahaan nga mga lugar.",
+                    "• Gikan sa panicle initiation hangtod sa flowering nga mga yugto, ang granules dili epektibo ug mga spray formulations ra ang angay gamiton."
+                ]
+            }
+        ]
+    }
+}

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:cropsight/views/navigation/notifier/change_notifier.dart';
 import 'package:cropsight/views/pages/scanning.dart';
+import 'package:cropsight/views/pages/settings.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'dart:math' as math;
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:tensorflow_lite_flutter/tensorflow_lite_flutter.dart';
 // import 'package:tensorflow_lite_flutter/tensorflow_lite_flutter.dart';
 
@@ -29,6 +32,8 @@ class _HomeTabState extends State<HomeTab> {
       selectedValue = newLocation;
     });
   }
+
+  final LanguagePreference _languagePreference = LanguagePreference();
 
   final picker = ImagePicker();
   File? _image;
@@ -80,9 +85,9 @@ class _HomeTabState extends State<HomeTab> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+              Text(
                 'Select Your Barangay in Panabo City',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               ListView.builder(
@@ -91,9 +96,12 @@ class _HomeTabState extends State<HomeTab> {
                 itemBuilder: (context, index) {
                   final location = locations[index];
                   return ListTile(
-                    title: Text(location),
+                    title: Text(
+                      location,
+                      style: TextStyle(fontSize: 12.sp),
+                    ),
                     trailing: selectedValue == location
-                        ? const Icon(Icons.check, color: Colors.blue)
+                        ? const Icon(Icons.check, color: Colors.green)
                         : null,
                     onTap: () {
                       setState(() {
@@ -338,10 +346,12 @@ class _HomeTabState extends State<HomeTab> {
       child: ListView(
         scrollDirection: Axis.vertical,
         children: [
-          const Text(
-            'Welcome',
+          Text(
+            _languagePreference.languageCode == 'en'
+                ? 'Welcome'
+                : 'Maayong pag-abot',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 22.sp,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.start,
@@ -351,41 +361,44 @@ class _HomeTabState extends State<HomeTab> {
             color: Theme.of(context).brightness == Brightness.light
                 ? Colors.white
                 : const Color.fromARGB(255, 26, 26, 26),
-            child: const Padding(
+            child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Column(
+                spacing: 10,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'What is Cropsight?',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    _languagePreference.languageCode == 'en'
+                        ? 'What is Cropsight?'
+                        : 'Unsa nang Cropsight?',
+                    style:
+                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 5),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
                         FluentIcons.phone_checkmark_20_regular,
                         color: Color.fromRGBO(86, 144, 51, 1),
-                        size: 38,
+                        size: 38.sp,
                       ),
                       SizedBox(
                         width: 5,
                       ),
                       Expanded(
                         child: Text(
-                          'Turn your mobile phone into a rice crop pest identifier.',
+                          _languagePreference.languageCode == 'en'
+                              ? 'Turn your mobile phone into a rice crop pest identifier.'
+                              : 'Himua ang imong mobile phone nga usa ka tigpaila sa mga peste sa tanom nga humay.',
                           style: TextStyle(
                             overflow: TextOverflow.clip,
+                            fontSize: 12.sp,
                           ),
                           textAlign: TextAlign.justify,
                         ),
                       )
                     ],
-                  ),
-                  SizedBox(
-                    height: 10,
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -393,24 +406,24 @@ class _HomeTabState extends State<HomeTab> {
                       Icon(
                         FluentIcons.image_search_24_regular,
                         color: Color.fromRGBO(86, 144, 51, 1),
-                        size: 38,
+                        size: 38.sp,
                       ),
                       SizedBox(
                         width: 5,
                       ),
                       Expanded(
                         child: Text(
-                          'With just one photo, CropSight diagnoses damage to rice crops and offers management options for any pest damage.',
+                          _languagePreference.languageCode == 'en'
+                              ? 'With just one photo, CropSight diagnoses damage to rice crops and offers management options for any pest damage.'
+                              : 'Pinaagi lang sa usa ka litrato, ang CropSight mopahibalo sa kadaot sa tanom nga humay ug maghatag og mga kapilian sa pagdumala sa kadaot nga hinungdan sa mga peste.',
                           style: TextStyle(
                             overflow: TextOverflow.clip,
+                            fontSize: 12.sp,
                           ),
                           textAlign: TextAlign.justify,
                         ),
                       )
                     ],
-                  ),
-                  SizedBox(
-                    height: 10,
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -418,16 +431,19 @@ class _HomeTabState extends State<HomeTab> {
                       Icon(
                         FluentIcons.book_search_24_regular,
                         color: Color.fromRGBO(86, 144, 51, 1),
-                        size: 38,
+                        size: 38.sp,
                       ),
                       SizedBox(
                         width: 5,
                       ),
                       Expanded(
                         child: Text(
-                          'CropSight will give you a rice pest list page with information about different pest in rice crops',
+                          _languagePreference.languageCode == 'en'
+                              ? 'CropSight will give you a rice pest list page with information about different pest in rice crops'
+                              : 'Ang CropSight maghatag kanimo og usa ka panid nga naglista sa mga peste sa humay, uban ang impormasyon kabahin sa lain-laing klase sa peste sa tanom nga humay.',
                           style: TextStyle(
                             overflow: TextOverflow.clip,
+                            fontSize: 12.sp,
                           ),
                           textAlign: TextAlign.justify,
                         ),
@@ -439,12 +455,12 @@ class _HomeTabState extends State<HomeTab> {
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 10,
           ),
-          const Text(
+          Text(
             'Scan Rice Pest Damage',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 20.sp,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.start,
@@ -475,16 +491,16 @@ class _HomeTabState extends State<HomeTab> {
                             decoration: const BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
-                            child: const Icon(
+                            child: Icon(
                               FluentIcons.camera_add_24_filled,
                               color: Colors.green,
-                              size: 40,
+                              size: 40.sp,
                             )),
-                        const Text(
+                        Text(
                           'Camera',
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               color: Colors.green),
                         ),
                       ],
@@ -516,17 +532,17 @@ class _HomeTabState extends State<HomeTab> {
                               Radius.circular(10),
                             ),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             FluentIcons.image_add_24_filled,
                             color: Colors.blue,
-                            size: 40,
+                            size: 40.sp,
                           ),
                         ),
-                        const Text(
+                        Text(
                           'Upload',
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             color: Colors.blue,
                           ),
                         ),

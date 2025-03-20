@@ -6,6 +6,7 @@ import 'package:cropsight/views/pages/history_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HistoryPages extends StatefulWidget {
   const HistoryPages({super.key});
@@ -93,8 +94,10 @@ class _HistoryPagesState extends State<HistoryPages> {
                   padding: const EdgeInsets.symmetric(vertical: 3),
                   child: Text(
                     'Scan History',
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 22.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 _buildFilterControls(),
@@ -148,16 +151,25 @@ class _HistoryPagesState extends State<HistoryPages> {
                               child: (File(item['insectPic']).existsSync())
                                   ? Image.file(
                                       File(item['insectPic']),
-                                      width: 50,
-                                      height: 50,
+                                      width: 50.sp,
+                                      height: 50.sp,
                                       fit: BoxFit.fill,
                                     )
-                                  : const Icon(Icons.image_not_supported,
-                                      size: 50),
+                                  : Icon(Icons.image_not_supported,
+                                      size: 50.sp),
                             ), // Adjust path handling as needed
-                            title: Text(item['insectName']),
+                            title: Text(
+                              item['insectName'],
+                              style: TextStyle(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             subtitle: Text(
                               '${item['insectDamage']} - ${item['month']}, ${item['year']}',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                              ),
                             ),
                           );
                         },
@@ -179,13 +191,20 @@ class _HistoryPagesState extends State<HistoryPages> {
         children: [
           // Sorting Dropdown
           Container(
-            height: 40,
+            height: 40.h,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.green),
             ),
             child: DropdownButton<String>(
+              style: TextStyle(
+                fontSize: 12.sp,
+                color: Theme.of(context).brightness == Brightness.light
+                    ? const Color.fromRGBO(18, 18, 18, 1)
+                    : const Color.fromRGBO(244, 253, 255, 1),
+                fontWeight: FontWeight.bold,
+              ),
               underline: Container(
                 height: 0,
               ),
@@ -209,13 +228,20 @@ class _HistoryPagesState extends State<HistoryPages> {
 
           // Limit Dropdown
           Container(
-            height: 40,
+            height: 40.h,
             padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Colors.green),
             ),
             child: DropdownButton<int>(
+              style: TextStyle(
+                fontSize: 12.sp,
+                color: Theme.of(context).brightness == Brightness.light
+                    ? const Color.fromRGBO(18, 18, 18, 1)
+                    : const Color.fromRGBO(244, 253, 255, 1),
+                fontWeight: FontWeight.bold,
+              ),
               underline: Container(
                 height: 0,
               ),

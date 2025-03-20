@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LocationReportScreen extends StatefulWidget {
   const LocationReportScreen({
@@ -176,6 +177,7 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
           "Brgy. ${widget.locationName}, Panabo City",
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: 18.sp,
           ),
         ),
         automaticallyImplyLeading: true,
@@ -192,13 +194,20 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    height: 40,
+                    height: 40.h,
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Colors.green),
                     ),
                     child: DropdownButton<String>(
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? const Color.fromRGBO(18, 18, 18, 1)
+                            : const Color.fromRGBO(244, 253, 255, 1),
+                        fontWeight: FontWeight.bold,
+                      ),
                       underline: Container(
                         height: 0,
                       ),
@@ -232,8 +241,8 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                     icon: isOnline
                         ? isLoad
                             ? SizedBox(
-                                width: 20,
-                                height: 20,
+                                width: 15.w,
+                                height: 15.h,
                                 child: CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
                                       Colors.grey),
@@ -245,8 +254,8 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                               )
                         : isLoad
                             ? SizedBox(
-                                width: 20,
-                                height: 20,
+                                width: 15.w,
+                                height: 15.h,
                                 child: CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
                                       Colors.grey),
@@ -258,11 +267,23 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                               ),
                     label: isOnline
                         ? isLoad
-                            ? Text('Loading')
-                            : Text('Refresh')
+                            ? Text(
+                                'Loading',
+                                style: TextStyle(fontSize: 12.sp),
+                              )
+                            : Text(
+                                'Refresh',
+                                style: TextStyle(fontSize: 12.sp),
+                              )
                         : isLoad
-                            ? Text('Loading')
-                            : Text('Offline'),
+                            ? Text(
+                                'Loading',
+                                style: TextStyle(fontSize: 12.sp),
+                              )
+                            : Text(
+                                'Offline',
+                                style: TextStyle(fontSize: 12.sp),
+                              ),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.green,
@@ -277,8 +298,8 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                 children: [
                   Text(
                     'Total Scan Report',
-                    style: const TextStyle(
-                      fontSize: 20,
+                    style: TextStyle(
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -308,8 +329,8 @@ class _LocationReportScreenState extends State<LocationReportScreen> {
                 children: [
                   Text(
                     'Total Insect Reports this ${isMonthlyView ? rightTitle : 'Years'}',
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

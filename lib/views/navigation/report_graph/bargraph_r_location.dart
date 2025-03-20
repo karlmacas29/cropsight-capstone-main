@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Color _getColorForInsect(int index) {
   switch (index) {
@@ -88,7 +89,7 @@ Widget buildInsectTotalChartBasedMonth({
                     BarChartRodData(
                       toY: entry.value,
                       color: _getColorForInsect(entry.key),
-                      width: 36,
+                      width: 34.w,
                       borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(6),
                         topRight: const Radius.circular(6),
@@ -104,7 +105,7 @@ Widget buildInsectTotalChartBasedMonth({
                     showTitles: true,
                     getTitlesWidget: (value, meta) {
                       return Text(_formatNumber(value),
-                          style: const TextStyle(fontSize: 10));
+                          style: TextStyle(fontSize: 10.sp));
                     },
                   ),
                 ),
@@ -118,12 +119,12 @@ Widget buildInsectTotalChartBasedMonth({
                     showTitles: true,
                     getTitlesWidget: (value, meta) {
                       return SizedBox(
-                        width: 80,
+                        width: 78.w,
                         child: Text(
                           insectName[value.toInt()],
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 10,
+                          style: TextStyle(
+                            fontSize: 9.5.sp,
                           ),
                           maxLines: 2,
                         ),
@@ -204,7 +205,7 @@ Widget buildYearlyInsectChart({
                     return BarChartRodData(
                       toY: insectEntry.value,
                       color: _getColorForInsect(insectEntry.key),
-                      width: 16,
+                      width: 15.w,
                       borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(6),
                         topRight: const Radius.circular(6),
@@ -225,7 +226,7 @@ Widget buildYearlyInsectChart({
                       // For the bottom titles, display the years
                       return Text(
                         value.toInt().toString(),
-                        style: const TextStyle(fontSize: 12),
+                        style: TextStyle(fontSize: 10.sp),
                       );
                     },
                   ),
@@ -237,7 +238,7 @@ Widget buildYearlyInsectChart({
                       // Display numbers on the left side
                       return Text(
                         _formatNumber(value),
-                        style: const TextStyle(fontSize: 10),
+                        style: TextStyle(fontSize: 10.sp),
                       );
                     },
                   ),
@@ -291,12 +292,18 @@ Widget _buildLegendItem(String label, Color color) {
   return Row(
     children: [
       Container(
-        width: 16,
-        height: 16,
-        color: color,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        width: 16.w,
+        height: 16.h,
       ),
       const SizedBox(width: 8),
-      Text(label),
+      Text(
+        label,
+        style: TextStyle(fontSize: 12.sp),
+      ),
     ],
   );
 }
