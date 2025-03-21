@@ -1,3 +1,4 @@
+import 'package:cropsight/controller/db_controller.dart';
 import 'package:cropsight/views/navigation/nav_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,7 +66,8 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
               height: 35,
             ),
             ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
+                  await OnlineDatabase().signInAnonymously();
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const HomePageNav()));
                 },
