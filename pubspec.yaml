@@ -97,7 +97,7 @@ flutter:
   assets:
       - .env
       - assets/labels.txt
-      - assets/MobileNetV2(InsectRice(1)).tflite
+      - assets/MobileNetV2(InsectRice(2)).tflite
       - assets/resources/cropsight-cebuano.json
       - assets/resources/cropsight.json
       - assets/background/

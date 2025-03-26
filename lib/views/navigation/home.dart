@@ -132,7 +132,7 @@ class _HomeTabState extends State<HomeTab> {
         ..useNnApiForAndroid = true;
 
       _interpreter = await Interpreter.fromAsset(
-        'assets/MobileNetV2(InsectRice(1)).tflite',
+        'assets/MobileNetV2(InsectRice(2)).tflite',
         options: options,
       );
 
