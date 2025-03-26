@@ -10,4 +10,4 @@
 - Flutter (framework)
 - Google colab (python and tensorflow lite)
 - MobileNetv2 (Model)
-- Supabase (Alternative Firebase)
+- Supabase (Alternative Firebase) online for overall reports and sqlite in offline device store locally
