@@ -18,6 +18,8 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
         (screenWidth / 375.0); // 375 is a standard width (e.g., iPhone 11)
   }
 
+  bool isTapped = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,11 +67,27 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
             const SizedBox(
               height: 35,
             ),
-            ElevatedButton(
+            ElevatedButton.icon(
                 onPressed: () async {
-                  await OnlineDatabase().signInAnonymously();
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const HomePageNav()));
+                  setState(() {
+                    isTapped = true;
+                  });
+
+                  final checkSignInGuest =
+                      await OnlineDatabase().signInAnonymously();
+
+                  if (checkSignInGuest == 'Signed in as Guest') {
+                    setState(() {
+                      isTapped = false;
+                    });
+                    return;
+                  }
+                  //
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const HomePageNav(),
+                    ),
+                  );
                 },
                 style: ButtonStyle(
                   shape: WidgetStatePropertyAll(RoundedRectangleBorder(
@@ -78,7 +96,16 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
                   backgroundColor: const WidgetStatePropertyAll(
                       Color.fromRGBO(86, 144, 51, 1)),
                 ),
-                child: Text(
+                icon: isTapped
+                    ? SizedBox(
+                        height: 15.h,
+                        width: 15.h,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      )
+                    : null,
+                label: Text(
                   'Let\'s Get Started',
                   style: TextStyle(
                     color: Colors.white,

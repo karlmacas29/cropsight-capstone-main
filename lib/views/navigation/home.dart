@@ -42,7 +42,7 @@ class _HomeTabState extends State<HomeTab> {
   // List of locations
   final List<String> locations = [
     'Southern',
-    'Datu Abdul',
+    'Consolacion',
     'Quezon',
     'Nanyo',
   ];

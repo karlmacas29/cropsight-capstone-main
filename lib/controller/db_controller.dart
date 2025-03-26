@@ -690,14 +690,22 @@ class CropSightDatabase {
 class OnlineDatabase {
   final SupabaseClient _supabase = Supabase.instance.client;
 
-  Future<void> signInAnonymously() async {
-    final response = await _supabase.auth.signInAnonymously();
-    if (response.user != null) {
-      debugPrint("Signed in as Guest: ${response.user!.id}");
-    } else {
-      debugPrint(
-          "Failed to sign in anonymously. Due to internet connection or server");
+  Future<String> signInAnonymously() async {
+    bool isConnected = await InternetConnectionChecker.instance.hasConnection;
+
+    if (isConnected) {
+      try {
+        final response = await _supabase.auth.signInAnonymously();
+        if (response.user != null) {
+          debugPrint("Signed in as Guest: ${response.user!.id}");
+          return "Signed in as Guest";
+        }
+      } catch (e) {
+        debugPrint("Failed to sign in anonymously: $e");
+      }
     }
+
+    return "No internet connection";
   }
 
   Future<void> uploadScan(Map<String, dynamic> scan) async {

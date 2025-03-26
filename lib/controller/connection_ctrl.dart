@@ -169,14 +169,14 @@ class LoadOnlineData {
     try {
       locations = [
         LocationModel(name: 'Southern', totalScans: 0, color: Colors.green),
-        LocationModel(name: 'Datu Abdul', totalScans: 0, color: Colors.green),
+        LocationModel(name: 'Consolacion', totalScans: 0, color: Colors.green),
         LocationModel(name: 'Quezon', totalScans: 0, color: Colors.green),
         LocationModel(name: 'Nanyo', totalScans: 0, color: Colors.green),
       ];
 
       await Future.wait([
         _fetchTotalScansForLocation('Southern'),
-        _fetchTotalScansForLocation('Datu Abdul'),
+        _fetchTotalScansForLocation('Consolacion'),
         _fetchTotalScansForLocation('Quezon'),
         _fetchTotalScansForLocation('Nanyo'),
       ]);
