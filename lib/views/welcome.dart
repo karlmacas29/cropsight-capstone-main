@@ -80,6 +80,11 @@ class _WelcomePageOneState extends State<WelcomePageOne> {
                     setState(() {
                       isTapped = false;
                     });
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const HomePageNav(),
+                      ),
+                    );
                     return;
                   }
                   //
