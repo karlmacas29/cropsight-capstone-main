@@ -20,10 +20,10 @@
 - Provide history reports that display the number of insects most commonly attacking crops.
 
 ## Screenshots
-<img src="https://github.com/user-attachments/assets/fede1c2b-4d8e-4866-8f68-319cfbd54351" width="240" height="500px"  />
-<img src="https://github.com/user-attachments/assets/09bb44c3-8fc6-4310-bf85-0c8a469931ac" width="240" height="500px"  />
-<img src="https://github.com/user-attachments/assets/59fe1e63-f792-4d2b-9ee8-aa1623b70944" width="240" height="500px"  />
-<img src="https://github.com/user-attachments/assets/bd7b1532-15f8-4eba-8ca7-5f1e7410a6eb" width="240" height="500px"  />
+<img src="https://github.com/user-attachments/assets/fede1c2b-4d8e-4866-8f68-319cfbd54351" width="200" height="400px"  />
+<img src="https://github.com/user-attachments/assets/09bb44c3-8fc6-4310-bf85-0c8a469931ac" width="200" height="400px"  />
+<img src="https://github.com/user-attachments/assets/59fe1e63-f792-4d2b-9ee8-aa1623b70944" width="200" height="400px"  />
+<img src="https://github.com/user-attachments/assets/bd7b1532-15f8-4eba-8ca7-5f1e7410a6eb" width="200" height="400px"  />
 
 ## Members
 - Flaven Charles Llanes
