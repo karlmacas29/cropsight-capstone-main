@@ -25,6 +25,30 @@
 <img src="https://github.com/user-attachments/assets/59fe1e63-f792-4d2b-9ee8-aa1623b70944" width="200" height="400px"  />
 <img src="https://github.com/user-attachments/assets/bd7b1532-15f8-4eba-8ca7-5f1e7410a6eb" width="200" height="400px"  />
 
+
+## Run Project Locally
+Make sure it required install flutter cli and android studio with java
+
+1. Clone flutter project
+```bash
+  git clone https://github.com/karlmacas29/cropsight-capstone-main.git
+```
+
+2. Access in folder
+```bash
+  cd cropsight-capstone-main
+```
+
+3. Get all package
+```bash
+  flutter pub get
+```
+
+4. Run 
+```bash
+  flutter run
+```
+
 ## Members
 - Flaven Charles Llanes
 - Kian Cusperos
