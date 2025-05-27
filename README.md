@@ -49,6 +49,10 @@ Make sure it required install flutter cli and android studio with java
   flutter run
 ```
 
+## For MobileNetV2 Export with Tensorflow Lite
+
+Link for [InstectMobileNetV2TrainVal](https://drive.google.com/file/d/1F6Kq0fs7kk2dpAyP8rUzkYAQ1LpJ2ZN8/view?usp=sharing)
+
 ## Members
 - Flaven Charles Llanes
 - Kian Cusperos
